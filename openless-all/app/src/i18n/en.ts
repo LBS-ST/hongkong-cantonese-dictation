@@ -944,6 +944,10 @@ export const en: typeof zhCN = {
       tipDisabled: 'Click to disable this rule',
       tipEnabled: 'Click to enable this rule',
       removeAria: 'Remove correction rule',
+      builtinBadge: 'built-in',
+      builtinTipExceptions:
+        'Built-in Hong Kong correction. Disable or delete it any time. Not applied inside: {{exceptions}}',
+      builtinTip: 'Built-in Hong Kong correction. Disable or delete it any time.',
       learnedBadge: 'auto',
       learnedTip: 'Collected automatically from your own edits. Delete it any time.',
       onlyLearned: 'Only auto-collected ({{count}})',
@@ -1462,6 +1466,11 @@ export const en: typeof zhCN = {
       migrationNoticeTitle: 'Default recording mode is now Toggle',
       migrationNoticeDesc:
         'This update changes the default; if you prefer push-to-talk, switch it back here.',
+      outputModeLabel: 'Output mode',
+      outputModeDesc:
+        'Colloquial keeps spoken Cantonese characters. Written replaces colloquial words with written Chinese (word by word; word order is kept).',
+      outputModeColloquial: 'Colloquial',
+      outputModeWritten: 'Written',
       microphoneLabel: 'Preferred microphone',
       microphoneDesc:
         'Choose the preferred input device; falls back to system default when unavailable.',

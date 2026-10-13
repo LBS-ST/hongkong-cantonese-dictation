@@ -904,6 +904,9 @@ export const zhTW: typeof zhCN = {
       tipDisabled: '點選停用此規則',
       tipEnabled: '點選啟用此規則',
       removeAria: '刪除糾正規則',
+      builtinBadge: '內建',
+      builtinTipExceptions: '內建港式糾正規則，可停用或刪除。例外詞：{{exceptions}}',
+      builtinTip: '內建港式糾正規則，可停用或刪除。',
       learnedBadge: '自動',
       learnedTip: '從你的手動修改中自動收集。可以隨時刪掉。',
       onlyLearned: '只看自動收集的（{{count}}）',
@@ -1392,6 +1395,11 @@ export const zhTW: typeof zhCN = {
       migrationNoticeTitle: '預設已改為切換式說話',
       migrationNoticeDesc:
         '如果你之前改過快捷鍵觸發方式，請在這裡手動確認一次。本次更新調整了快捷鍵方式的預設值與讀取邏輯；如果你更習慣按住說話，可以重新切回“按住說話”。',
+      outputModeLabel: '輸出模式',
+      outputModeDesc:
+        '口語：直接輸出廣東話口語字。書面：把口語詞轉做書面語（逐詞替換，語序不變）。',
+      outputModeColloquial: '口語',
+      outputModeWritten: '書面',
       microphoneLabel: '首選麥克風',
       microphoneDesc:
         '選擇優先使用的輸入裝置。裝置暫時不可用時會使用系統預設麥克風，重新連線後自動切回首選裝置。',

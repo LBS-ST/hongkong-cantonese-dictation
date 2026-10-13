@@ -962,6 +962,10 @@ export const de: typeof zhCN = {
       tipDisabled: 'Klicken, um diese Regel zu deaktivieren',
       tipEnabled: 'Klicken, um diese Regel zu aktivieren',
       removeAria: 'Korrekturregel entfernen',
+      builtinBadge: 'integriert',
+      builtinTipExceptions:
+        'Integrierte Hongkong-Korrektur. Jederzeit deaktivierbar oder löschbar. Nicht angewendet in: {{exceptions}}',
+      builtinTip: 'Integrierte Hongkong-Korrektur. Jederzeit deaktivierbar oder löschbar.',
       learnedBadge: 'auto',
       learnedTip:
         'Automatisch aus deinen eigenen Änderungen gelernt. Du kannst die Regel jederzeit löschen.',
@@ -1490,6 +1494,11 @@ export const de: typeof zhCN = {
       migrationNoticeTitle: 'Standard-Aufnahmemodus ist jetzt „Umschalten“',
       migrationNoticeDesc:
         'Dieses Update ändert die Standardeinstellung. Falls du lieber die Taste gedrückt hältst, kannst du hier zurückwechseln.',
+      outputModeLabel: 'Ausgabemodus',
+      outputModeDesc:
+        'Umgangssprachlich behält kantonesische Schriftzeichen. Schriftlich ersetzt umgangssprachliche Wörter durch Schriftchinesisch (wortweise, Wortstellung bleibt).',
+      outputModeColloquial: 'Umgangssprachlich',
+      outputModeWritten: 'Schriftlich',
       microphoneLabel: 'Bevorzugtes Mikrofon',
       microphoneDesc:
         'Wähle das bevorzugte Eingabegerät. Ist es nicht verfügbar, wird der Systemstandard verwendet.',

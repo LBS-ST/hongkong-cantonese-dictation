@@ -28,6 +28,7 @@ import type {
 } from '../../lib/types';
 import { useHotkeySettings } from '../../state/HotkeySettingsContext';
 import { SelectLite } from '../../components/ui/SelectLite';
+import { OFFLINE_ONLY } from '../../lib/offlineLock';
 import { Card, Collapsible } from '../_atoms';
 import { SectionTitle, SettingRow, Toggle, inputStyle, segmentedTrackStyle } from './shared';
 import { MicrophoneSelect } from './MicrophoneSelect';
@@ -442,6 +443,26 @@ export function RecordingInputSection() {
             )}
           </div>
         </SettingRow>
+        {OFFLINE_ONLY && (
+          <SettingRow
+            label={t('settings.recording.outputModeLabel')}
+            desc={t('settings.recording.outputModeDesc')}
+          >
+            <div style={{ minWidth: 0 }}>
+              <SelectLite
+                value={prefs.writtenChineseOutput ? 'written' : 'colloquial'}
+                onChange={(next) =>
+                  savePrefs({ ...prefs, writtenChineseOutput: next === 'written' })
+                }
+                options={[
+                  { value: 'colloquial', label: t('settings.recording.outputModeColloquial') },
+                  { value: 'written', label: t('settings.recording.outputModeWritten') },
+                ]}
+                ariaLabel={t('settings.recording.outputModeLabel')}
+              />
+            </div>
+          </SettingRow>
+        )}
         {!isAndroid && (
           <SettingRow
             label={t('settings.recording.capsuleLabel')}

@@ -133,6 +133,8 @@ pub struct DictationPolishContext {
     pub selection_input: bool,
     pub chinese_script_preference: ChineseScriptPreference,
     pub output_language_preference: OutputLanguagePreference,
+    /// Offline Cantonese: convert colloquial output to written Chinese (書面 mode).
+    pub written_chinese_output: bool,
     pub llm_thinking_enabled: bool,
     pub context_window_minutes: u32,
     pub front_app: Option<String>,
@@ -331,6 +333,7 @@ impl DictationContext {
                 selection_input: false,
                 chinese_script_preference: preferences.chinese_script_preference,
                 output_language_preference: preferences.output_language_preference,
+                written_chinese_output: preferences.written_chinese_output,
                 llm_thinking_enabled: preferences.llm_thinking_enabled,
                 context_window_minutes: preferences.polish_context_window_minutes,
                 front_app: options.front_app.clone().and_then(non_blank_owned),

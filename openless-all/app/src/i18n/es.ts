@@ -958,6 +958,10 @@ export const es: typeof zhCN = {
       tipDisabled: 'Pulsa para desactivar esta regla',
       tipEnabled: 'Pulsa para activar esta regla',
       removeAria: 'Eliminar regla de corrección',
+      builtinBadge: 'integrada',
+      builtinTipExceptions:
+        'Corrección integrada para Hong Kong. Puedes desactivarla o eliminarla. No se aplica en: {{exceptions}}',
+      builtinTip: 'Corrección integrada para Hong Kong. Puedes desactivarla o eliminarla.',
       learnedBadge: 'automática',
       learnedTip:
         'Recogida automáticamente de tus propias correcciones. Puedes eliminarla cuando quieras.',
@@ -1483,6 +1487,11 @@ export const es: typeof zhCN = {
       migrationNoticeTitle: 'El modo de grabación predeterminado ahora es Alternar',
       migrationNoticeDesc:
         'Esta actualización cambia el modo predeterminado. Si prefieres mantener pulsado para hablar, cámbialo aquí.',
+      outputModeLabel: 'Modo de salida',
+      outputModeDesc:
+        'Coloquial conserva los caracteres del cantonés hablado. Escrito sustituye palabras coloquiales por chino escrito (palabra a palabra; se mantiene el orden).',
+      outputModeColloquial: 'Coloquial',
+      outputModeWritten: 'Escrito',
       microphoneLabel: 'Micrófono preferido',
       microphoneDesc:
         'Elige el dispositivo de entrada preferido. Si no está disponible, se usará el predeterminado del sistema.',

@@ -124,6 +124,9 @@ pub enum RuleSource {
     Manual,
     /// Learned from a correction made by the user.
     Learned,
+    /// Shipped default (e.g. the Hong Kong Cantonese ASR corrections). Seeded once into
+    /// the user's rule list, where it can be disabled, edited or deleted like any rule.
+    Builtin,
 }
 
 /// One deterministic text correction shared by dictation and selection flows.
@@ -139,6 +142,10 @@ pub struct CorrectionRule {
     pub created_at: String,
     #[serde(default)]
     pub source: RuleSource,
+    /// Words in which a match must be left alone, e.g. pattern 穩 with exceptions
+    /// 穩定 / 穩陣: `去穩嘢` is corrected, `穩定` is not.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub exceptions: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

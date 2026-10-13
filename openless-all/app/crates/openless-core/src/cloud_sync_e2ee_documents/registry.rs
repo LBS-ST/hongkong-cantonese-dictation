@@ -670,6 +670,13 @@ pub const PREFERENCE_FIELDS: &[PreferenceField] = &[
         reason: "portable_setting",
     },
     PreferenceField {
+        rust_name: "written_chinese_output",
+        key: "writtenChineseOutput",
+        class: PreferenceClass::Portable,
+        shape: PreferenceShape::Boolean,
+        reason: "portable_setting",
+    },
+    PreferenceField {
         rust_name: "cursor_context_enabled",
         key: "cursorContextEnabled",
         class: PreferenceClass::Excluded,

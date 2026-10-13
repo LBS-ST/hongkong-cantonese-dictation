@@ -935,6 +935,9 @@ export const ja: typeof zhCN = {
       tipDisabled: 'クリックしてこのルールを無効化',
       tipEnabled: 'クリックしてこのルールを有効化',
       removeAria: '補正ルールを削除',
+      builtinBadge: '内蔵',
+      builtinTipExceptions: '内蔵の香港向け補正ルール。無効化・削除できます。例外：{{exceptions}}',
+      builtinTip: '内蔵の香港向け補正ルール。無効化・削除できます。',
       learnedBadge: '自動',
       learnedTip: 'あなたの手直しから自動で収集したものです。いつでも削除できます。',
       onlyLearned: '自動収集のみ表示（{{count}}）',
@@ -1449,6 +1452,11 @@ export const ja: typeof zhCN = {
       migrationNoticeTitle: 'デフォルトがトグル式に変更されました',
       migrationNoticeDesc:
         '以前にトリガー方式を変更していた場合は、ここで再度確認してください。今回のアップデートではショートカット方式のデフォルト値と読み込みロジックが変更されています。「押し続けて話す」が好みであれば再度切り替えてください。',
+      outputModeLabel: '出力モード',
+      outputModeDesc:
+        '口語：広東語の口語文字をそのまま出力。書面：口語の語を書き言葉に置き換えます（語単位、語順は変わりません）。',
+      outputModeColloquial: '口語',
+      outputModeWritten: '書面',
       microphoneLabel: '優先マイク',
       microphoneDesc:
         '優先して使用する入力デバイスを選択します。一時的に利用できない場合はシステムのデフォルトマイクを使い、再接続後に自動で優先デバイスへ戻します。',

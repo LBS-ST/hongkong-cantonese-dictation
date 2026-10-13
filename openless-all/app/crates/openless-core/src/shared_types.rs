@@ -757,6 +757,11 @@ pub struct UserPreferences {
     /// user habits).
     #[serde(default = "default_true")]
     pub streaming_insert_save_clipboard: bool,
+    /// Offline Cantonese output mode: false = 口語 (colloquial Cantonese, default),
+    /// true = 書面 (rule-based written Chinese: 唔→不, 嘅→的, 係→是 ...; word substitution
+    /// only, Cantonese word order is kept).
+    #[serde(default)]
+    pub written_chinese_output: bool,
     /// Whether to send original text near the cursor from the document the
     /// user is writing as LLM polish context.
     ///
@@ -1106,6 +1111,8 @@ struct UserPreferencesWire {
     #[serde(default = "default_true")]
     streaming_insert_save_clipboard: bool,
     #[serde(default)]
+    written_chinese_output: bool,
+    #[serde(default)]
     cursor_context_enabled: bool,
     #[serde(default)]
     vocabulary_learning_enabled: bool,
@@ -1289,6 +1296,7 @@ impl Default for UserPreferencesWire {
             streaming_insert: prefs.streaming_insert,
             streaming_insert_default_migrated: prefs.streaming_insert_default_migrated,
             streaming_insert_save_clipboard: prefs.streaming_insert_save_clipboard,
+            written_chinese_output: prefs.written_chinese_output,
             cursor_context_enabled: prefs.cursor_context_enabled,
             vocabulary_learning_enabled: prefs.vocabulary_learning_enabled,
             vocabulary_learning_settings: prefs.vocabulary_learning_settings,
@@ -1502,6 +1510,7 @@ impl<'de> Deserialize<'de> for UserPreferences {
             streaming_insert,
             streaming_insert_default_migrated: true,
             streaming_insert_save_clipboard: wire.streaming_insert_save_clipboard,
+            written_chinese_output: wire.written_chinese_output,
             cursor_context_enabled: wire.cursor_context_enabled,
             vocabulary_learning_enabled: wire.vocabulary_learning_enabled,
             vocabulary_learning_settings: wire.vocabulary_learning_settings.normalized(),
@@ -1863,6 +1872,7 @@ impl Default for UserPreferences {
             streaming_insert: true,
             streaming_insert_default_migrated: true,
             streaming_insert_save_clipboard: true,
+            written_chinese_output: false,
             cursor_context_enabled: false,
             vocabulary_learning_enabled: false,
             vocabulary_learning_settings: VocabularyLearningSettings::default(),
