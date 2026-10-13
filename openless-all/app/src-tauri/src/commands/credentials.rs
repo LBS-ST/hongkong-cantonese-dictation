@@ -93,11 +93,11 @@ pub(crate) fn active_foundry_asr_is_supported(provider: &str) -> bool {
 }
 
 pub(crate) fn active_sherpa_asr_is_supported(provider: &str) -> bool {
-    #[cfg(all(not(mobile), target_os = "windows"))]
+    #[cfg(all(not(mobile), sherpa_native))]
     {
         provider == crate::asr::local::sherpa::PROVIDER_ID
     }
-    #[cfg(not(all(not(mobile), target_os = "windows")))]
+    #[cfg(not(all(not(mobile), sherpa_native)))]
     {
         let _ = provider;
         false
@@ -291,7 +291,13 @@ fn credentials_status(
     )
     .map_err(credential_persistence_error)?;
     let snap = snapshot.credentials;
-    let active_asr_provider = snapshot.active_asr_provider;
+    // M1 offline lock: sessions always use local sherpa-onnx, whatever the vault names
+    // (e.g. a cloud channel left by an upstream OpenLess install).
+    let active_asr_provider = if openless_core::offline_lock::ENFORCED {
+        openless_core::OFFLINE_LOCK_ASR_PROVIDER_ID.to_string()
+    } else {
+        snapshot.active_asr_provider
+    };
     let active_llm_provider = snapshot.active_llm_provider;
     let configuration = credential_configuration(
         &snap,
@@ -613,9 +619,25 @@ fn local_asr_configured(
         return Some(active_foundry_asr_is_supported(provider));
     }
     if provider == crate::asr::local::sherpa::PROVIDER_ID {
-        return Some(active_sherpa_asr_is_supported(provider));
+        if !active_sherpa_asr_is_supported(provider) {
+            return Some(false);
+        }
+        // Ready only once the selected model is downloaded, so first launch points the
+        // user at the one-click SenseVoice download instead of failing at dictation time.
+        return Some(model_store.is_some_and(sherpa_model_installed));
     }
     None
+}
+
+fn sherpa_model_installed(store: &openless_core::ModelStore) -> bool {
+    let model = crate::persistence::PreferencesStore::new()
+        .ok()
+        .map(|store| store.get().sherpa_onnx_model)
+        .filter(|alias| !alias.trim().is_empty())
+        .unwrap_or_else(|| openless_core::OFFLINE_LOCK_ASR_MODEL.to_string());
+    openless_core::LocalAsrTarget::parse(openless_core::LocalAsrRuntime::SherpaOnnx, model)
+        .and_then(|target| store.is_installed(&target))
+        .unwrap_or(false)
 }
 
 pub(crate) fn llm_configured_for_provider(provider: &str, snap: &CredentialsSnapshot) -> bool {
@@ -797,7 +819,7 @@ pub async fn set_active_asr_provider(core: CoreState<'_>, provider: String) -> R
     if provider == crate::asr::local::sherpa::PROVIDER_ID
         && !active_sherpa_asr_is_supported(&provider)
     {
-        return Err("sherpa-onnx local ASR is only available on Windows".to_string());
+        return Err("sherpa-onnx local ASR is only available on Windows and macOS".to_string());
     }
     if provider == crate::asr::local::APPLE_SPEECH_PROVIDER_ID
         && !active_apple_speech_asr_is_supported(&provider)

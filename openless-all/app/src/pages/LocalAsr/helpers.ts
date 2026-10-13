@@ -11,6 +11,7 @@ import {
   type SherpaOnnxLanguageHint,
   type SherpaOnnxModelAlias,
 } from '../../lib/localAsr';
+import { OFFLINE_ONLY } from '../../lib/offlineLock';
 
 export function isFoundryAlias(value: string): value is FoundryLocalAsrModelAlias {
   return FOUNDRY_LOCAL_ASR_MODELS.some((model) => model.alias === value);
@@ -25,6 +26,10 @@ export function normalizeFoundryLanguageHintForUi(value: string): FoundryLocalAs
 }
 
 export function normalizeSherpaLanguageHintForUi(value: string): SherpaOnnxLanguageHint {
+  if (OFFLINE_ONLY) {
+    // M1: no auto detection; anything outside yue / zh / en is shown as Cantonese.
+    return value === 'zh' || value === 'en' ? value : 'yue';
+  }
   return value === 'zh' || value === 'en' || value === 'ja' || value === 'ko' || value === 'yue'
     ? value
     : '';

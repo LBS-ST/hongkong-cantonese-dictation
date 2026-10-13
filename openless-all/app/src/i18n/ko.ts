@@ -2509,9 +2509,10 @@ export const ko: typeof zhCN = {
     foundryModelBaseDesc: '더 빠르고 리소스를 적게 사용해 가벼운 일상 받아쓰기에 적합합니다.',
     foundryModelTiny: 'Whisper Tiny(가장 빠름 / 스모크 테스트)',
     foundryModelTinyDesc: 'Foundry 경로가 작동하는지 확인하기 위한 가장 빠른 옵션.',
-    sherpaTitle: 'Windows sherpa-onnx Local(실험적)',
-    sherpaDesc:
-      'Windows는 sherpa-onnx로 기기 내 오프라인 일괄 인식을 수행하며 ASR API 키가 필요 없습니다.',
+    sherpaTitle: 'sherpa-onnx Local(실험적)',
+    sherpaDesc: 'sherpa-onnx로 기기 내 오프라인 일괄 인식을 수행하며 ASR API 키가 필요 없습니다.',
+    sherpaAvailable: '사용 가능',
+    sherpaUnavailable: '사용 불가',
     sherpaRuntimeReady: '모델 로드됨',
     sherpaRuntimeMissing: '모델 로드되지 않음',
     sherpaSetDefault: '기본값으로 설정 / sherpa-onnx 활성화',

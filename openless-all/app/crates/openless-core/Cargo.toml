@@ -41,3 +41,13 @@ uuid = { version = "1", features = ["v4", "serde"] }
 unicode-normalization = "0.1"
 zeroize = { version = "1", features = ["derive"] }
 zip = "2"
+
+[features]
+# M1 Cantonese offline build: pin every session to local sherpa-onnx SenseVoice (yue)
+# with LLM polish off. Enabled by the desktop app (src-tauri); left off here so the
+# upstream test suites keep covering the cloud / polish paths that M1 hides.
+offline-lock = []
+
+[[test]]
+name = "offline_lock"
+required-features = ["offline-lock"]

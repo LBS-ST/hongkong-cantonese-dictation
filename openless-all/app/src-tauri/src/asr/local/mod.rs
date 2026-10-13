@@ -2,10 +2,11 @@
 //!
 //! 当前本地引擎：
 //! - **macOS**：Qwen3-ASR 可选 MLX/Metal 或 C/CPU；
-//! - **Windows**：Foundry Local Whisper（`foundry_*`），以及 sherpa-onnx-local
-//!   实验 provider（`sherpa*`，offline batch + online streaming）
+//! - **Windows**：Foundry Local Whisper（`foundry_*`）
+//! - **Windows + macOS**：sherpa-onnx-local provider（`sherpa*`，offline batch + online
+//!   streaming）；M1 粤语离线版的默认引擎（SenseVoice yue）
 
-#[cfg(any(target_os = "windows", test))]
+#[cfg(any(sherpa_native, test))]
 mod blocking_decode;
 pub mod cache;
 pub mod foundry;

@@ -2650,9 +2650,11 @@ export const fr: typeof zhCN = {
     foundryModelBaseDesc: 'Plus rapide et moins gourmand pour la dictée quotidienne légère.',
     foundryModelTiny: 'Whisper Tiny (le plus rapide / test de base)',
     foundryModelTinyDesc: 'L’option la plus rapide pour vérifier que Foundry fonctionne.',
-    sherpaTitle: 'sherpa-onnx local pour Windows (expérimental)',
+    sherpaTitle: 'sherpa-onnx local (expérimental)',
     sherpaDesc:
-      'Windows utilise sherpa-onnx pour la reconnaissance locale par lots, hors ligne et sans clé API ASR.',
+      'Utilise sherpa-onnx pour la reconnaissance locale par lots, hors ligne et sans clé API ASR.',
+    sherpaAvailable: 'Disponible',
+    sherpaUnavailable: 'Indisponible',
     sherpaRuntimeReady: 'Modèle chargé',
     sherpaRuntimeMissing: 'Modèle non chargé',
     sherpaSetDefault: 'Définir par défaut / Activer sherpa-onnx',

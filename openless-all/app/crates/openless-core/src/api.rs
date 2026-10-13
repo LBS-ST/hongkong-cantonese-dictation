@@ -7081,7 +7081,8 @@ impl OpenLessBackend {
         purpose: DictationContextPurpose,
         host_context: &dyn HostContextAdapter,
     ) -> Result<DictationContext, BackendError> {
-        let preferences = self.get_preferences();
+        let mut preferences = self.get_preferences();
+        crate::offline_lock::enforce(&mut preferences);
         let mut captured_options = options.clone();
         if !preferences.cursor_context_enabled {
             // This switch controls document text, including text supplied by
@@ -7129,7 +7130,16 @@ impl OpenLessBackend {
             preferences.pipeline_mode,
         );
         let traditional = pipeline_mode == crate::shared_types::PipelineMode::Traditional;
-        let active_asr_provider = if traditional && purpose != DictationContextPurpose::QaText {
+        let active_asr_provider = if traditional
+            && purpose != DictationContextPurpose::QaText
+            && crate::offline_lock::ENFORCED
+        {
+            // M1 offline lock: the credential vault may still name a cloud ASR channel
+            // (e.g. after an upstream OpenLess install); every session uses local sherpa-onnx.
+            crate::dictation_context::ProviderInvocation::for_provider(
+                crate::offline_lock::OFFLINE_LOCK_ASR_PROVIDER_ID,
+            )
+        } else if traditional && purpose != DictationContextPurpose::QaText {
             self.resolve_session_provider(ProviderSlot::Asr, &preferences.active_asr_provider)
                 .await?
         } else {
@@ -7194,6 +7204,13 @@ impl OpenLessBackend {
             options,
         );
         context.pipeline_mode = pipeline_mode;
+        if crate::offline_lock::ENFORCED && purpose == DictationContextPurpose::Dictation {
+            // M1 offline lock: no LLM polish, so colloquial Cantonese (呢/唔/嘅) is inserted
+            // verbatim instead of being rewritten into written Mandarin. Also covers style-pack
+            // hotkeys and a customised Raw prompt, which would otherwise reach an LLM.
+            context = context.with_raw_requested(true);
+            context.polish.translation_active = false;
+        }
         if let Some(error) = deferred_llm_error {
             if purpose != DictationContextPurpose::Dictation || context.uses_llm_polisher() {
                 return Err(error);

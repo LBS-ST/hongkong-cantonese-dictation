@@ -44,6 +44,7 @@ pub mod llm_protocol;
 mod marketplace;
 pub mod model_store;
 pub mod net;
+pub mod offline_lock;
 pub mod omni;
 pub mod output_cleaning;
 mod persistence;
@@ -270,6 +271,10 @@ pub use local_asr_catalog::{
     normalize_foundry_language_hint, normalize_sherpa_language_hint, FoundryRuntimeSource,
     LocalAsrExecutionMode, LocalAsrMirror, LocalAsrModelId, LocalAsrRuntime, LocalAsrTarget,
     SherpaModelFamily,
+};
+pub use offline_lock::{
+    apply_offline_lock, lock_language_hint, OFFLINE_LOCK_ASR_MODEL, OFFLINE_LOCK_ASR_PROVIDER_ID,
+    OFFLINE_LOCK_DEFAULT_LANGUAGE, OFFLINE_LOCK_LANGUAGES,
 };
 pub use local_asr_service::{
     LocalAsrRuntimeLease, ModelPrepareProgressSink, ModelRuntimeAdapter, NativeModelState,

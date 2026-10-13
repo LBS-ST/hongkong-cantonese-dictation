@@ -916,6 +916,10 @@ fn default_sherpa_onnx_model() -> String {
 }
 
 fn default_active_asr_provider() -> String {
+    if crate::offline_lock::ENFORCED {
+        // M1 offline Cantonese: local sherpa-onnx SenseVoice on every desktop platform.
+        return crate::offline_lock::OFFLINE_LOCK_ASR_PROVIDER_ID.into();
+    }
     #[cfg(target_os = "windows")]
     {
         crate::local_asr_catalog::FOUNDRY_PROVIDER_ID.into()
@@ -1759,7 +1763,7 @@ fn default_working_languages() -> Vec<String> {
 
 impl Default for UserPreferences {
     fn default() -> Self {
-        Self {
+        let mut preferences = Self {
             hotkey: HotkeyBinding::default(),
             dictation_hotkey: default_dictation_hotkey_from_legacy(
                 &HotkeyBinding::default(),
@@ -1882,7 +1886,10 @@ impl Default for UserPreferences {
             android_overlay_size_dp: default_android_overlay_size_dp(),
             splash_seen_version: String::new(),
             sync_custom_server_origin: None,
-        }
+        };
+        // M1: first launch works offline with no cloud credentials.
+        crate::offline_lock::enforce(&mut preferences);
+        preferences
     }
 }
 

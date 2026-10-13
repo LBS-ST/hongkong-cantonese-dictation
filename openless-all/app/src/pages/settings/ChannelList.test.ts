@@ -47,7 +47,7 @@ const descriptors: ProviderDescriptor[] = [
 }));
 
 const asrPresets = (os: OS, supportsQwen3Mlx = true, currentProviderId?: string) =>
-  presetsFor('asr', os, supportsQwen3Mlx, currentProviderId, descriptors);
+  presetsFor('asr', os, supportsQwen3Mlx, currentProviderId, descriptors, false);
 
 for (const os of Object.keys(expectedByPlatform) as OS[]) {
   const ids = new Set(asrPresets(os).map((preset) => preset.id));
@@ -132,6 +132,19 @@ if (channelTestMode('asr', 'apple-speech', 'asr_native_silence') !== 'provider')
 }
 if (channelTestMode('asr', 'volcengine', 'asr_silence') !== 'provider') {
   throw new Error('cloud ASR providers must keep the generic provider validation path');
+}
+
+// M1 offline Cantonese: only local sherpa-onnx is offered on desktop; no cloud LLM presets.
+for (const os of ['mac', 'win'] as const) {
+  const offlineIds = presetsFor('asr', os, true, undefined, descriptors, true).map(
+    (preset) => preset.id,
+  );
+  if (offlineIds.join(',') !== 'sherpa-onnx-local') {
+    throw new Error(`offline build must only offer sherpa-onnx-local on ${os}: ${offlineIds}`);
+  }
+}
+if (presetsFor('llm', 'mac', true, undefined, [], true).length !== 0) {
+  throw new Error('offline build must hide every LLM provider');
 }
 
 console.log('ChannelList platform filtering and draft lifecycle tests passed');
