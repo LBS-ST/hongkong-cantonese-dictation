@@ -1172,6 +1172,10 @@ struct TrayStylePackMenuEntry {
 const TRAY_STYLE_PACK_MENU_ID_PREFIX: &str = "style-pack-id-";
 
 fn tray_style_menu_enabled() -> bool {
+    // Style packs are LLM polish prompts; the offline Cantonese build has none to switch.
+    if openless_core::offline_lock::ENFORCED {
+        return false;
+    }
     #[cfg(all(not(mobile), target_os = "windows"))]
     return true;
     #[cfg(not(all(not(mobile), target_os = "windows")))]

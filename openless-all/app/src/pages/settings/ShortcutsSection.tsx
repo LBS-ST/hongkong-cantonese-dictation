@@ -29,6 +29,7 @@ import { Card } from '../_atoms';
 import { SettingRow } from './shared';
 import { detectOS } from '../../components/WindowChrome';
 import { getStylePackPresentation } from '../../lib/stylePackPresentation';
+import { OFFLINE_ONLY } from '../../lib/offlineLock';
 
 export function ShortcutsSection() {
   const { t } = useTranslation();
@@ -131,33 +132,38 @@ export function ShortcutsSection() {
           </div>
         </div>
       </SettingRow>
-      <SettingRow label={t('translation.hotkey.title', 'Translation shortcut')}>
-        <ShortcutRecorder
-          value={prefs.translationHotkey}
-          onSave={async (binding) => {
-            await setTranslationHotkey(binding);
-            await savePrefs({ ...prefs, translationHotkey: binding });
-          }}
-        />
-      </SettingRow>
-      <SettingRow label={t('selectionAsk.hotkey.title')}>
-        <ShortcutRecorder
-          value={prefs.qaHotkey}
-          onSave={async (binding) => {
-            await setQaHotkey(binding);
-            await savePrefs({ ...prefs, qaHotkey: binding });
-          }}
-          onDisable={async () => {
-            await setQaHotkey(null);
-            await savePrefs({ ...prefs, qaHotkey: null });
-          }}
-          onReset={async () => {
-            const binding = defaultQaShortcut();
-            await setQaHotkey(binding);
-            await savePrefs({ ...prefs, qaHotkey: binding });
-          }}
-        />
-      </SettingRow>
+      {/* M2 offline build: translation / QA / style / Less Computer need a cloud LLM. */}
+      {!OFFLINE_ONLY && (
+        <>
+          <SettingRow label={t('translation.hotkey.title', 'Translation shortcut')}>
+            <ShortcutRecorder
+              value={prefs.translationHotkey}
+              onSave={async (binding) => {
+                await setTranslationHotkey(binding);
+                await savePrefs({ ...prefs, translationHotkey: binding });
+              }}
+            />
+          </SettingRow>
+          <SettingRow label={t('selectionAsk.hotkey.title')}>
+            <ShortcutRecorder
+              value={prefs.qaHotkey}
+              onSave={async (binding) => {
+                await setQaHotkey(binding);
+                await savePrefs({ ...prefs, qaHotkey: binding });
+              }}
+              onDisable={async () => {
+                await setQaHotkey(null);
+                await savePrefs({ ...prefs, qaHotkey: null });
+              }}
+              onReset={async () => {
+                const binding = defaultQaShortcut();
+                await setQaHotkey(binding);
+                await savePrefs({ ...prefs, qaHotkey: binding });
+              }}
+            />
+          </SettingRow>
+        </>
+      )}
       <SettingRow
         label={t('settings.shortcuts.quickNote', 'Quick note')}
         desc={t(
@@ -177,136 +183,143 @@ export function ShortcutsSection() {
           }}
         />
       </SettingRow>
-      <SettingRow label={t('settings.shortcuts.switchStyle')}>
-        <ShortcutRecorder
-          value={prefs.switchStyleHotkey}
-          onSave={async (binding) => {
-            await setSwitchStyleHotkey(binding);
-            await savePrefs({ ...prefs, switchStyleHotkey: binding });
-          }}
-          onDisable={async () => {
-            await setSwitchStyleHotkey(null);
-            await savePrefs({ ...prefs, switchStyleHotkey: null });
-          }}
-          onReset={async () => {
-            const binding = defaultSwitchStyleShortcut();
-            await setSwitchStyleHotkey(binding);
-            await savePrefs({ ...prefs, switchStyleHotkey: binding });
-          }}
-        />
-      </SettingRow>
-      <div style={{ marginTop: 12, marginBottom: 6 }}>
-        <div style={{ fontSize: 13, fontWeight: 600 }}>
-          {t('settings.shortcuts.stylePackTitle')}
-        </div>
-        <div style={{ fontSize: 11, color: 'var(--ol-ink-4)', marginTop: 2 }}>
-          {t('settings.shortcuts.stylePackDesc')}
-        </div>
-      </div>
-      {stylePackHotkeys.map((entry, index) => (
-        <div
-          key={entry.packId}
-          style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}
-        >
-          <SelectLite
-            value={entry.packId}
-            options={stylePackOptions(entry.packId)}
-            ariaLabel={t('settings.shortcuts.stylePackSelect')}
-            style={{ width: 170, flexShrink: 0 }}
-            onChange={(packId) => {
-              const next = stylePackHotkeys.map((item, i) =>
-                i === index ? { ...item, packId } : item,
-              );
-              void saveStylePackHotkeys(next).catch(() => undefined);
-            }}
-          />
-          <div style={{ flex: 1, minWidth: 0 }}>
+      {!OFFLINE_ONLY && (
+        <>
+          <SettingRow label={t('settings.shortcuts.switchStyle')}>
             <ShortcutRecorder
-              value={entry.binding}
+              value={prefs.switchStyleHotkey}
               onSave={async (binding) => {
-                const next = stylePackHotkeys.map((item, i) =>
-                  i === index ? { ...item, binding } : item,
-                );
-                await saveStylePackHotkeys(next);
+                await setSwitchStyleHotkey(binding);
+                await savePrefs({ ...prefs, switchStyleHotkey: binding });
+              }}
+              onDisable={async () => {
+                await setSwitchStyleHotkey(null);
+                await savePrefs({ ...prefs, switchStyleHotkey: null });
+              }}
+              onReset={async () => {
+                const binding = defaultSwitchStyleShortcut();
+                await setSwitchStyleHotkey(binding);
+                await savePrefs({ ...prefs, switchStyleHotkey: binding });
               }}
             />
+          </SettingRow>
+          <div style={{ marginTop: 12, marginBottom: 6 }}>
+            <div style={{ fontSize: 13, fontWeight: 600 }}>
+              {t('settings.shortcuts.stylePackTitle')}
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--ol-ink-4)', marginTop: 2 }}>
+              {t('settings.shortcuts.stylePackDesc')}
+            </div>
           </div>
-          <button
-            type="button"
-            aria-label={t('settings.shortcuts.stylePackRemove')}
-            title={t('settings.shortcuts.stylePackRemove')}
-            style={removeButtonStyle}
-            onClick={() => {
-              const next = stylePackHotkeys.filter((_, i) => i !== index);
-              void saveStylePackHotkeys(next).catch(() => undefined);
-            }}
-          >
-            ✕
-          </button>
-        </div>
-      ))}
-      {draftOpen && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <SelectLite
-            value={draftPackId}
-            options={stylePackOptions(draftPackId)}
-            placeholder={t('settings.shortcuts.stylePackSelect')}
-            ariaLabel={t('settings.shortcuts.stylePackSelect')}
-            style={{ width: 170, flexShrink: 0 }}
-            onChange={setDraftPackId}
-          />
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <ShortcutRecorder
-              value={null}
-              disabled={!draftPackId}
-              onSave={async (binding) => {
-                await saveStylePackHotkeys([...stylePackHotkeys, { packId: draftPackId, binding }]);
-                setDraftOpen(false);
+          {stylePackHotkeys.map((entry, index) => (
+            <div
+              key={entry.packId}
+              style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}
+            >
+              <SelectLite
+                value={entry.packId}
+                options={stylePackOptions(entry.packId)}
+                ariaLabel={t('settings.shortcuts.stylePackSelect')}
+                style={{ width: 170, flexShrink: 0 }}
+                onChange={(packId) => {
+                  const next = stylePackHotkeys.map((item, i) =>
+                    i === index ? { ...item, packId } : item,
+                  );
+                  void saveStylePackHotkeys(next).catch(() => undefined);
+                }}
+              />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <ShortcutRecorder
+                  value={entry.binding}
+                  onSave={async (binding) => {
+                    const next = stylePackHotkeys.map((item, i) =>
+                      i === index ? { ...item, binding } : item,
+                    );
+                    await saveStylePackHotkeys(next);
+                  }}
+                />
+              </div>
+              <button
+                type="button"
+                aria-label={t('settings.shortcuts.stylePackRemove')}
+                title={t('settings.shortcuts.stylePackRemove')}
+                style={removeButtonStyle}
+                onClick={() => {
+                  const next = stylePackHotkeys.filter((_, i) => i !== index);
+                  void saveStylePackHotkeys(next).catch(() => undefined);
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+          {draftOpen && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              <SelectLite
+                value={draftPackId}
+                options={stylePackOptions(draftPackId)}
+                placeholder={t('settings.shortcuts.stylePackSelect')}
+                ariaLabel={t('settings.shortcuts.stylePackSelect')}
+                style={{ width: 170, flexShrink: 0 }}
+                onChange={setDraftPackId}
+              />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <ShortcutRecorder
+                  value={null}
+                  disabled={!draftPackId}
+                  onSave={async (binding) => {
+                    await saveStylePackHotkeys([
+                      ...stylePackHotkeys,
+                      { packId: draftPackId, binding },
+                    ]);
+                    setDraftOpen(false);
+                    setDraftPackId('');
+                  }}
+                />
+              </div>
+              <button
+                type="button"
+                aria-label={t('settings.shortcuts.stylePackRemove')}
+                title={t('settings.shortcuts.stylePackRemove')}
+                style={removeButtonStyle}
+                onClick={() => {
+                  setDraftOpen(false);
+                  setDraftPackId('');
+                  setStylePackError(null);
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          )}
+          {stylePackError && (
+            <div style={{ fontSize: 11, color: 'var(--ol-err)', marginBottom: 6 }}>
+              {stylePackError}
+            </div>
+          )}
+          {!draftOpen && (
+            <button
+              type="button"
+              style={{
+                border: '0.5px dashed var(--ol-line-strong)',
+                background: 'transparent',
+                color: 'var(--ol-ink-3)',
+                borderRadius: 6,
+                padding: '4px 10px',
+                fontSize: 12,
+                cursor: 'pointer',
+                marginBottom: 6,
+              }}
+              onClick={() => {
+                setDraftOpen(true);
                 setDraftPackId('');
+                setStylePackError(null);
               }}
-            />
-          </div>
-          <button
-            type="button"
-            aria-label={t('settings.shortcuts.stylePackRemove')}
-            title={t('settings.shortcuts.stylePackRemove')}
-            style={removeButtonStyle}
-            onClick={() => {
-              setDraftOpen(false);
-              setDraftPackId('');
-              setStylePackError(null);
-            }}
-          >
-            ✕
-          </button>
-        </div>
-      )}
-      {stylePackError && (
-        <div style={{ fontSize: 11, color: 'var(--ol-err)', marginBottom: 6 }}>
-          {stylePackError}
-        </div>
-      )}
-      {!draftOpen && (
-        <button
-          type="button"
-          style={{
-            border: '0.5px dashed var(--ol-line-strong)',
-            background: 'transparent',
-            color: 'var(--ol-ink-3)',
-            borderRadius: 6,
-            padding: '4px 10px',
-            fontSize: 12,
-            cursor: 'pointer',
-            marginBottom: 6,
-          }}
-          onClick={() => {
-            setDraftOpen(true);
-            setDraftPackId('');
-            setStylePackError(null);
-          }}
-        >
-          + {t('settings.shortcuts.stylePackAdd')}
-        </button>
+            >
+              + {t('settings.shortcuts.stylePackAdd')}
+            </button>
+          )}
+        </>
       )}
       <SettingRow label={t('settings.shortcuts.openApp')}>
         <ShortcutRecorder
@@ -326,7 +339,7 @@ export function ShortcutsSection() {
           }}
         />
       </SettingRow>
-      {(os === 'mac' || os === 'win') && (
+      {!OFFLINE_ONLY && (os === 'mac' || os === 'win') && (
         <SettingRow
           label={t('settings.codingAgent.title')}
           desc={t('settings.codingAgent.voiceHotkeyDesc')}

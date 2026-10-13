@@ -3,6 +3,7 @@ import { Capsule } from './components/Capsule';
 import { CapsuleTranscriptOverlay } from './components/LiveTranscriptPill';
 import { CoreStartupScreen } from './components/CoreStartupScreen';
 import { GlobalDownloadProgress } from './components/GlobalDownloadProgress';
+import { OfflineModelBootstrap } from './components/OfflineModelBootstrap';
 import { detectOS, type OS } from './components/WindowChrome';
 import {
   checkAccessibilityPermission,
@@ -436,6 +437,7 @@ function ReadyApp({
         {/* Global download progress overlay: always mounted across main-window pages
             (listens to events itself, decoupled from pages). */}
         <GlobalDownloadProgress />
+        <OfflineModelBootstrap />
         {platformCaps?.platform === 'android' && (
           <div style={{ display: mobileQaOpen ? 'block' : 'none', height: '100%' }}>
             <QaPanel

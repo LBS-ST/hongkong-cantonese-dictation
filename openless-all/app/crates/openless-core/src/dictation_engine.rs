@@ -695,6 +695,11 @@ impl DictationEngine for PipelineDictationEngine {
                 .into());
             }
             let original_asr_text = transcript.text.clone();
+            if crate::offline_lock::ENFORCED {
+                // Offline Cantonese: SenseVoice emits Simplified forms; insert HK Traditional.
+                // Runs before correction rules so rules written in Traditional still match.
+                transcript.text = crate::offline_lock::to_hong_kong_traditional(&transcript.text);
+            }
             transcript.text = crate::correction::apply_correction_rules(
                 &transcript.text,
                 &context.correction_rules,

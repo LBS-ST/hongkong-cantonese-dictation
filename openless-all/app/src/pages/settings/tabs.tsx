@@ -99,7 +99,8 @@ export function ShortcutsTab() {
   return (
     <>
       <ShortcutsSection />
-      <SelectionWorkspaceSection />
+      {/* Selection polish / QA / selection voice need a cloud LLM. */}
+      {!OFFLINE_ONLY && <SelectionWorkspaceSection />}
     </>
   );
 }
@@ -349,7 +350,7 @@ export function PrivacyTab() {
       </div>
       <PermissionsSection />
       <DataStorageSection />
-      <CloudSyncSection />
+      {!OFFLINE_ONLY && <CloudSyncSection />}
     </>
   );
 }
