@@ -9,6 +9,7 @@ import { WindowChrome, detectOS, type OS } from './WindowChrome';
 import { AudioCueListener } from './AudioCue';
 import { SettingsModal } from './SettingsModal';
 import { CloudSyncSetupPrompt } from './CloudSyncSetupPrompt';
+import { OFFLINE_ONLY } from '../lib/offlineLock';
 import { Overview } from '../pages/Overview';
 import { History } from '../pages/History';
 import { Vocab } from '../pages/Vocab';
@@ -188,7 +189,10 @@ function FloatingShellBody({
           PROVIDER_SETUP_PROMPT_DEFERRED_KEY,
         );
         if (!cancelled && shouldShowProviderSetupPrompt(credentials, promptDeferredValue)) {
-          setProviderPromptOpen(true);
+          // M1 offline Cantonese: no cloud/LLM provider dialog. Until the local SenseVoice
+          // model is downloaded, open straight to its one-click download.
+          if (OFFLINE_ONLY) openSettings('services');
+          else setProviderPromptOpen(true);
         }
       } catch (error) {
         // A locked/unavailable credential store is not an unconfigured provider.
@@ -639,10 +643,14 @@ function FloatingShellBody({
           onOpenSettings={openHotkeyRecordingSettings}
         />
       ) : null}
-      <CloudSyncSetupPrompt
-        blocked={settingsMount.mounted || providerPromptMount.mounted || hotkeyPromptMount.mounted}
-        onSetup={() => openSettings('privacy')}
-      />
+      {!OFFLINE_ONLY && (
+        <CloudSyncSetupPrompt
+          blocked={
+            settingsMount.mounted || providerPromptMount.mounted || hotkeyPromptMount.mounted
+          }
+          onSetup={() => openSettings('privacy')}
+        />
+      )}
       <AudioCueListener />
 
       {/* Enter keyframes shared by tab switching, the provider prompt, and the footer popover */}

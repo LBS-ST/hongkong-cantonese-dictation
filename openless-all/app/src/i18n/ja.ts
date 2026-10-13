@@ -2531,9 +2531,11 @@ export const ja: typeof zhCN = {
       'より高速でリソース消費が少なく、日常の軽量ディクテーションに適しています。',
     foundryModelTiny: 'Whisper Tiny（最速 / スモークテスト）',
     foundryModelTinyDesc: 'Foundry 経路が動作するか確認するための最速オプション。',
-    sherpaTitle: 'Windows sherpa-onnx Local（実験的）',
+    sherpaTitle: 'sherpa-onnx Local（実験的）',
     sherpaDesc:
-      'Windows では sherpa-onnx によるデバイス上のオフライン一括認識を使用します。ASR API キーは不要です。',
+      'sherpa-onnx によるデバイス上のオフライン一括認識を使用します。ASR API キーは不要です。',
+    sherpaAvailable: '利用可能',
+    sherpaUnavailable: '利用不可',
     sherpaRuntimeReady: 'モデル読み込み済み',
     sherpaRuntimeMissing: 'モデル未読み込み',
     sherpaSetDefault: '既定に設定 / sherpa-onnx を有効化',

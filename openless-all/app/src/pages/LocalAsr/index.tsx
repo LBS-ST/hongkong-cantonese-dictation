@@ -2826,8 +2826,8 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
                   )}
                   <Pill tone={sherpaStatus?.available ? 'ok' : 'outline'} size="sm">
                     {sherpaStatus?.available
-                      ? t('localAsr.foundryAvailable')
-                      : t('localAsr.foundryUnavailable')}
+                      ? t('localAsr.sherpaAvailable')
+                      : t('localAsr.sherpaUnavailable')}
                   </Pill>
                   <Pill tone={sherpaStatus?.runtimeReady ? 'ok' : 'outline'} size="sm">
                     {sherpaStatus?.runtimeReady

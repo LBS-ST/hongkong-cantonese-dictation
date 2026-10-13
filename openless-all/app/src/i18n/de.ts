@@ -2636,9 +2636,10 @@ export const de: typeof zhCN = {
     foundryModelBaseDesc: 'Schneller und ressourcenschonender für einfache alltägliche Diktate.',
     foundryModelTiny: 'Whisper Tiny (am schnellsten / Funktionstest)',
     foundryModelTinyDesc: 'Schnellste Testoption, um die Funktionsfähigkeit von Foundry zu prüfen.',
-    sherpaTitle: 'Lokales sherpa-onnx unter Windows (experimentell)',
-    sherpaDesc:
-      'Windows verwendet sherpa-onnx für lokale Offline-Stapelerkennung ohne ASR-API-Schlüssel.',
+    sherpaTitle: 'Lokales sherpa-onnx (experimentell)',
+    sherpaDesc: 'sherpa-onnx ermöglicht lokale Offline-Stapelerkennung ohne ASR-API-Schlüssel.',
+    sherpaAvailable: 'Verfügbar',
+    sherpaUnavailable: 'Nicht verfügbar',
     sherpaRuntimeReady: 'Modell geladen',
     sherpaRuntimeMissing: 'Modell nicht geladen',
     sherpaSetDefault: 'Als Standard festlegen / sherpa-onnx aktivieren',

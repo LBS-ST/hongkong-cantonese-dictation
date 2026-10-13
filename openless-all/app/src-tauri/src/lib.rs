@@ -454,31 +454,31 @@ macro_rules! app_invoke_handler_desktop {
             commands::foundry_local_asr_model_dir,
             commands::foundry_local_asr_delete_model,
             commands::foundry_local_asr_reveal_model_dir,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_status,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_catalog,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_fetch_remote_info,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_download_model,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_cancel_download,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_set_model,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_set_language_hint,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_prepare,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_cancel_prepare,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_release,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_model_dir,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_delete_model,
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             commands::sherpa_onnx_asr_reveal_model_dir,
             commands::export_error_log,
             commands::debug_read_cursor_context,

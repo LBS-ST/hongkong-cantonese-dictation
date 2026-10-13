@@ -21,6 +21,7 @@ import type { PermissionStatus, PlatformCapabilities } from '../lib/types';
 import { useHotkeySettings } from '../state/HotkeySettingsContext';
 import { ProvidersSection } from '../pages/settings/ChannelList';
 import { CloudSyncWelcome } from './CloudSyncSetupPrompt';
+import { OFFLINE_ONLY } from '../lib/offlineLock';
 
 interface OnboardingProps {
   onComplete: () => void;
@@ -48,7 +49,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   return (
     <>
       <DesktopOnboarding onComplete={onComplete} platformCaps={platformCaps} />
-      <CloudSyncWelcome />
+      {/* M1 offline Cantonese: no cloud restore entry on first launch. */}
+      {!OFFLINE_ONLY && <CloudSyncWelcome />}
     </>
   );
 }
