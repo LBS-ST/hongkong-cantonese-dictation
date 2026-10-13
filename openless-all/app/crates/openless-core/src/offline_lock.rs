@@ -52,31 +52,32 @@ pub fn enforce(preferences: &mut UserPreferences) {
 /// 吓 (試吓 / 吓?) → 嚇 (scare). They are kept exactly as recognised.
 const CANTONESE_PROTECTED: &[char] = &['晒', '搵', '吓'];
 
-/// Cantonese copula 係 ("is") phrases that `s2hk` leaves as the Simplified 系, because
-/// OpenCC only knows 係 inside written-Chinese words (關係, 就係). Applied after conversion.
-/// Bare 系 is not touched: 系統 / 系列 / 星系 / 體系 must keep it.
-const CANTONESE_COPULA_PHRASES: &[(&str, &str)] = &[
-    ("系唔系", "係唔係"),
-    ("系咪", "係咪"),
-    ("唔系", "唔係"),
-    ("真系", "真係"),
-    ("梗系", "梗係"),
-    ("即系", "即係"),
-    ("都系", "都係"),
-    ("咪系", "咪係"),
-    ("又系", "又係"),
-    ("佢系", "佢係"),
-    ("佢哋系", "佢哋係"),
-    ("我哋系", "我哋係"),
-    ("你哋系", "你哋係"),
-    ("邊個系", "邊個係"),
-    ("系咁", "係咁"),
-    ("系呀", "係呀"),
-    ("系啊", "係啊"),
-    ("系喇", "係喇"),
-    ("系啦", "係啦"),
-    ("系囉", "係囉"),
-    ("系咩", "係咩"),
+/// Written-Chinese words that really use 系 (system / series / lineage / department).
+/// In Cantonese dictation every other 系 is the copula 係 ("is"): SenseVoice yue writes it
+/// as the Simplified 系 and OpenCC `s2hk` only restores 係 inside words it knows (關係,
+/// 就係), missing 係咪 / 唔係 / 定係 / 淨係 / 但係 / 佢係 ... The 繫 sense (聯繫, 繫上) is
+/// already converted by OpenCC.
+const WRITTEN_XI_WORDS: &[&str] = &[
+    "系統",
+    "系列",
+    "系譜",
+    "系主任",
+    "體系",
+    "派系",
+    "星系",
+    "銀河系",
+    "太陽系",
+    "直系",
+    "旁系",
+    "嫡系",
+    "科系",
+    "學系",
+    "院系",
+    "母系",
+    "父系",
+    "譜系",
+    "世系",
+    "菌系",
 ];
 
 /// Convert ASR output to Hong Kong Traditional Chinese (OpenCC `s2hk`).
@@ -109,14 +110,59 @@ pub fn to_hong_kong_traditional(text: &str) -> String {
                 }
             }
             output.push_str(&converter.convert(&segment));
-            for (simplified, cantonese) in CANTONESE_COPULA_PHRASES {
-                if output.contains(simplified) {
-                    output = output.replace(simplified, cantonese);
-                }
-            }
             output
         }
         _ => text.to_string(),
+    }
+}
+
+/// Restore the Cantonese copula: every 系 becomes 係 except inside [`WRITTEN_XI_WORDS`].
+pub fn restore_cantonese_copula(text: &str) -> String {
+    if !text.contains('系') {
+        return text.to_string();
+    }
+    let characters: Vec<char> = text.chars().collect();
+    let mut keep = vec![false; characters.len()];
+    for word in WRITTEN_XI_WORDS {
+        let word: Vec<char> = word.chars().collect();
+        if word.len() > characters.len() {
+            continue;
+        }
+        for start in 0..=characters.len() - word.len() {
+            if characters[start..start + word.len()] == word[..] {
+                for (offset, character) in word.iter().enumerate() {
+                    if *character == '系' {
+                        keep[start + offset] = true;
+                    }
+                }
+            }
+        }
+    }
+    characters
+        .iter()
+        .zip(keep)
+        .map(|(character, keep)| {
+            if *character == '系' && !keep {
+                '係'
+            } else {
+                *character
+            }
+        })
+        .collect()
+}
+
+/// Text inserted by offline dictation: Hong Kong Traditional, plus the Cantonese copula
+/// fix when recognising Cantonese (`yue`, the default). Mandarin (`zh`) keeps 系 as is.
+pub fn localize_offline_transcript(text: &str, language: Option<&str>) -> String {
+    let traditional = to_hong_kong_traditional(text);
+    let cantonese = language
+        .map(str::trim)
+        .filter(|language| !language.is_empty())
+        .is_none_or(|language| language.eq_ignore_ascii_case(OFFLINE_LOCK_DEFAULT_LANGUAGE));
+    if cantonese {
+        restore_cantonese_copula(&traditional)
+    } else {
+        traditional
     }
 }
 
@@ -154,6 +200,42 @@ mod tests {
     use super::*;
 
     #[test]
+    fn cantonese_copula_is_restored_in_live_dictation_output() {
+        // Verbatim SenseVoice yue output from live dictation on macOS (asrTranscript).
+        for (asr, inserted) in [
+            ("而家系咪净系出繁体字今晚。", "而家係咪淨係出繁體字今晚。"),
+            ("现在测试中应该，系净系出繁体字。", "現在測試中應該，係淨係出繁體字。"),
+            (
+                "我现在就是用这个程式同你沟通，你看看里边有没有我们想做的事是否达成系咪搞掂咗定系还是要执。",
+                "我現在就是用這個程式同你溝通，你看看裏邊有沒有我們想做的事是否達成係咪搞掂咗定係還是要執。",
+            ),
+            (
+                "你啱，啱讲话仲有三个残留，但系我睇翻，我自己 send 个 message 系啊繁体中文嚟嘅。",
+                "你啱，啱講話仲有三個殘留，但係我睇翻，我自己 send 個 message 係啊繁體中文嚟嘅。",
+            ),
+            (
+                "我想问多次，我哋依个模型系决定用依个噶啦嘛定定系还是会用其他。",
+                "我想問多次，我哋依個模型係決定用依個噶啦嘛定定係還是會用其他。",
+            ),
+            ("梗系啦，即系咁，都系佢", "梗係啦，即係咁，都係佢"),
+        ] {
+            assert_eq!(localize_offline_transcript(asr, Some("yue")), inserted, "{asr}");
+            assert_eq!(localize_offline_transcript(asr, None), inserted, "{asr} (default)");
+        }
+        // Written words keep 系; the 繫 sense is OpenCC's job.
+        assert_eq!(
+            localize_offline_transcript("呢个系统系列同太阳系", Some("yue")),
+            "呢個系統系列同太陽系"
+        );
+        assert_eq!(localize_offline_transcript("联系佢", Some("yue")), "聯繫佢");
+        // Mandarin keeps 系 untouched.
+        assert_eq!(
+            localize_offline_transcript("他是中文系的", Some("zh")),
+            "他是中文系的"
+        );
+    }
+
+    #[test]
     fn hong_kong_traditional_converts_simplified_and_keeps_colloquial_cantonese() {
         assert_eq!(
             to_hong_kong_traditional("其实我觉得现在讲"),
@@ -171,7 +253,7 @@ mod tests {
         }
         // SenseVoice yue output observed on macOS (macOS "Sinji" voice → sherpa-onnx).
         assert_eq!(
-            to_hong_kong_traditional("呢个系咪你嘅，咁，就系咁先。"),
+            localize_offline_transcript("呢个系咪你嘅，咁，就系咁先。", Some("yue")),
             "呢個係咪你嘅，咁，就係咁先。"
         );
         assert_eq!(
@@ -179,11 +261,9 @@ mod tests {
             "唔該晒，我今日唔去觀塘啦。"
         );
         assert_eq!(
-            to_hong_kong_traditional("佢系唔系真系咁讲"),
+            localize_offline_transcript("佢系唔系真系咁讲", Some("yue")),
             "佢係唔係真係咁講"
         );
-        // Written-Chinese 系 words are untouched.
-        assert_eq!(to_hong_kong_traditional("系统同系列"), "系統同系列");
         // Real conversions around a protected character still happen.
         assert_eq!(to_hong_kong_traditional("现在食晒几多"), "現在食晒幾多");
         assert_eq!(to_hong_kong_traditional(""), "");
