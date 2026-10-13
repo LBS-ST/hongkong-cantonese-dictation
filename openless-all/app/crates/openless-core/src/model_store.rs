@@ -2398,6 +2398,11 @@ fn commit_staging(staging: &Path, destination: &Path) -> Result<(), BackendError
             .unwrap_or("model"),
         uuid::Uuid::new_v4().simple()
     ));
+    // Runtime-scoped models (e.g. `<root>/sherpa-onnx/<model>`) commit into a parent that
+    // does not exist on a fresh install; rename() would fail with ENOENT.
+    if let Some(parent) = destination.parent() {
+        std::fs::create_dir_all(parent).map_err(platform_error)?;
+    }
     let had_previous = destination.exists();
     if had_previous {
         std::fs::rename(destination, &backup).map_err(platform_error)?;
@@ -3352,6 +3357,49 @@ mod tests {
             body
         );
         assert_eq!(calls.load(Ordering::Relaxed), 2);
+        let _ = std::fs::remove_dir_all(root);
+    }
+
+    #[tokio::test]
+    async fn sherpa_download_creates_the_nested_runtime_directory_on_commit() {
+        // Sherpa models live under `<root>/sherpa-onnx/<model>`. On a fresh install that
+        // parent does not exist yet; committing the finished staging dir must create it
+        // instead of failing the final rename with ENOENT ("os error 2").
+        let root = std::env::temp_dir().join(format!(
+            "openless-model-store-sherpa-{}",
+            uuid::Uuid::new_v4()
+        ));
+        let body = b"sense-voice".to_vec();
+        let transport = Arc::new(FakeTransport {
+            calls: Arc::new(AtomicUsize::new(0)),
+            body: body.clone(),
+            ignore_range: false,
+        });
+        let store =
+            ModelStore::with_transport(ModelStoreConfig::new(root.clone()).unwrap(), transport);
+        let target =
+            LocalAsrTarget::parse(LocalAsrRuntime::SherpaOnnx, "sense-voice-small-zh").unwrap();
+        let manifest = ModelManifest::new(
+            target.clone(),
+            "csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17",
+            vec![ModelFile {
+                path: "model.int8.onnx".into(),
+                url: "https://example.test/model.int8.onnx".into(),
+                size_bytes: body.len() as u64,
+                sha256: Some(format!("{:x}", Sha256::digest(&body))),
+            }],
+        )
+        .unwrap();
+        assert!(!root.join("sherpa-onnx").exists());
+
+        let status = store.download(manifest).await.unwrap();
+
+        assert!(status.ready);
+        assert_eq!(
+            std::fs::read(root.join("sherpa-onnx/sense-voice-small-zh/model.int8.onnx")).unwrap(),
+            body
+        );
+        assert!(!root.join(staging_dir_name(&target)).exists());
         let _ = std::fs::remove_dir_all(root);
     }
 
