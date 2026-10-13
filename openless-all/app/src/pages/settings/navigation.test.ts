@@ -80,29 +80,29 @@ assert.equal(
   'desktop hides Android input method settings',
 );
 assert.equal(
-  visibleAdvancedPages('desktop', 'win').some((item) => item.id === 'lessComputer'),
+  visibleAdvancedPages('desktop', 'win', false).some((item) => item.id === 'lessComputer'),
   true,
   'Windows retains Less Computer configuration',
 );
 assert.equal(
-  visibleAdvancedPages('desktop', 'win').some((item) => item.id === 'claudeConsole'),
+  visibleAdvancedPages('desktop', 'win', false).some((item) => item.id === 'claudeConsole'),
   false,
   'the macOS Claude console is not exposed on Windows',
 );
 assert.deepEqual(
-  visibleAdvancedPages('android', 'android').map((item) => item.id),
+  visibleAdvancedPages('android', 'android', false).map((item) => item.id),
   ['vocabularyLearning', 'debug'],
   'the pipeline switch lives in Services on every platform',
 );
 console.log('settings navigation tests passed');
 
 assert.equal(
-  visibleAdvancedPages('mobile', 'mac').some((item) => item.id === 'vocabularyLearning'),
+  visibleAdvancedPages('mobile', 'mac', false).some((item) => item.id === 'vocabularyLearning'),
   false,
   'generic mobile hosts without a native observer do not expose learning configuration',
 );
 assert.equal(
-  visibleAdvancedPages('desktop', 'mac').some((item) => item.id === 'vocabularyLearning'),
+  visibleAdvancedPages('desktop', 'mac', false).some((item) => item.id === 'vocabularyLearning'),
   true,
   'macOS retains its native correction observer settings',
 );
@@ -173,5 +173,11 @@ assert.deepEqual(
   phoneViews,
   ['llm', 'asr', 'omni', 'connections'],
   'mobile service tabs stay stable',
+);
+// M2 offline build: agent pages are hidden; local correction learning and debug stay.
+assert.deepEqual(
+  visibleAdvancedPages('desktop', 'mac', true).map((item) => item.id),
+  ['vocabularyLearning', 'debug'],
+  'offline build hides Less Computer and the Claude console',
 );
 console.log('settings service view tests passed');

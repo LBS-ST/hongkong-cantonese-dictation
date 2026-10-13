@@ -1,4 +1,5 @@
 import type { OS } from '../../components/WindowChrome';
+import { OFFLINE_ONLY } from '../../lib/offlineLock';
 import type { PlatformKind } from '../../lib/types';
 
 export type SettingsSectionId =
@@ -21,8 +22,14 @@ export const ADVANCED_PAGES = [
 export type AdvancedPage = (typeof ADVANCED_PAGES)[number];
 export type AdvancedPageId = AdvancedPage['id'];
 
-export function visibleAdvancedPages(platform: PlatformKind | undefined, os: OS): AdvancedPage[] {
+export function visibleAdvancedPages(
+  platform: PlatformKind | undefined,
+  os: OS,
+  offline: boolean = OFFLINE_ONLY,
+): AdvancedPage[] {
   return ADVANCED_PAGES.filter((page) => {
+    // M2 offline build: Less Computer and the Claude console are agent (cloud) features.
+    if (offline && (page.id === 'lessComputer' || page.id === 'claudeConsole')) return false;
     if (page.id === 'lessComputer') return platform === 'desktop' && (os === 'mac' || os === 'win');
     if (page.id === 'claudeConsole') return platform === 'desktop' && os === 'mac';
     if (page.id === 'vocabularyLearning')

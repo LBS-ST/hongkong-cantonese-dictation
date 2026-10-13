@@ -9,7 +9,8 @@ import { WindowChrome, detectOS, type OS } from './WindowChrome';
 import { AudioCueListener } from './AudioCue';
 import { SettingsModal } from './SettingsModal';
 import { CloudSyncSetupPrompt } from './CloudSyncSetupPrompt';
-import { OFFLINE_ONLY } from '../lib/offlineLock';
+import { OFFLINE_ONLY, isTabVisibleOffline } from '../lib/offlineLock';
+import { ensureOfflineModel } from '../lib/offlineModelBootstrap';
 import { Overview } from '../pages/Overview';
 import { History } from '../pages/History';
 import { Vocab } from '../pages/Vocab';
@@ -68,7 +69,7 @@ type NavNode =
   | { kind: 'item'; id: AppTab; icon: string }
   | { kind: 'group'; key: string; icon: string; children: Array<{ id: AppTab }> };
 
-const NAV_TREE: NavNode[] = [
+const FULL_NAV_TREE: NavNode[] = [
   { kind: 'item', id: 'overview', icon: 'overview' },
   { kind: 'item', id: 'history', icon: 'history' },
   { kind: 'item', id: 'vocab', icon: 'vocab' },
@@ -90,6 +91,13 @@ const NAV_TREE: NavNode[] = [
     ],
   },
 ];
+
+/** M2 offline build: drop cloud-only pages and any group left empty. */
+const NAV_TREE: NavNode[] = FULL_NAV_TREE.flatMap((node): NavNode[] => {
+  if (node.kind === 'item') return isTabVisibleOffline(node.id) ? [node] : [];
+  const children = node.children.filter((child) => isTabVisibleOffline(child.id));
+  return children.length > 0 ? [{ ...node, children }] : [];
+});
 
 interface FloatingShellProps {
   os?: OS;
@@ -189,10 +197,15 @@ function FloatingShellBody({
           PROVIDER_SETUP_PROMPT_DEFERRED_KEY,
         );
         if (!cancelled && shouldShowProviderSetupPrompt(credentials, promptDeferredValue)) {
-          // M1 offline Cantonese: no cloud/LLM provider dialog. Until the local SenseVoice
-          // model is downloaded, open straight to its one-click download.
-          if (OFFLINE_ONLY) openSettings('services');
-          else setProviderPromptOpen(true);
+          // Offline Cantonese: no cloud/LLM provider dialog. Download the local SenseVoice
+          // model in the background (progress shows top-right); only if that fails, open
+          // Settings → Services where the error and a manual 下載 button are shown.
+          if (OFFLINE_ONLY) {
+            void ensureOfflineModel().catch((error) => {
+              console.warn('[startup] SenseVoice auto-download failed', error);
+              if (!cancelled) openSettings('services');
+            });
+          } else setProviderPromptOpen(true);
         }
       } catch (error) {
         // A locked/unavailable credential store is not an unconfigured provider.

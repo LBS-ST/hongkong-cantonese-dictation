@@ -11,3 +11,16 @@ export const OFFLINE_ASR_PROVIDER_ID = 'sherpa-onnx-local';
 export const OFFLINE_ASR_MODEL = 'sense-voice-small-zh';
 export const OFFLINE_LANGUAGES = ['yue', 'zh', 'en'] as const;
 export const OFFLINE_DEFAULT_LANGUAGE = 'yue';
+
+// M2: pages that only work with a cloud LLM / marketplace service. Hidden from navigation;
+// local pages (overview, history, vocab, quick note, corrections) stay.
+export const OFFLINE_HIDDEN_TABS: readonly string[] = [
+  'style',
+  'marketplace',
+  'translation',
+  'selectionAsk',
+];
+
+export function isTabVisibleOffline(tab: string, offline: boolean = OFFLINE_ONLY): boolean {
+  return !offline || !OFFLINE_HIDDEN_TABS.includes(tab);
+}
