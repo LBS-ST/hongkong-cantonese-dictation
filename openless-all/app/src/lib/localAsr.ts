@@ -13,7 +13,9 @@ export function isLocalAsrModelSupportedOnOs(
   model: Pick<LocalAsrModelStatus, 'runtime' | 'family'>,
   os: OS,
 ): boolean {
-  if (model.runtime === 'foundry' || model.runtime === 'sherpa_onnx') return os === 'win';
+  if (model.runtime === 'foundry') return os === 'win';
+  // M1 offline Cantonese: sherpa-onnx runs on macOS as well as Windows.
+  if (model.runtime === 'sherpa_onnx') return os === 'win' || os === 'mac';
   if (model.runtime !== 'generic') return false;
   if (model.family === 'whisper') return os === 'mac';
   if (model.family === 'qwen3' || model.family === 'qwen3_asr') return os === 'mac';

@@ -108,8 +108,8 @@ pub use selection_polish_preview::*;
 pub use selection_voice::*;
 pub use settings::*;
 #[cfg(not(mobile))]
-// Sherpa commands are registered on Windows only; other desktop targets keep
-// an empty re-export.
+// Sherpa commands are backed by a native runtime on Windows and macOS
+// (`cfg(sherpa_native)`); other desktop targets keep the status facade.
 #[allow(unused_imports)]
 pub use sherpa_asr::*;
 pub use style_packs::*;

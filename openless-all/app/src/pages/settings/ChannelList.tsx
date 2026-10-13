@@ -46,6 +46,7 @@ import {
 } from '../../lib/useMobileLayout';
 import { useHotkeySettings } from '../../state/HotkeySettingsContext';
 import { getPlatformCapabilities } from '../../lib/platform';
+import { OFFLINE_ASR_PROVIDER_ID, OFFLINE_ONLY } from '../../lib/offlineLock';
 import { Btn, Pill } from '../_atoms';
 import {
   ChannelCredentialFields,
@@ -80,6 +81,7 @@ export function presetsFor(
   supportsQwen3Mlx = true,
   currentProviderId?: string,
   descriptors: ProviderDescriptor[] = [],
+  offline: boolean = OFFLINE_ONLY,
 ): PresetOption[] {
   const descriptorPresets = descriptors.map((descriptor) => ({
     id: descriptor.providerType,
@@ -92,6 +94,14 @@ export function presetsFor(
     defaultRequestFormat: descriptor.defaultRequestFormat,
     supportedRequestFormats: descriptor.supportedRequestFormats,
   }));
+  // M1 offline Cantonese: cloud LLM polish and cloud ASR are hidden; the only engine is local
+  // sherpa-onnx SenseVoice (desktop). Provider code stays (disable + hide).
+  if (offline) {
+    if (kind === 'llm') return [];
+    return descriptorPresets.filter(
+      (p) => p.id === OFFLINE_ASR_PROVIDER_ID && (os === 'mac' || os === 'win'),
+    );
+  }
   if (kind === 'llm') return descriptorPresets;
   const available = descriptorPresets;
   const visible = available.filter((p) => {
@@ -932,6 +942,12 @@ export function ProvidersSection({
   // Onboarding uses the active pipeline; settings can inspect either configuration at any time.
   const multimodalMode =
     prefs?.multimodalPipelineEnabled === true && prefs?.pipelineMode === 'multimodal';
+  if (OFFLINE_ONLY) {
+    // M1: no cloud LLM / multimodal sections; only the local ASR channel list.
+    return kind === 'llm' ? null : (
+      <ChannelList kind="asr" autoCreateWhenEmpty={autoCreateWhenEmpty} />
+    );
+  }
   return (
     <>
       {kind === 'all' && multimodalMode && <OmniChannelSection />}

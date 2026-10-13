@@ -22,6 +22,7 @@ const input = {
   desktop: true,
   hotkeyAvailable: true,
   hasShortcut: true,
+  offline: false,
 };
 
 // No service recommendation or success badge may be derived from an unfinished read.
@@ -119,3 +120,27 @@ assert(
 );
 
 console.log('overview setup behavior tests passed');
+
+// M1 offline Cantonese: only the local model is listed and required.
+const offlineMissing = getOverviewSetup({
+  ...input,
+  offline: true,
+  credentials: { ...configured, activeAsrProvider: 'sherpa-onnx-local', asrConfigured: false },
+});
+assert(
+  offlineMissing.step === 'services' &&
+    offlineMissing.providers.length === 1 &&
+    offlineMissing.providers[0].kind === 'asr',
+  'offline build must point at the local model, not cloud LLM setup',
+);
+const offlineReady = getOverviewSetup({
+  ...input,
+  offline: true,
+  credentials: {
+    ...configured,
+    activeAsrProvider: 'sherpa-onnx-local',
+    asrConfigured: true,
+    llmConfigured: false,
+  },
+});
+assert(offlineReady.step === 'tryDictation', 'offline build must not require an LLM');

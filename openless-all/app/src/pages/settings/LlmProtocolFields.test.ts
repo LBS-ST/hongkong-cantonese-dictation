@@ -63,7 +63,7 @@ assert(
 );
 
 const descriptors = await listProviderDescriptors('llm');
-const presets = presetsFor('llm', 'win', true, undefined, descriptors);
+const presets = presetsFor('llm', 'win', true, undefined, descriptors, false);
 assert(
   presets.filter((p) => p.id.startsWith('custom')).length === 3,
   'Browser catalog should expose three compatibility presets',

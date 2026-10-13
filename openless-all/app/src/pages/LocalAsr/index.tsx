@@ -80,6 +80,7 @@ import {
 } from '../../lib/localAsr';
 import { useHotkeySettings } from '../../state/HotkeySettingsContext';
 import { detectOS } from '../../components/WindowChrome';
+import { OFFLINE_ASR_MODEL, OFFLINE_LANGUAGES, OFFLINE_ONLY } from '../../lib/offlineLock';
 import { getPlatformCapabilities } from '../../lib/platform';
 import { SelectLite } from '../../components/ui/SelectLite';
 import { Icon } from '../../components/Icon';
@@ -113,7 +114,11 @@ import type { RemoteSize } from './types';
 // capabilities and the chosen channel.
 const OS = detectOS();
 const IS_WINDOWS = OS === 'win';
-const IS_QWEN_PLATFORM = OS === 'mac';
+// M1 offline Cantonese: sherpa-onnx (SenseVoice yue) is the engine on macOS as well as Windows;
+// the Foundry and Qwen3/Whisper engines are hidden because dictation is pinned to sherpa.
+const IS_SHERPA_PLATFORM = IS_WINDOWS || OS === 'mac';
+const IS_FOUNDRY_PLATFORM = IS_WINDOWS && !OFFLINE_ONLY;
+const IS_QWEN_PLATFORM = OS === 'mac' && !OFFLINE_ONLY;
 
 function effectiveModelMirror(modelId: string, mirror: string): LocalAsrMirror {
   if (mirror === 'modelscope' && !modelId.startsWith('qwen3-asr-')) return 'huggingface';
@@ -486,10 +491,12 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
       setSettings(s);
       setModels(supportedModels);
       void refreshEngineStatus();
-      if (IS_WINDOWS) {
+      if (IS_FOUNDRY_PLATFORM) {
         void refreshFoundryStatus();
         void refreshFoundryCatalog();
         void refreshFoundryModelDir(selectedFoundryAlias);
+      }
+      if (IS_SHERPA_PLATFORM) {
         void refreshSherpaStatus();
         void refreshSherpaCatalog();
         void refreshSherpaModelDir(selectedSherpaAlias);
@@ -766,7 +773,7 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
   }, []);
 
   useEffect(() => {
-    if (!isTauri || !IS_WINDOWS) return;
+    if (!isTauri || !IS_SHERPA_PLATFORM) return;
     let unlisten: undefined | (() => void);
     let cancelled = false;
     (async () => {
@@ -797,7 +804,7 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
   }, []);
 
   useEffect(() => {
-    if (!isTauri || !IS_WINDOWS) return;
+    if (!isTauri || !IS_SHERPA_PLATFORM) return;
     let unlisten: undefined | (() => void);
     let cancelled = false;
     (async () => {
@@ -1609,7 +1616,10 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
   );
   const sherpaModelOptions = useMemo(
     () =>
-      SHERPA_ONNX_ASR_MODELS.map((model) => {
+      SHERPA_ONNX_ASR_MODELS.filter(
+        // M1: only the SenseVoice yue model is offered.
+        (model) => !OFFLINE_ONLY || model.alias === OFFLINE_ASR_MODEL,
+      ).map((model) => {
         const catalog = sherpaCatalog.find((item) => item.alias === model.alias);
         const remoteSize = sherpaRemoteSizes[model.alias];
         const sizeMb = formatFoundrySizeMb(catalog?.fileSizeMb);
@@ -1626,32 +1636,44 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
     [sherpaCatalog, sherpaRemoteSizes, t],
   );
   const sherpaLanguageOptions = useMemo(
-    () => [
-      {
-        value: '',
-        label: t('localAsr.foundryLanguageAuto'),
-      },
-      {
-        value: 'zh',
-        label: t('localAsr.foundryLanguageZh'),
-      },
-      {
-        value: 'en',
-        label: t('localAsr.foundryLanguageEn'),
-      },
-      {
-        value: 'ja',
-        label: t('localAsr.sherpaLanguageJa'),
-      },
-      {
-        value: 'ko',
-        label: t('localAsr.sherpaLanguageKo'),
-      },
-      {
-        value: 'yue',
-        label: t('localAsr.sherpaLanguageYue'),
-      },
-    ],
+    () =>
+      [
+        {
+          value: '',
+          label: t('localAsr.foundryLanguageAuto'),
+        },
+        {
+          value: 'zh',
+          label: t('localAsr.foundryLanguageZh'),
+        },
+        {
+          value: 'en',
+          label: t('localAsr.foundryLanguageEn'),
+        },
+        {
+          value: 'ja',
+          label: t('localAsr.sherpaLanguageJa'),
+        },
+        {
+          value: 'ko',
+          label: t('localAsr.sherpaLanguageKo'),
+        },
+        {
+          value: 'yue',
+          label: t('localAsr.sherpaLanguageYue'),
+        },
+      ]
+        // M1: Cantonese first, manual 中 / EN switch kept, no auto detection.
+        .filter(
+          (option) =>
+            !OFFLINE_ONLY || (OFFLINE_LANGUAGES as readonly string[]).includes(option.value),
+        )
+        .sort((a, b) =>
+          OFFLINE_ONLY
+            ? OFFLINE_LANGUAGES.indexOf(a.value as (typeof OFFLINE_LANGUAGES)[number]) -
+              OFFLINE_LANGUAGES.indexOf(b.value as (typeof OFFLINE_LANGUAGES)[number])
+            : 0,
+        ),
     [t],
   );
   const sherpaPrepareLabel =
@@ -1718,7 +1740,7 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
       });
     }
     // Windows：sherpa-onnx + foundry
-    for (const c of IS_WINDOWS ? sherpaCatalog : []) {
+    for (const c of IS_SHERPA_PLATFORM ? sherpaCatalog : []) {
       const isDownloading =
         Boolean(sherpaDownloadProgress[c.alias]) &&
         (sherpaDownloadProgress[c.alias]?.phase === 'started' ||
@@ -1743,14 +1765,14 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
         isActive:
           sherpaStatus?.activeModel === c.alias && prefs?.activeAsrProvider === 'sherpa-onnx-local',
         engine: 'sherpa',
-        runtimeLabel: 'Windows · sherpa-onnx',
+        runtimeLabel: IS_WINDOWS ? 'Windows · sherpa-onnx' : 'macOS · sherpa-onnx',
         downloadError:
           sherpaDownloadProgress[c.alias]?.phase === 'failed'
             ? sherpaDownloadProgress[c.alias]?.error || t('localAsr.failed')
             : null,
       });
     }
-    for (const c of IS_WINDOWS ? foundryCatalog : []) {
+    for (const c of IS_FOUNDRY_PLATFORM ? foundryCatalog : []) {
       // Foundry downloads happen inside prepare (runtime/model/load phases) while cached is still false;
       // the prepare progress is what marks "downloading" and keeps the entry alive.
       const isDownloading =
@@ -1958,7 +1980,7 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
           {visibleError}
         </div>
       )}
-      {!IS_WINDOWS && (
+      {!IS_WINDOWS && !OFFLINE_ONLY && (
         <section className="ol-model-manager">
           {sidebarEntries.length > 0 ? (
             <>
@@ -2383,9 +2405,9 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
       )}
 
       {/* ─── Group: download and manage (per-engine model fetch/prepare/download) ─── */}
-      {IS_WINDOWS && <LocalAsrGroupTitle>{t('localAsr.groupDownload')}</LocalAsrGroupTitle>}
+      {IS_SHERPA_PLATFORM && <LocalAsrGroupTitle>{t('localAsr.groupDownload')}</LocalAsrGroupTitle>}
 
-      {IS_WINDOWS && (
+      {IS_FOUNDRY_PLATFORM && (
         <Card style={{ marginBottom: 16 }}>
           <div
             style={{
@@ -2754,7 +2776,7 @@ export function LocalAsr({ embedded = false }: LocalAsrProps = {}) {
         </Card>
       )}
 
-      {IS_WINDOWS && (
+      {IS_SHERPA_PLATFORM && (
         <Card style={{ marginBottom: 16 }}>
           <div
             ref={sherpaAnchorRef}

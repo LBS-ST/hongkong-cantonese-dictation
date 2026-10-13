@@ -1,3 +1,4 @@
+import { OFFLINE_ONLY } from './offlineLock';
 import { areProvidersConfigured } from './providerSetup';
 import type { CredentialsStatus } from './types';
 
@@ -33,6 +34,7 @@ export function getOverviewSetup({
   desktop,
   hotkeyAvailable,
   hasShortcut,
+  offline = OFFLINE_ONLY,
 }: {
   credentials: CredentialsStatus | null;
   loading: boolean;
@@ -41,12 +43,21 @@ export function getOverviewSetup({
   desktop: boolean;
   hotkeyAvailable: boolean | null;
   hasShortcut: boolean;
+  /** M1 offline Cantonese build: only the local ASR model is a required service. */
+  offline?: boolean;
 }): OverviewSetup {
   if (loading) return { step: 'loading', action: null, providers: [] };
   if (error || !credentials) return { step: 'unavailable', action: 'refresh', providers: [] };
 
-  const providers: OverviewProvider[] =
-    credentials.pipelineMode === 'multimodal'
+  const providers: OverviewProvider[] = offline
+    ? [
+        {
+          kind: 'asr',
+          id: credentials.activeAsrProvider,
+          configured: credentials.asrConfigured === true,
+        },
+      ]
+    : credentials.pipelineMode === 'multimodal'
       ? [
           {
             kind: 'omni',
@@ -67,7 +78,7 @@ export function getOverviewSetup({
           },
         ];
 
-  if (!areProvidersConfigured(credentials))
+  if (!areProvidersConfigured(credentials, offline))
     return { step: 'services', action: 'services', providers };
   if (!desktop) return { step: 'recording', action: 'general', providers };
   if (hotkeyAvailable === false) return { step: 'permissions', action: 'privacy', providers };

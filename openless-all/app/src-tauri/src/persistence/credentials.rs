@@ -664,6 +664,10 @@ impl Default for CredsActive {
 }
 
 fn creds_default_asr() -> String {
+    if openless_core::offline_lock::ENFORCED {
+        // M1 offline Cantonese: local sherpa-onnx SenseVoice, no cloud credentials needed.
+        return openless_core::OFFLINE_LOCK_ASR_PROVIDER_ID.into();
+    }
     #[cfg(target_os = "windows")]
     {
         return crate::asr::local::foundry::PROVIDER_ID.into();

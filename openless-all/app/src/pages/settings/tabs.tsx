@@ -19,6 +19,7 @@ import { PermissionsSection } from './PermissionsSection';
 import { DataStorageSection } from './DataStorageSection';
 import { CloudSyncSection } from './CloudSyncSection';
 import { LocalModelsSection } from './models/LocalModelsSection';
+import { OFFLINE_ONLY } from '../../lib/offlineLock';
 import { LocalModelsNavContext } from './models/modelsNav';
 import { DebugToolsSection } from './DebugToolsSection';
 import { VocabularyLearningSection } from './VocabularyLearningSection';
@@ -114,6 +115,13 @@ export function AppearanceTab() {
 
 // AI services & models: organizes channels, local models, and network settings by current pipeline and platform capabilities.
 export function ServicesTab() {
+  // M1 offline Cantonese: no cloud channels or multimodal pipeline — only the local
+  // SenseVoice model (one-click download / enable).
+  if (OFFLINE_ONLY) return <LocalModelsSection />;
+  return <CloudServicesTab />;
+}
+
+function CloudServicesTab() {
   const { t } = useTranslation();
   const { prefs, updatePrefs } = useHotkeySettings();
   const platformCaps = usePlatformCaps();

@@ -22,7 +22,7 @@ cc = "1.1"
 zeroize = "1"
 # Framework-independent business core.  Tauri remains an adapter and owns the
 # window/plugin/IPC concerns; Linux must depend on the same crate directly.
-openless-core = { path = "../crates/openless-core" }
+openless-core = { path = "../crates/openless-core", features = ["offline-lock"] }
 # Pin the whole 2.11.2 train. tauri 2.11.2 allows `tauri-runtime ^2.11`, so an
 # unlocked resolve picks 2.12.0 and fails to compile (Monitor / UnexpectedMenuKind).
 # Direct pins keep `cargo generate-lockfile` (ci-disable-macos-qwen3) compatible.
@@ -149,7 +149,6 @@ qwen3-asr-rs = { path = "vendor/qwen3-asr-rs", default-features = false, feature
 windows-core = "0.58"
 foundry-local-sdk = { version = "=1.2.1", features = ["winml"] }
 raw-window-handle = "0.6"
-sherpa-onnx = { version = "1.13.2", default-features = false, features = ["static"] }
 windows = { version = "0.58", features = [
   "implement",
   "Win32_UI_Accessibility",
@@ -180,6 +179,8 @@ winreg = "0.52"
 # 跨平台磨砂层（macOS NSVisualEffectView / Windows Mica）。
 [target.'cfg(any(target_os = "macos", target_os = "windows"))'.dependencies]
 window-vibrancy = "0.7"
+# M1 (Cantonese offline): sherpa-onnx SenseVoice runs on macOS too, not only Windows.
+sherpa-onnx = { version = "1.13.2", default-features = false, features = ["static"] }
 
 [features]
 default = ["custom-protocol"]

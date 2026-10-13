@@ -58,7 +58,7 @@ pub(crate) struct TauriNativeAsrDependencies {
     sherpa: Arc<crate::asr::local::SherpaOnnxRuntime>,
     #[cfg(target_os = "windows")]
     foundry_generation: Arc<AtomicU64>,
-    #[cfg(target_os = "windows")]
+    #[cfg(sherpa_native)]
     sherpa_generation: Arc<AtomicU64>,
     #[cfg(target_os = "macos")]
     qwen_cache: Arc<crate::asr::local::LocalAsrCache>,
@@ -85,6 +85,8 @@ impl TauriNativeAsrDependencies {
         Self {
             foundry: Arc::new(crate::asr::local::FoundryLocalRuntime::new()),
             sherpa: Arc::new(crate::asr::local::SherpaOnnxRuntime::new()),
+            #[cfg(sherpa_native)]
+            sherpa_generation: Arc::new(AtomicU64::new(0)),
             #[cfg(target_os = "macos")]
             qwen_cache: Arc::new(crate::asr::local::LocalAsrCache::new()),
             #[cfg(target_os = "macos")]
@@ -175,6 +177,13 @@ pub(crate) fn backend_dependencies(
         crate::asr::local::LOCAL_QWEN3_MLX_PROVIDER_ID,
         crate::asr::local::LOCAL_QWEN3_C_PROVIDER_ID,
     ] {
+        transcription
+            .register(provider_type, Arc::clone(&native_asr))
+            .expect("native ASR provider ids are non-empty");
+    }
+    // M1 offline Cantonese: sherpa-onnx (SenseVoice yue) is the macOS default engine.
+    #[cfg(target_os = "macos")]
+    for provider_type in [crate::asr::local::sherpa::PROVIDER_ID, "sherpa-onnx"] {
         transcription
             .register(provider_type, Arc::clone(&native_asr))
             .expect("native ASR provider ids are non-empty");
@@ -331,8 +340,8 @@ impl openless_core::ModelRuntimeAdapter for TauriLocalAsrRuntimeAdapter {
             openless_core::LocalAsrRuntime::Generic => {
                 cfg!(target_os = "macos")
             }
-            openless_core::LocalAsrRuntime::Foundry
-            | openless_core::LocalAsrRuntime::SherpaOnnx => cfg!(target_os = "windows"),
+            openless_core::LocalAsrRuntime::Foundry => cfg!(target_os = "windows"),
+            openless_core::LocalAsrRuntime::SherpaOnnx => cfg!(sherpa_native),
         }
     }
 
@@ -348,8 +357,8 @@ impl openless_core::ModelRuntimeAdapter for TauriLocalAsrRuntimeAdapter {
                     false
                 }
             }
-            openless_core::LocalAsrRuntime::Foundry
-            | openless_core::LocalAsrRuntime::SherpaOnnx => cfg!(target_os = "windows"),
+            openless_core::LocalAsrRuntime::Foundry => cfg!(target_os = "windows"),
+            openless_core::LocalAsrRuntime::SherpaOnnx => cfg!(sherpa_native),
         }
     }
 
@@ -548,7 +557,7 @@ impl openless_core::ModelRuntimeAdapter for TauriLocalAsrRuntimeAdapter {
         model_dir: PathBuf,
         progress: openless_core::ModelPrepareProgressSink,
     ) -> BoxFuture<'static, Result<String, BackendError>> {
-        #[cfg(target_os = "windows")]
+        #[cfg(sherpa_native)]
         self.invalidate_scheduled_release(target.runtime);
         let foundry = Arc::clone(&self.native.foundry);
         let sherpa = Arc::clone(&self.native.sherpa);
@@ -691,7 +700,7 @@ impl openless_core::ModelRuntimeAdapter for TauriLocalAsrRuntimeAdapter {
         &self,
         runtime: openless_core::LocalAsrRuntime,
     ) -> BoxFuture<'static, Result<(), BackendError>> {
-        #[cfg(target_os = "windows")]
+        #[cfg(sherpa_native)]
         self.invalidate_scheduled_release(runtime);
         let foundry = Arc::clone(&self.native.foundry);
         let sherpa = Arc::clone(&self.native.sherpa);
@@ -814,10 +823,13 @@ impl openless_core::ModelRuntimeAdapter for TauriLocalAsrRuntimeAdapter {
         }
     }
 
-    #[cfg(target_os = "windows")]
+    #[cfg(sherpa_native)]
     fn invalidate_scheduled_release(&self, runtime: openless_core::LocalAsrRuntime) {
         match runtime {
+            #[cfg(target_os = "windows")]
             openless_core::LocalAsrRuntime::Foundry => &self.native.foundry_generation,
+            #[cfg(not(target_os = "windows"))]
+            openless_core::LocalAsrRuntime::Foundry => return,
             openless_core::LocalAsrRuntime::SherpaOnnx => &self.native.sherpa_generation,
             openless_core::LocalAsrRuntime::Generic => return,
         }
@@ -864,7 +876,7 @@ impl TauriLocalAsrRuntimeAdapter {
     ) -> BoxFuture<'static, Result<(), BackendError>> {
         #[cfg(target_os = "windows")]
         let foundry = Arc::clone(&self.native.foundry);
-        #[cfg(target_os = "windows")]
+        #[cfg(sherpa_native)]
         let sherpa = Arc::clone(&self.native.sherpa);
         #[cfg(target_os = "macos")]
         let qwen_cache = Arc::clone(&self.native.qwen_cache);
@@ -876,11 +888,19 @@ impl TauriLocalAsrRuntimeAdapter {
                 // verifies the receipt. preload can also be called standalone, so the really
                 // loaded alias must be checked — never fake success, and never overturn a
                 // successful prepare with Unsupported like the old implementation did.
-                #[cfg(target_os = "windows")]
+                #[cfg(sherpa_native)]
                 {
                     let ready = match target.runtime {
+                        #[cfg(target_os = "windows")]
                         openless_core::LocalAsrRuntime::Foundry => {
                             foundry.is_loaded_for(target.model_id())
+                        }
+                        #[cfg(not(target_os = "windows"))]
+                        openless_core::LocalAsrRuntime::Foundry => {
+                            return Err(BackendError::new(
+                                BackendErrorCode::Unsupported,
+                                "Foundry is only available on Windows",
+                            ));
                         }
                         openless_core::LocalAsrRuntime::SherpaOnnx => {
                             let status = sherpa.status_snapshot(target.model_id()).await;
@@ -896,11 +916,11 @@ impl TauriLocalAsrRuntimeAdapter {
                         )
                     });
                 }
-                #[cfg(not(target_os = "windows"))]
+                #[cfg(not(sherpa_native))]
                 {
                     return Err(BackendError::new(
                         BackendErrorCode::Unsupported,
-                        "Foundry and Sherpa are only available on Windows",
+                        "Foundry and Sherpa are only available on Windows and macOS",
                     ));
                 }
             }
@@ -1601,7 +1621,7 @@ enum TauriNativeTranscriptionSessionKind {
         provider: Arc<crate::asr::local::FoundryLocalWhisperAsr>,
         runtime: Arc<crate::asr::local::FoundryLocalRuntime>,
     },
-    #[cfg(target_os = "windows")]
+    #[cfg(sherpa_native)]
     Sherpa {
         provider: Arc<crate::asr::local::SherpaOnnxAsr>,
         runtime: Arc<crate::asr::local::SherpaOnnxRuntime>,
@@ -1639,9 +1659,9 @@ struct TauriNativeTranscriptionSession {
     partials: Arc<dyn TextStreamSink>,
     #[cfg(target_os = "macos")]
     next_offset: Arc<AtomicU64>,
-    #[cfg(target_os = "windows")]
+    #[cfg(sherpa_native)]
     generation: u64,
-    #[cfg(target_os = "windows")]
+    #[cfg(sherpa_native)]
     current_generation: Arc<AtomicU64>,
     keep_loaded_secs: u32,
     released: Arc<AtomicBool>,
@@ -1666,7 +1686,10 @@ impl TranscriptionEngine for TauriNativeTranscriptionEngine {
                 &self.dependencies.sherpa_generation
             },
         );
-        #[cfg(target_os = "windows")]
+        // macOS has a single generation-counted runtime (sherpa); Qwen/Whisper use caches.
+        #[cfg(all(sherpa_native, not(target_os = "windows")))]
+        let current_generation = Arc::clone(&self.dependencies.sherpa_generation);
+        #[cfg(sherpa_native)]
         let generation = current_generation.fetch_add(1, Ordering::AcqRel) + 1;
         let keep_loaded_secs = context.asr.keep_loaded_secs.unwrap_or(0);
 
@@ -1674,7 +1697,7 @@ impl TranscriptionEngine for TauriNativeTranscriptionEngine {
         let foundry = Arc::clone(&self.dependencies.foundry);
         #[cfg(target_os = "windows")]
         let backend = Arc::clone(&self.backend);
-        #[cfg(target_os = "windows")]
+        #[cfg(sherpa_native)]
         let sherpa = Arc::clone(&self.dependencies.sherpa);
         #[cfg(target_os = "macos")]
         let qwen_cache = Arc::clone(&self.dependencies.qwen_cache);
@@ -1721,68 +1744,7 @@ impl TranscriptionEngine for TauriNativeTranscriptionEngine {
                     Some(model),
                 )
             } else if provider_type == openless_core::LocalAsrRuntime::SherpaOnnx.provider_id() {
-                let model = context
-                    .asr
-                    .model
-                    .clone()
-                    .filter(|model| {
-                        openless_core::LocalAsrTarget::parse(
-                            openless_core::LocalAsrRuntime::SherpaOnnx,
-                            model,
-                        )
-                        .is_ok()
-                    })
-                    .unwrap_or_else(|| {
-                        openless_core::LocalAsrRuntime::SherpaOnnx
-                            .default_model()
-                            .to_string()
-                    });
-                let token_sink = Arc::clone(&partials);
-                let token_offset = Arc::new(AtomicU64::new(0));
-                let handler_offset = Arc::clone(&token_offset);
-                let token_handler = Arc::new(move |piece: String| {
-                    let offset =
-                        handler_offset.fetch_add(piece.chars().count() as u64, Ordering::AcqRel);
-                    if let Err(error) = token_sink.publish(TextStreamChunk {
-                        text: piece,
-                        offset,
-                    }) {
-                        log::warn!("[core-adapter] publish sherpa partial failed: {error}");
-                    }
-                });
-                let target = openless_core::LocalAsrTarget::parse(
-                    openless_core::LocalAsrRuntime::SherpaOnnx,
-                    model.clone(),
-                )?;
-                let store = model_store.as_ref().ok_or_else(|| {
-                    BackendError::new(
-                        BackendErrorCode::Unsupported,
-                        "Core model store is unavailable",
-                    )
-                })?;
-                if !store.is_installed(&target)? {
-                    return Err(BackendError::new(
-                        BackendErrorCode::InvalidState,
-                        "Sherpa model is not downloaded",
-                    ));
-                }
-                let model_dir = store.runtime_model_dir(&target)?;
-                let provider = crate::asr::local::SherpaOnnxAsr::new_for_model(
-                    Arc::clone(&sherpa),
-                    model.clone(),
-                    model_dir,
-                    context.asr.language.clone(),
-                    Some(token_handler),
-                )
-                .await
-                .map_err(map_native_asr_error)?;
-                (
-                    TauriNativeTranscriptionSessionKind::Sherpa {
-                        provider: Arc::new(provider),
-                        runtime: sherpa,
-                    },
-                    Some(model),
-                )
+                start_sherpa_session(&context, &partials, sherpa, model_store.as_ref()).await?
             } else {
                 return Err(BackendError::new(
                     BackendErrorCode::Unsupported,
@@ -1791,7 +1753,11 @@ impl TranscriptionEngine for TauriNativeTranscriptionEngine {
             };
 
             #[cfg(target_os = "macos")]
-            let (kind, label_model) = if crate::asr::local::is_local_qwen3(provider_type) {
+            let (kind, label_model) = if provider_type
+                == openless_core::LocalAsrRuntime::SherpaOnnx.provider_id()
+            {
+                start_sherpa_session(&context, &partials, sherpa, model_store.as_ref()).await?
+            } else if crate::asr::local::is_local_qwen3(provider_type) {
                 let backend = crate::asr::local::qwen_backend_for_provider(provider_type)
                     .ok_or_else(|| {
                         BackendError::new(
@@ -1949,15 +1915,84 @@ impl TranscriptionEngine for TauriNativeTranscriptionEngine {
                 partials,
                 #[cfg(target_os = "macos")]
                 next_offset: Arc::new(AtomicU64::new(0)),
-                #[cfg(target_os = "windows")]
+                #[cfg(sherpa_native)]
                 generation,
-                #[cfg(target_os = "windows")]
+                #[cfg(sherpa_native)]
                 current_generation,
                 keep_loaded_secs,
                 released: Arc::new(AtomicBool::new(false)),
             }) as Arc<dyn TranscriptionSession>)
         })
     }
+}
+
+/// Start a sherpa-onnx (SenseVoice) dictation session. Shared by the Windows and macOS
+/// native engines (M1: the macOS default engine).
+#[cfg(sherpa_native)]
+async fn start_sherpa_session(
+    context: &DictationContext,
+    partials: &Arc<dyn TextStreamSink>,
+    sherpa: Arc<crate::asr::local::SherpaOnnxRuntime>,
+    model_store: Option<&Arc<openless_core::ModelStore>>,
+) -> Result<(TauriNativeTranscriptionSessionKind, Option<String>), BackendError> {
+    let model = context
+        .asr
+        .model
+        .clone()
+        .filter(|model| {
+            openless_core::LocalAsrTarget::parse(openless_core::LocalAsrRuntime::SherpaOnnx, model)
+                .is_ok()
+        })
+        .unwrap_or_else(|| {
+            openless_core::LocalAsrRuntime::SherpaOnnx
+                .default_model()
+                .to_string()
+        });
+    let token_sink = Arc::clone(partials);
+    let token_offset = Arc::new(AtomicU64::new(0));
+    let handler_offset = Arc::clone(&token_offset);
+    let token_handler = Arc::new(move |piece: String| {
+        let offset = handler_offset.fetch_add(piece.chars().count() as u64, Ordering::AcqRel);
+        if let Err(error) = token_sink.publish(TextStreamChunk {
+            text: piece,
+            offset,
+        }) {
+            log::warn!("[core-adapter] publish sherpa partial failed: {error}");
+        }
+    });
+    let target = openless_core::LocalAsrTarget::parse(
+        openless_core::LocalAsrRuntime::SherpaOnnx,
+        model.clone(),
+    )?;
+    let store = model_store.ok_or_else(|| {
+        BackendError::new(
+            BackendErrorCode::Unsupported,
+            "Core model store is unavailable",
+        )
+    })?;
+    if !store.is_installed(&target)? {
+        return Err(BackendError::new(
+            BackendErrorCode::InvalidState,
+            "Sherpa model is not downloaded",
+        ));
+    }
+    let model_dir = store.runtime_model_dir(&target)?;
+    let provider = crate::asr::local::SherpaOnnxAsr::new_for_model(
+        Arc::clone(&sherpa),
+        model.clone(),
+        model_dir,
+        context.asr.language.clone(),
+        Some(token_handler),
+    )
+    .await
+    .map_err(map_native_asr_error)?;
+    Ok((
+        TauriNativeTranscriptionSessionKind::Sherpa {
+            provider: Arc::new(provider),
+            runtime: sherpa,
+        },
+        Some(model),
+    ))
 }
 
 #[cfg(any(target_os = "windows", target_os = "macos"))]
@@ -1968,7 +2003,7 @@ impl CoreAudioConsumer for TauriNativeTranscriptionSession {
             TauriNativeTranscriptionSessionKind::Foundry { provider, .. } => {
                 LegacyAudioConsumer::consume_pcm_chunk(provider.as_ref(), pcm);
             }
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             TauriNativeTranscriptionSessionKind::Sherpa { provider, .. } => {
                 LegacyAudioConsumer::consume_pcm_chunk(provider.as_ref(), pcm);
             }
@@ -2050,7 +2085,7 @@ impl TranscriptionSession for TauriNativeTranscriptionSession {
                     recovery = result.primary_recovery;
                     result.raw
                 }
-                #[cfg(target_os = "windows")]
+                #[cfg(sherpa_native)]
                 TauriNativeTranscriptionSessionKind::Sherpa { provider, .. } => {
                     let timeout = openless_core::provider_rules::native_transcribe_timeout(
                         "sherpa-onnx-local", provider.buffer_duration_ms());
@@ -2201,7 +2236,7 @@ impl TauriNativeTranscriptionSession {
         match &self.kind {
             #[cfg(target_os = "windows")]
             TauriNativeTranscriptionSessionKind::Foundry { provider, .. } => provider.cancel(),
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             TauriNativeTranscriptionSessionKind::Sherpa { provider, .. } => provider.cancel(),
             #[cfg(target_os = "macos")]
             TauriNativeTranscriptionSessionKind::Qwen {
@@ -2246,7 +2281,7 @@ impl TauriNativeTranscriptionSession {
                     Arc::clone(&self.current_generation),
                 );
             }
-            #[cfg(target_os = "windows")]
+            #[cfg(sherpa_native)]
             TauriNativeTranscriptionSessionKind::Sherpa { runtime, .. } => {
                 schedule_sherpa_release(
                     Arc::clone(runtime),
@@ -2369,7 +2404,7 @@ fn schedule_foundry_release(
     });
 }
 
-#[cfg(target_os = "windows")]
+#[cfg(sherpa_native)]
 fn schedule_sherpa_release(
     runtime: Arc<crate::asr::local::SherpaOnnxRuntime>,
     keep_loaded_secs: u32,

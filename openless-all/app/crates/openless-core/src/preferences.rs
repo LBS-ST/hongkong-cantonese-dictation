@@ -208,15 +208,18 @@ impl PreferencesStore {
         if path.as_os_str().is_empty() {
             return Err(persistence_error("preferences path is empty"));
         }
-        let preferences = if crate::cloud_sync_e2ee_store::gate::recovery_pending_for_path(&path) {
-            read_preferences(&path)?
-        } else {
-            crate::cloud_sync_e2ee_store::gate::with_registered_mutation(
-                &path,
-                crate::cloud_sync_e2ee_store::gate::ChangeOrigin::User,
-                || read_preferences(&path),
-            )?
-        };
+        let mut preferences =
+            if crate::cloud_sync_e2ee_store::gate::recovery_pending_for_path(&path) {
+                read_preferences(&path)?
+            } else {
+                crate::cloud_sync_e2ee_store::gate::with_registered_mutation(
+                    &path,
+                    crate::cloud_sync_e2ee_store::gate::ChangeOrigin::User,
+                    || read_preferences(&path),
+                )?
+            };
+        // M1: preferences written by an upstream OpenLess install still start offline.
+        crate::offline_lock::enforce(&mut preferences);
         Ok(Self {
             path,
             state: Mutex::new(preferences),
@@ -343,6 +346,8 @@ impl PreferencesStore {
             let previous =
                 serde_json::to_value(&next).map_err(|_| persistence_error("encode preferences"))?;
             let result = update(&mut next);
+            // M1: cloud ASR / LLM polish / auto language cannot be re-enabled by a save.
+            crate::offline_lock::enforce(&mut next);
             let value = preferences_json_preserving_unknown(&self.path, &next)?;
             let changed = crate::cloud_sync_e2ee_documents::registry::PREFERENCE_FIELDS
                 .iter()

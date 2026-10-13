@@ -13,6 +13,12 @@ fn main() {
         std::env::var("CARGO_CFG_TARGET_OS").ok().as_deref(),
     );
     println!("cargo:warning=OpenLess build target={target}, target_os={target_os}");
+    // M1 (Cantonese offline): the sherpa-onnx runtime is compiled for macOS as well as
+    // Windows. Foundry stays Windows-only, so sherpa code is gated on `sherpa_native`.
+    println!("cargo::rustc-check-cfg=cfg(sherpa_native)");
+    if matches!(target_os, "windows" | "macos") {
+        println!("cargo:rustc-cfg=sherpa_native");
+    }
     if target_os == "windows" {
         link_windows_common_controls_v6_manifest_dependency();
     }
