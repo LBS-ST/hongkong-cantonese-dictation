@@ -280,6 +280,28 @@ function CorrectionRuleChip({ rule, onToggle, onRemove }: CorrectionRuleChipProp
       >
         {rule.pattern} → {rule.replacement}
       </button>
+      {rule.source === 'builtin' && (
+        <span
+          title={
+            rule.exceptions && rule.exceptions.length > 0
+              ? t('vocab.corrections.builtinTipExceptions', {
+                  exceptions: rule.exceptions.join('、'),
+                })
+              : t('vocab.corrections.builtinTip')
+          }
+          style={{
+            padding: '1px 5px',
+            borderRadius: 4,
+            fontSize: 10,
+            background: 'var(--ol-blue-soft)',
+            color: 'var(--ol-ink-3)',
+            fontFamily: 'inherit',
+            letterSpacing: 0.2,
+          }}
+        >
+          {t('vocab.corrections.builtinBadge')}
+        </span>
+      )}
       {rule.source === 'learned' && (
         <span
           title={t('vocab.corrections.learnedTip')}

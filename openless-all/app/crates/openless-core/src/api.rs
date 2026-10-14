@@ -3791,23 +3791,39 @@ impl OpenLessBackend {
         // Native status warms only through the already-bound sync gate. A
         // pending journal therefore uses the Host's read-only loader before
         // startup recovery/auto-sync tries to capture credentials.
+        let started_at = std::time::Instant::now();
+        let step = |name: &str| {
+            log::info!(
+                "[core-start] {name} (+{}ms)",
+                started_at.elapsed().as_millis()
+            );
+        };
         if !self.snapshot().running {
+            step("recover_cloud_notes: begin");
             self.recover_cloud_notes()?;
+            step("recover_cloud_notes: done");
         }
         let before = self.get_preferences();
+        step("credential_store.status (warm): begin");
         let warmed = self.deps.credential_store.status(before).await;
+        step("credential_store.status (warm): done");
         if let Some(sync) = &self.encrypted_sync {
             // Keep Settings available even after a denied/failed warm read.
             // The service records its own retryable recovery/storage error;
             // runtime admission remains fenced until recovery is complete.
+            step("sync.start: begin");
             let _ = sync.start(Arc::clone(&self.deps.task_spawner)).await;
+            step("sync.start: done");
         }
         let preferences = self.get_preferences();
         let status = match warmed {
             // Recovery can replace both preferences and credentials. Recompute
             // from the new in-memory target after it has settled.
             Ok(_) if self.encrypted_sync.is_some() => {
-                self.deps.credential_store.status(preferences.clone()).await
+                step("credential_store.status (after sync): begin");
+                let status = self.deps.credential_store.status(preferences.clone()).await;
+                step("credential_store.status (after sync): done");
+                status
             }
             Ok(credentials) => Ok(credentials),
             Err(error) => Err(error),
@@ -3831,6 +3847,7 @@ impl OpenLessBackend {
         let mut state = self.state.write().expect("backend state lock poisoned");
         state.credentials = credentials;
         if state.running {
+            step("snapshot (already running)");
             return Ok(StartupSnapshot {
                 contract_version: crate::BACKEND_CONTRACT_VERSION.to_string(),
                 backend: BackendSnapshot {
@@ -3846,7 +3863,8 @@ impl OpenLessBackend {
         }
         state.running = true;
         self.events.publish(None, BackendEventKind::BackendStarted);
-        Ok(StartupSnapshot {
+        step("BackendStarted published");
+        let snapshot = StartupSnapshot {
             contract_version: crate::BACKEND_CONTRACT_VERSION.to_string(),
             backend: BackendSnapshot {
                 running: true,
@@ -3857,7 +3875,24 @@ impl OpenLessBackend {
                 preferences_revision: self.preferences_revision.load(Ordering::Acquire),
                 credentials: state.credentials.clone(),
             },
-        })
+        };
+        drop(state);
+        if crate::offline_lock::ENFORCED {
+            // Offline Cantonese build: offer the built-in HK corrections once the backend
+            // (and its sync gate) is fully up — never from a store constructor.
+            match self
+                .correction_rules
+                .seed_builtin_rules(&crate::offline_lock::hong_kong_correction_rules())
+            {
+                Ok(0) => step("built-in HK corrections: nothing new"),
+                Ok(added) => step(&format!("built-in HK corrections: seeded {added}")),
+                Err(error) => {
+                    log::warn!("[core-start] seeding built-in HK corrections failed: {error}")
+                }
+            }
+        }
+        step("snapshot");
+        Ok(snapshot)
     }
 
     pub async fn shutdown(&self) -> Result<(), BackendError> {

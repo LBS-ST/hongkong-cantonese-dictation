@@ -708,6 +708,11 @@ impl DictationEngine for PipelineDictationEngine {
                 &transcript.text,
                 &context.correction_rules,
             );
+            if crate::offline_lock::ENFORCED && context.polish.written_chinese_output {
+                // 書面 mode: after conversion, the 係 fix and correction rules (built-in HK +
+                // user), turn colloquial Cantonese into written Chinese words.
+                transcript.text = crate::offline_lock::to_written_chinese(&transcript.text);
+            }
             let asr_transcript =
                 (transcript.text != original_asr_text).then_some(original_asr_text);
             if !context.recording.archive_successful_recording {

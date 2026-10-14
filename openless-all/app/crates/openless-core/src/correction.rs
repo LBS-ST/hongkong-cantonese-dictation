@@ -99,6 +99,7 @@ impl CorrectionRuleStore {
                     enabled: true,
                     created_at: Utc::now().to_rfc3339(),
                     source,
+                    exceptions: Vec::new(),
                 };
                 rules.insert(0, rule.clone());
                 self.write_locked(&rules)?;
@@ -143,6 +144,63 @@ impl CorrectionRuleStore {
                     self.write_locked(&rules)?;
                 }
                 Ok(())
+            },
+        )
+    }
+
+    /// Add shipped rules (e.g. the Hong Kong Cantonese corrections) to the user's list.
+    ///
+    /// Each rule id is seeded at most once: the ids already offered are recorded in a
+    /// marker file next to the store, so a built-in the user deleted or edited is never
+    /// re-added, while built-ins introduced by a later release still are. Returns how
+    /// many rules were added.
+    pub fn seed_builtin_rules(&self, builtins: &[CorrectionRule]) -> Result<usize, BackendError> {
+        let marker = self.path.with_extension("builtin-seed.json");
+        // Fast path: every built-in was already offered → no gate mutation, no file write.
+        let already_offered: Vec<String> = std::fs::read(&marker)
+            .ok()
+            .and_then(|bytes| serde_json::from_slice(&bytes).ok())
+            .unwrap_or_default();
+        if builtins
+            .iter()
+            .all(|builtin| already_offered.contains(&builtin.id))
+        {
+            return Ok(0);
+        }
+        crate::cloud_sync_e2ee_store::gate::with_registered_mutation(
+            &self.path,
+            crate::cloud_sync_e2ee_store::gate::ChangeOrigin::User,
+            || {
+                let _guard = self.lock_store()?;
+                let mut offered: Vec<String> = match std::fs::read(&marker) {
+                    Ok(bytes) => serde_json::from_slice(&bytes).unwrap_or_default(),
+                    Err(error) if error.kind() == std::io::ErrorKind::NotFound => Vec::new(),
+                    Err(_) => return Err(persistence_error("read builtin correction marker")),
+                };
+                let mut rules = self.read_locked()?;
+                let mut added = 0;
+                let mut newly_offered = 0;
+                for builtin in builtins {
+                    if offered.contains(&builtin.id) {
+                        continue;
+                    }
+                    offered.push(builtin.id.clone());
+                    newly_offered += 1;
+                    if !rules.iter().any(|rule| rule.id == builtin.id) {
+                        rules.push(builtin.clone());
+                        added += 1;
+                    }
+                }
+                if added > 0 {
+                    self.write_locked(&rules)?;
+                }
+                // The marker only changes when an id is offered for the first time.
+                if newly_offered > 0 {
+                    let json = serde_json::to_vec_pretty(&offered)
+                        .map_err(|_| persistence_error("encode builtin correction marker"))?;
+                    atomic_write(&marker, &json)?;
+                }
+                Ok(added)
             },
         )
     }
@@ -204,9 +262,56 @@ pub fn apply_correction_rules(text: &str, rules: &[CorrectionRule]) -> String {
         if pattern.is_empty() {
             continue;
         }
-        current = apply_rule(&current, pattern, &rule.replacement);
+        current = if rule.exceptions.is_empty() {
+            apply_rule(&current, pattern, &rule.replacement)
+        } else {
+            replace_words(
+                &current,
+                &[(pattern, rule.replacement.as_str())],
+                &rule
+                    .exceptions
+                    .iter()
+                    .map(String::as_str)
+                    .collect::<Vec<_>>(),
+            )
+        };
     }
     current
+}
+
+/// Literal word replacement that leaves exception words untouched.
+///
+/// Scans left to right: an exception word starting at the cursor is copied verbatim
+/// (so `安穩` / `穩定` protect their 穩), otherwise the longest matching `from` is replaced.
+/// Used by rules with exceptions and by the offline written-Chinese table.
+pub fn replace_words(text: &str, replacements: &[(&str, &str)], exceptions: &[&str]) -> String {
+    let mut output = String::with_capacity(text.len());
+    let mut cursor = 0;
+    'scan: while cursor < text.len() {
+        let rest = &text[cursor..];
+        if let Some(word) = exceptions
+            .iter()
+            .filter(|word| !word.is_empty() && rest.starts_with(**word))
+            .max_by_key(|word| word.len())
+        {
+            output.push_str(word);
+            cursor += word.len();
+            continue 'scan;
+        }
+        if let Some((from, to)) = replacements
+            .iter()
+            .filter(|(from, _)| !from.is_empty() && rest.starts_with(*from))
+            .max_by_key(|(from, _)| from.len())
+        {
+            output.push_str(to);
+            cursor += from.len();
+            continue 'scan;
+        }
+        let character = rest.chars().next().expect("cursor is on a char boundary");
+        output.push(character);
+        cursor += character.len_utf8();
+    }
+    output
 }
 
 /// Apply one correction pattern.
@@ -341,6 +446,7 @@ mod tests {
             enabled: true,
             created_at: String::new(),
             source: RuleSource::Manual,
+            exceptions: Vec::new(),
         }
     }
 
@@ -442,5 +548,80 @@ mod tests {
         assert!(store.list().unwrap().is_empty());
 
         let _ = std::fs::remove_file(path);
+    }
+
+    #[test]
+    fn exceptions_protect_whole_words_around_the_match() {
+        let mut stable = rule("穩", "搵");
+        stable.exceptions = ["穩定", "穩陣", "穩妥", "穩步", "穩健", "安穩"]
+            .map(String::from)
+            .to_vec();
+        assert_eq!(
+            apply_correction_rules("我去穩嘢，個系統好穩定，好穩陣，好安穩", &[stable]),
+            "我去搵嘢，個系統好穩定，好穩陣，好安穩"
+        );
+        assert_eq!(
+            replace_words("呢個關係係咁", &[("係", "是")], &["關係"]),
+            "呢個關係是咁"
+        );
+        // Longest replacement wins over a shorter overlapping one.
+        assert_eq!(
+            replace_words(
+                "唔係唔去",
+                &[("唔係", "不是"), ("唔", "不"), ("係", "是")],
+                &[]
+            ),
+            "不是不去"
+        );
+    }
+
+    #[test]
+    fn builtin_rules_are_seeded_once_and_stay_deleted() {
+        let dir =
+            std::env::temp_dir().join(format!("openless-builtin-seed-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let store = CorrectionRuleStore::at_data_dir(&dir);
+        let user = store.add("觀塘".into(), "觀塘區".into()).unwrap();
+        let mut builtin = rule("知家", "即刻");
+        builtin.id = "builtin.test".into();
+        builtin.source = RuleSource::Builtin;
+
+        assert_eq!(store.seed_builtin_rules(&[builtin.clone()]).unwrap(), 1);
+        let ids: Vec<_> = store
+            .list()
+            .unwrap()
+            .into_iter()
+            .map(|rule| rule.id)
+            .collect();
+        assert_eq!(ids, vec![user.id.clone(), "builtin.test".to_string()]);
+        // Next launch: nothing new, and neither the marker nor the rules are rewritten.
+        let marker = dir.join("correction-rules.builtin-seed.json");
+        let marker_mtime = std::fs::metadata(&marker).unwrap().modified().unwrap();
+        let rules_mtime = std::fs::metadata(dir.join("correction-rules.json"))
+            .unwrap()
+            .modified()
+            .unwrap();
+        std::thread::sleep(std::time::Duration::from_millis(20));
+        assert_eq!(store.seed_builtin_rules(&[builtin.clone()]).unwrap(), 0);
+        assert_eq!(
+            std::fs::metadata(&marker).unwrap().modified().unwrap(),
+            marker_mtime
+        );
+        assert_eq!(
+            std::fs::metadata(dir.join("correction-rules.json"))
+                .unwrap()
+                .modified()
+                .unwrap(),
+            rules_mtime
+        );
+        // The user deletes the built-in; it must not come back.
+        store.remove("builtin.test").unwrap();
+        assert_eq!(store.seed_builtin_rules(&[builtin.clone()]).unwrap(), 0);
+        assert_eq!(store.list().unwrap().len(), 1);
+        // A built-in shipped by a later release is still offered.
+        let mut newer = builtin;
+        newer.id = "builtin.newer".into();
+        assert_eq!(store.seed_builtin_rules(&[newer]).unwrap(), 1);
+        let _ = std::fs::remove_dir_all(dir);
     }
 }

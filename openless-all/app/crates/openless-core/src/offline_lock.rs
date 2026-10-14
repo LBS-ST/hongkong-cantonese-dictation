@@ -166,6 +166,148 @@ pub fn localize_offline_transcript(text: &str, language: Option<&str>) -> String
     }
 }
 
+/// Colloquial Cantonese → written Chinese word table (M2 round 2 spec §2, 書面 mode).
+/// Word substitution only — Cantonese word order is kept (我食先 → 我吃先).
+const WRITTEN_CHINESE_WORDS: &[(&str, &str)] = &[
+    // Phrases first (the longest match wins).
+    ("而家", "現在"),
+    ("宜家", "現在"),
+    ("點解", "為什麼"),
+    ("點樣", "怎樣"),
+    ("咁樣", "這樣"),
+    ("今日", "今天"),
+    ("聽日", "明天"),
+    ("尋日", "昨天"),
+    ("琴日", "昨天"),
+    ("邊度", "哪裏"),
+    ("邊個", "誰"),
+    ("乜嘢", "甚麼"),
+    ("咩嘢", "甚麼"),
+    ("唔係", "不是"),
+    ("係咪", "是不是"),
+    ("唔該晒", "非常感謝"),
+    ("多謝晒", "非常感謝"),
+    ("唔該", "謝謝"),
+    ("我哋", "我們"),
+    ("你哋", "你們"),
+    ("佢哋", "他們"),
+    ("呢個", "這個"),
+    ("嗰個", "那個"),
+    ("呢啲", "這些"),
+    ("嗰啲", "那些"),
+    ("呢度", "這裏"),
+    ("嗰度", "那裏"),
+    ("呢次", "這次"),
+    ("呢排", "最近"),
+    ("嗰陣", "那時"),
+    ("一啲", "一點"),
+    ("有啲", "有些"),
+    ("好啲", "好一點"),
+    ("試吓", "試一下"),
+    ("即刻", "立刻"),
+    // Single characters.
+    ("唔", "不"),
+    ("嘅", "的"),
+    ("係", "是"),
+    ("喺", "在"),
+    ("嚟", "來"),
+    ("返", "回"),
+    ("畀", "給"),
+    ("俾", "給"),
+    ("攞", "拿"),
+    ("睇", "看"),
+    ("講", "說"),
+    ("食", "吃"),
+    ("飲", "喝"),
+    ("瞓", "睡"),
+    ("冇", "沒有"),
+    ("咗", "了"),
+    ("佢", "他"),
+    ("啲", "些"),
+    ("搵", "找"),
+    ("嘢", "東西"),
+    ("喇", "了"),
+    ("咯", "了"),
+    ("啦", "吧"),
+];
+
+/// Written words that contain a character from [`WRITTEN_CHINESE_WORDS`] and must stay.
+const WRITTEN_CHINESE_KEEP: &[&str] = &[
+    "關係", "係數", "食物", "食品", "食堂", "飲食", "糧食", "零食", "美食", "食譜", "食材", "食肆",
+    "素食", "主食", "飲品", "飲料", "冷飲", "熱飲", "餐飲", "講座", "講師", "演講", "講解", "講究",
+    "講義", "講台", "返回", "往返", "返還",
+];
+
+/// 書面 mode: colloquial Cantonese → written Chinese by word substitution. 咁 depends on
+/// position: sentence-initial → 那麼, before punctuation / end → 這樣, otherwise 這麼.
+pub fn to_written_chinese(text: &str) -> String {
+    let words = crate::correction::replace_words(text, WRITTEN_CHINESE_WORDS, WRITTEN_CHINESE_KEEP);
+    let characters: Vec<char> = words.chars().collect();
+    let is_break = |character: Option<&char>| {
+        character.is_none_or(|character| {
+            character.is_whitespace() || "，。！？、；：,.!?;:…".contains(*character)
+        })
+    };
+    let mut output = String::with_capacity(words.len());
+    for (index, character) in characters.iter().enumerate() {
+        if *character != '咁' {
+            output.push(*character);
+        } else if index == 0 || is_break(characters.get(index - 1)) {
+            output.push_str("那麼");
+        } else if is_break(characters.get(index + 1)) {
+            output.push_str("這樣");
+        } else {
+            output.push_str("這麼");
+        }
+    }
+    output
+}
+
+/// Built-in Hong Kong correction rules for fixed SenseVoice yue misrecognitions
+/// (M2 round 2 spec §1). Seeded once into the user's correction-rule list, so they are
+/// editable, can be disabled or deleted, and run alongside user rules — after the
+/// HK Traditional conversion and the 係 copula fix.
+pub fn hong_kong_correction_rules() -> Vec<crate::types::CorrectionRule> {
+    let rule = |id: &str, pattern: &str, replacement: &str, exceptions: &[&str]| {
+        crate::types::CorrectionRule {
+            id: format!("builtin.hk.{id}"),
+            pattern: pattern.into(),
+            replacement: replacement.into(),
+            enabled: true,
+            created_at: String::new(),
+            source: crate::types::RuleSource::Builtin,
+            exceptions: exceptions.iter().map(|word| (*word).to_string()).collect(),
+        }
+    };
+    vec![
+        rule("jik-hak", "知家", "即刻", &[]),
+        rule("si-haa", "試下", "試吓", &[]),
+        rule("laa", "啦", "喇", &[]),
+        // 搵 (find) heard as 穩; 穩 inside 穩定 / 穩陣 / 穩妥 / 穩步 / 穩健 ... is real.
+        rule(
+            "wan",
+            "穩",
+            "搵",
+            &[
+                "穩定",
+                "穩陣",
+                "穩妥",
+                "穩步",
+                "穩健",
+                "穩固",
+                "穩重",
+                "穩當",
+                "穩紮穩打",
+                "安穩",
+                "平穩",
+                "企穩",
+                "坐穩",
+                "站穩",
+            ],
+        ),
+    ]
+}
+
 /// Pin preferences to the offline Cantonese configuration.
 pub fn apply_offline_lock(preferences: &mut UserPreferences) {
     preferences.active_asr_provider = OFFLINE_LOCK_ASR_PROVIDER_ID.to_string();
@@ -198,6 +340,90 @@ pub fn apply_offline_lock(preferences: &mut UserPreferences) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Full offline pipeline for one utterance: HK conversion + 係 fix → correction
+    /// rules (built-in + user) → optional 書面 mode. Mirrors dictation_engine.
+    fn pipeline(asr: &str, user_rules: &[crate::types::CorrectionRule], written: bool) -> String {
+        let mut rules = hong_kong_correction_rules();
+        rules.extend_from_slice(user_rules);
+        let text = localize_offline_transcript(asr, Some("yue"));
+        let text = crate::correction::apply_correction_rules(&text, &rules);
+        if written {
+            to_written_chinese(&text)
+        } else {
+            text
+        }
+    }
+
+    #[test]
+    fn spec_acceptance_hk_corrections_and_written_mode() {
+        // §1: 「我而家就即刻試」 heard as 知家.
+        assert_eq!(pipeline("我而家就知家试", &[], false), "我而家就即刻試");
+        // §2 colloquial (default) and written.
+        assert_eq!(pipeline("我今日唔去观塘啦", &[], false), "我今日唔去觀塘喇");
+        assert_eq!(pipeline("我今日唔去观塘啦", &[], true), "我今天不去觀塘了");
+        // Word substitution only: Cantonese word order stays (spec limitation).
+        assert_eq!(pipeline("我食先", &[], true), "我吃先");
+    }
+
+    #[test]
+    fn hong_kong_corrections_cover_spec_cases_and_respect_context() {
+        assert_eq!(pipeline("你试下啦", &[], false), "你試吓喇");
+        assert_eq!(pipeline("我去稳嘢", &[], false), "我去搵嘢");
+        for kept in [
+            "个系统好稳定",
+            "好稳阵",
+            "好稳妥",
+            "稳步上升",
+            "稳健",
+            "好安稳",
+        ] {
+            let colloquial = pipeline(kept, &[], false);
+            assert!(colloquial.contains('穩'), "{kept} → {colloquial}");
+        }
+        // User rules run alongside the built-ins, and a disabled built-in is skipped.
+        let user = crate::types::CorrectionRule {
+            id: "user".into(),
+            pattern: "觀塘".into(),
+            replacement: "觀塘區".into(),
+            enabled: true,
+            created_at: String::new(),
+            source: crate::types::RuleSource::Manual,
+            exceptions: Vec::new(),
+        };
+        assert_eq!(
+            pipeline("我今日去观塘啦", &[user.clone()], false),
+            "我今日去觀塘區喇"
+        );
+        let mut rules = hong_kong_correction_rules();
+        rules
+            .iter_mut()
+            .for_each(|rule| rule.enabled = rule.pattern != "啦");
+        let text = localize_offline_transcript("去啦", Some("yue"));
+        assert_eq!(
+            crate::correction::apply_correction_rules(&text, &rules),
+            "去啦"
+        );
+    }
+
+    #[test]
+    fn written_mode_substitutes_words_and_keeps_written_vocabulary() {
+        for (colloquial, written) in [
+            ("點解你唔嚟", "為什麼你不來"),
+            ("佢喺屋企睇電視", "他在屋企看電視"),
+            ("我哋而家食飯，飲咗水", "我們現在吃飯，喝了水"),
+            ("呢個係我嘅，冇問題", "這個是我的，沒有問題"),
+            ("咁樣唔得", "這樣不得"),
+            ("咁，我返屋企喇", "那麼，我回屋企了"),
+            ("好咁好", "好這麼好"),
+            ("就係咁", "就是這樣"),
+            ("我哋嘅關係", "我們的關係"),
+            ("食物同飲品", "食物同飲品"),
+            ("佢講咗個講座", "他說了個講座"),
+        ] {
+            assert_eq!(to_written_chinese(colloquial), written, "{colloquial}");
+        }
+    }
 
     #[test]
     fn cantonese_copula_is_restored_in_live_dictation_output() {

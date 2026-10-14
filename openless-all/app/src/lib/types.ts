@@ -98,7 +98,7 @@ export interface DictionaryEntry {
 
 /** Where a correction rule came from. Old correction-rules.json lacks this field; the backend
  *  deserializes it as 'manual' — those rules were indeed all added manually. */
-export type RuleSource = 'manual' | 'learned';
+export type RuleSource = 'manual' | 'learned' | 'builtin';
 
 export interface CorrectionRule {
   id: string;
@@ -107,6 +107,8 @@ export interface CorrectionRule {
   enabled: boolean;
   createdAt: string;
   source: RuleSource;
+  /** Words in which the pattern is left alone (e.g. 穩 inside 穩定). */
+  exceptions?: string[];
 }
 
 /** Return of `debug_read_cursor_context`: full result of one cursor-context probe.
@@ -512,6 +514,8 @@ export interface UserPreferences {
   /** Whether to write the final polished text back to the clipboard after a successful streaming insert.
    *  When on, Cmd+V can re-paste that output, matching the one-shot path. Default true. */
   streamingInsertSaveClipboard: boolean;
+  /** Offline Cantonese output: false = 口語 (default), true = 書面 (rule-based). */
+  writtenChineseOutput: boolean;
   /** Whether to send the text near the cursor in the document the user is writing to LLM polish as context.
    *  Default false — when on, every dictation reads cursor-local text for the configured LLM provider.
    *  Available on macOS, Windows and Android (IME); password fields / Secure Input (macOS) /

@@ -972,6 +972,10 @@ export const fr: typeof zhCN = {
       tipDisabled: 'Cliquez pour désactiver cette règle',
       tipEnabled: 'Cliquez pour activer cette règle',
       removeAria: 'Supprimer la règle de correction',
+      builtinBadge: 'intégrée',
+      builtinTipExceptions:
+        'Correction intégrée pour Hong Kong. Désactivable ou supprimable à tout moment. Non appliquée dans : {{exceptions}}',
+      builtinTip: 'Correction intégrée pour Hong Kong. Désactivable ou supprimable à tout moment.',
       learnedBadge: 'auto',
       learnedTip:
         'Collectée automatiquement à partir de vos corrections. Vous pouvez la supprimer à tout moment.',
@@ -1503,6 +1507,11 @@ export const fr: typeof zhCN = {
       migrationNoticeTitle: 'Le mode d’enregistrement par défaut est désormais Basculer',
       migrationNoticeDesc:
         'Cette mise à jour change le mode par défaut. Si vous préférez maintenir la touche pour parler, rétablissez ce mode ici.',
+      outputModeLabel: 'Mode de sortie',
+      outputModeDesc:
+        'Familier conserve les caractères du cantonais parlé. Écrit remplace les mots familiers par du chinois écrit (mot à mot ; l’ordre des mots est conservé).',
+      outputModeColloquial: 'Familier',
+      outputModeWritten: 'Écrit',
       microphoneLabel: 'Microphone préféré',
       microphoneDesc:
         'Choisissez le périphérique d’entrée préféré. S’il est indisponible, celui par défaut du système est utilisé.',

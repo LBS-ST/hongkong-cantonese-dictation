@@ -928,6 +928,10 @@ export const ko: typeof zhCN = {
       tipDisabled: '이 규칙 비활성화',
       tipEnabled: '이 규칙 활성화',
       removeAria: '교정 규칙 삭제',
+      builtinBadge: '내장',
+      builtinTipExceptions:
+        '내장 홍콩 보정 규칙입니다. 끄거나 삭제할 수 있습니다. 예외: {{exceptions}}',
+      builtinTip: '내장 홍콩 보정 규칙입니다. 끄거나 삭제할 수 있습니다.',
       learnedBadge: '자동',
       learnedTip: '직접 고친 내용에서 자동으로 수집했습니다. 언제든 삭제할 수 있습니다.',
       onlyLearned: '자동 수집만 보기 ({{count}})',
@@ -1437,6 +1441,11 @@ export const ko: typeof zhCN = {
       migrationNoticeTitle: '기본값이 토글 방식으로 변경됨',
       migrationNoticeDesc:
         '이전에 트리거 방식을 변경했다면 여기서 다시 한 번 확인해 주세요. 이번 업데이트는 단축키 방식의 기본값과 읽기 로직을 조정했습니다. "눌러서 말하기"가 더 익숙하다면 다시 전환할 수 있습니다.',
+      outputModeLabel: '출력 모드',
+      outputModeDesc:
+        '구어: 광둥어 구어 글자를 그대로 출력합니다. 문어: 구어 단어를 문어로 바꿉니다(단어 단위, 어순 유지).',
+      outputModeColloquial: '구어',
+      outputModeWritten: '문어',
       microphoneLabel: '기본 선택 마이크',
       microphoneDesc:
         '우선 사용할 입력 장치를 선택합니다. 장치를 일시적으로 사용할 수 없으면 시스템 기본 마이크를 사용하고, 다시 연결되면 자동으로 우선 장치로 돌아갑니다.',

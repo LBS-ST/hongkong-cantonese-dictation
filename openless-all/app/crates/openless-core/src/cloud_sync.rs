@@ -333,6 +333,7 @@ impl CloudSyncService {
                 enabled: rule.enabled,
                 created_at: rule.created_at.clone(),
                 source: rule.source,
+                exceptions: Vec::new(),
             })
             .collect();
         for rule in &corrections {
