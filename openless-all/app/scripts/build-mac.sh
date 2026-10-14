@@ -66,9 +66,6 @@ case "$(uname -m)" in
     exit 1
     ;;
 esac
-if [ -n "${TAURI_SIGNING_PRIVATE_KEY:-}" ] || [ -n "${TAURI_SIGNING_PRIVATE_KEY_PATH:-}" ]; then
-  TAURI_BUILD_ARGS+=(--config '{"bundle":{"createUpdaterArtifacts":true}}')
-fi
 APP_VERSION="$(node -p "require('./package.json').version")"
 DMG_PATH="$DMG_DIR/${APP_NAME}_${APP_VERSION}_${MAC_BUNDLE_ARCH}.dmg"
 
@@ -123,7 +120,7 @@ codesign -d --entitlements :- "$APP" 2> /dev/null | grep -q "com.apple.security.
 codesign --verify --deep --strict --verbose=2 "$APP" 2>&1 | tail -2
 
 if [ "$MAC_BUNDLE_ARCH" = "aarch64" ]; then
-  echo "▶ 校验 MLX metallib 已进入 app / DMG / updater"
+  echo "▶ 校验 MLX metallib 已进入 app / DMG"
   APP_METALLIB="$APP/Contents/Resources/mlx.metallib"
   if [ ! -s "$APP_METALLIB" ]; then
     echo "✗ Apple Silicon app 缺少 Contents/Resources/mlx.metallib"
@@ -164,19 +161,6 @@ if [ "$MAC_BUNDLE_ARCH" = "aarch64" ]; then
   cleanup_dmg_mount
   trap - EXIT
 
-  if [ -n "${TAURI_SIGNING_PRIVATE_KEY:-}" ] || [ -n "${TAURI_SIGNING_PRIVATE_KEY_PATH:-}" ]; then
-    UPDATER_ARCHIVE="src-tauri/target/release/bundle/macos/$APP_NAME.app.tar.gz"
-    if [ ! -f "$UPDATER_ARCHIVE" ]; then
-      echo "✗ 未找到 Tauri updater archive：$UPDATER_ARCHIVE"
-      exit 1
-    fi
-    UPDATER_METALLIB_SHA="$(tar -xOf "$UPDATER_ARCHIVE" \
-      "$APP_NAME.app/Contents/Resources/mlx.metallib" | shasum -a 256 | awk '{print $1}')"
-    if [ "$UPDATER_METALLIB_SHA" != "$APP_METALLIB_SHA" ]; then
-      echo "✗ app 与 updater 中的 mlx.metallib SHA-256 不一致"
-      exit 1
-    fi
-  fi
   echo "✓ MLX metallib sha256=$APP_METALLIB_SHA"
 elif [ -e "$APP/Contents/MacOS/mlx.metallib" ] || [ -e "$APP/Contents/Resources/mlx.metallib" ]; then
   echo "✗ Intel app 不应包含 Apple Silicon MLX metallib"

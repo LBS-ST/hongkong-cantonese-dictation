@@ -19,7 +19,6 @@ const repositoryReferences = [
   'openless-all/app/src-tauri/src/commands/mod.rs',
   'openless-all/app/src-tauri/src/commands/settings.rs',
   'openless-all/app/src-tauri/tauri.conf.json',
-  'openless-all/app/src/components/AutoUpdate.tsx',
   'openless-all/app/src/components/SettingsModal.tsx',
   'openless-all/app/src/pages/settings/AboutSection.tsx',
   'openless-all/app/scripts/write-updater-manifest.mjs',
@@ -36,14 +35,7 @@ for (const relativePath of repositoryReferences) {
 const tauriConfig = JSON.parse(
   await readFile(join(repoRoot, 'openless-all/app/src-tauri/tauri.conf.json'), 'utf8'),
 );
-const updaterEndpoints = tauriConfig?.plugins?.updater?.endpoints;
-assert(
-  Array.isArray(updaterEndpoints) && updaterEndpoints.length > 0,
-  'desktop updater endpoints are missing',
-);
-assert(
-  updaterEndpoints.every((endpoint) => endpoint.includes(currentRepo)),
-  'desktop updater endpoints must use the current GitHub repository',
-);
+// 唔打啦 ships without the desktop updater: it must never fetch upstream OpenLess releases.
+assert.equal(tauriConfig?.plugins?.updater, undefined, 'desktop updater must stay removed');
 
 console.log('repository-owner-contract.test.mjs passed');

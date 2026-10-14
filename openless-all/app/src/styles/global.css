@@ -567,38 +567,6 @@ html[data-ol-conservative-layout='true'] .ol-conservative-scope .ol-select-lite-
   }
 }
 
-/* ── 2.0 开屏 PV（仅首启播放一次）──────────────────────────────────────
-   任意窗口比例下 object-fit: cover 裁切铺满、无黑边；黑底防首帧前闪白。
-   入场短促淡入；播放结束后整层从最后一帧画面慢慢变透明直至消失——
-   「从哪来到哪去」，渐隐时长与 SplashVideo.tsx 的 FADE_MS 保持一致。 */
-.ol-splash {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: #000;
-  animation: ol-splash-in 0.25s ease both;
-}
-.ol-splash[data-fading] {
-  animation: ol-splash-out 1.2s ease both;
-  pointer-events: none;
-}
-.ol-splash-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-@keyframes ol-splash-in {
-  from {
-    opacity: 0;
-  }
-}
-@keyframes ol-splash-out {
-  to {
-    opacity: 0;
-  }
-}
-
 /* ── 词典页────────────────────────────────────────────── */
 
 /* 来源分段筛选：灰底胶囊容器 + 白色浮起选中片（参考 Typeless 词典稿）。 */

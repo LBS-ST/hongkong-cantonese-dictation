@@ -15,7 +15,6 @@ const channelList = read('src/pages/settings/ChannelList.tsx');
 const permissions = read('src/pages/settings/PermissionsSection.tsx');
 const androidPermissions = read('android/frontend/components/AndroidPermissionsPanel.tsx');
 const about = read('src/pages/settings/AboutSection.tsx');
-const updateButton = read('src/pages/settings/CheckUpdateButton.tsx');
 const moreSheet = read('src/components/MobileMoreSheet.tsx');
 const styleSheet = read('src/components/MobileStyleSheet.tsx');
 
@@ -43,10 +42,6 @@ assert.match(androidPermissions, /const baseLayoutStack = useLayoutStack\(\)/);
 assert.match(androidPermissions, /const rowJustify = layoutStack \? 'flex-start' : 'flex-end'/);
 
 assert.match(about, /ol-inline-composite/);
-assert.match(about, /compact=\{compactLayout\}/);
-assert.match(updateButton, /minWidth:\s*compact\s*\?\s*32\s*:\s*160/);
-assert.match(updateButton, /aria-label=\{compact\s*\?\s*label\s*:\s*undefined\}/);
-assert.match(updateButton, /display:\s*compact\s*\?\s*'none'/);
 assert.match(moreSheet, /chevRight/);
 assert.match(styleSheet, /chevRight/);
 assert.match(moreSheet, /flexWrap:\s*'nowrap'/);

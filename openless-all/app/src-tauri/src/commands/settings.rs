@@ -474,14 +474,9 @@ mod tests {
 // fallback normalization stays consistent with other prefs writes, and "prefs:changed" is
 // emitted afterwards to sync the frontend across webviews.
 //
-// Update: plugin-updater 2.10.1's Builder now exposes the .endpoints() runtime API (the
-// "unsupported" note recorded in CLAUDE.md no longer holds). This section, together with
-// the `app_check_update_with_channel` command, implements Beta auto-update: Stable channel →
-// tauri.conf's default endpoints; Beta channel → fetch_latest_beta_release gets the latest
-// prerelease tag → build the -beta manifest URL →
-// builder.endpoints(vec![url]).build().check(). Stable users can never hit a Beta package
-// (Beta-tag manifests carry a `-beta` filename suffix, physically separated from Stable
-// manifests in the GitHub Release assets).
+// 唔打啦: the desktop updater (tauri-plugin-updater) is removed and no update command is
+// registered, so nothing fetches upstream OpenLess releases. The channel preference is still
+// persisted (preserved across settings writes) because it is part of UserPreferences.
 
 fn effective_update_channel(
     requested: Option<UpdateChannel>,
@@ -499,6 +494,7 @@ fn effective_update_channel(
     })
 }
 
+#[cfg(test)]
 fn select_update_channel(prefs: &mut UserPreferences, channel: UpdateChannel) -> bool {
     let changed = prefs.update_channel != channel || !prefs.update_channel_explicit;
     prefs.update_channel = channel;
@@ -511,28 +507,9 @@ fn preserve_update_channel_preferences(incoming: &mut UserPreferences, current: 
     incoming.update_channel_explicit = current.update_channel_explicit;
 }
 
-#[tauri::command]
-pub fn get_update_channel(core: CoreState<'_>) -> UpdateChannel {
-    let prefs = core.get_preferences();
-    effective_update_channel(None, &prefs, env!("CARGO_PKG_VERSION"))
-}
-
-#[tauri::command]
-pub fn set_update_channel(
-    coord: CoordinatorState<'_>,
-    channel: UpdateChannel,
-) -> Result<(), String> {
-    // Channel read and persistence must share one write critical section, so they can't be
-    // overwritten in reverse by concurrent regular settings writes.
-    let _host_guard = coord.lock_settings_host();
-    let mut prefs = coord.backend().get_preferences();
-    if !select_update_channel(&mut prefs, channel) {
-        return Ok(());
-    }
-    persist_settings_with_host_lock_held(&*coord, prefs)?;
-    Ok(())
-}
-
+// The Beta release-feed helpers below are kept only for the Android updater module and its
+// tests; no command exposes them, so they are dead code in the shipped app.
+#[allow(dead_code)]
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LatestBetaRelease {
@@ -551,6 +528,7 @@ pub struct LatestBetaRelease {
 /// `-Beta.N-tauri` convention while also accepting the historical `-beta-tauri` suffix.
 ///
 /// `Ok(None)` = no Beta release published yet; `Err(String)` = network/parse failure.
+#[allow(dead_code)]
 #[tauri::command]
 pub async fn fetch_latest_beta_release() -> Result<Option<LatestBetaRelease>, String> {
     let resp = net::send_with_retry(|| {
@@ -574,6 +552,7 @@ pub async fn fetch_latest_beta_release() -> Result<Option<LatestBetaRelease>, St
 /// `<entry>...</entry>` contains one
 /// `<link rel="alternate" type="text/html" href=".../releases/tag/<tag>"/>` line; grab the
 /// tag via the unique `/releases/tag/` anchor.
+#[allow(dead_code)]
 pub(crate) fn parse_latest_beta_from_atom(body: &str) -> Option<LatestBetaRelease> {
     for entry in body.split("<entry>").skip(1) {
         let entry_body = entry
@@ -605,6 +584,7 @@ pub(crate) fn parse_latest_beta_from_atom(body: &str) -> Option<LatestBetaReleas
     None
 }
 
+#[allow(dead_code)]
 fn is_beta_release_tag(tag_name: &str) -> bool {
     if tag_name.ends_with("-beta-tauri") {
         return true;
@@ -630,30 +610,16 @@ fn is_beta_release_tag(tag_name: &str) -> bool {
     }) && version_parts.next().is_none()
 }
 
+#[allow(dead_code)]
 fn extract_between(haystack: &str, open: &str, close: &str) -> Option<String> {
     let start = haystack.find(open)? + open.len();
     let end = haystack[start..].find(close)?;
     Some(haystack[start..start + end].to_string())
 }
 
-// ─────────────────────── Channel-aware updater check ────────────────────────
-//
-// Replaces the frontend's previous direct import('@tauri-apps/plugin-updater').check() path:
-// - Stable channel: the builder keeps tauri.conf's stable manifest URL endpoints untouched.
-// - Beta channel: fetch_latest_beta_release gets the latest prerelease tag, builds the -beta
-//   manifest URL (as a mirror + direct pair), then
-//   builder.endpoints(vec![url])?.build()?.check().
-//
-// The returned Metadata shape exactly matches plugin-updater's JS UpdateMetadata (rid +
-// currentVersion and other camelCase fields), so the frontend can call
-// `new Update(metadata)` directly and reuse the plugin's download / install / close
-// implementations instead of writing our own download and signature verification.
-//
-// Physical isolation: manifests published from Beta tags carry a `-beta` filename suffix
-// (see the comment at line 382 of release-tauri.yml), separate from Stable's
-// `latest-{tgt}-{arch}.json` in the GitHub Release assets — even if buggy code passed a
-// Beta URL to a Stable user, HTTP returns 404 outright; the wrong artifact is unreachable.
+// Update metadata shape, used only by the (unregistered) Android updater path.
 
+#[allow(dead_code)]
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AppUpdateMetadata {
@@ -667,80 +633,6 @@ pub struct AppUpdateMetadata {
     pub body: Option<String>,
     /// Raw manifest JSON — shared by desktop `new Update(metadata)` and the Android custom install path.
     pub raw_json: serde_json::Value,
-}
-
-/// Resolves the manifest source, then runs plugin-updater's standard check flow.
-/// Channel: uses an explicitly passed `channel` (the About page always checks Stable, the
-/// advanced page's Beta section checks Beta); when absent, uses the user's explicit
-/// channel choice; when none chosen yet, follows the current build type.
-/// Returns None = already up to date; Some(metadata) = an update is available.
-#[tauri::command]
-#[cfg(not(mobile))]
-pub async fn app_check_update_with_channel<R: tauri::Runtime>(
-    coord: CoordinatorState<'_>,
-    webview: tauri::Webview<R>,
-    timeout_ms: Option<u64>,
-    channel: Option<UpdateChannel>,
-) -> Result<Option<AppUpdateMetadata>, String> {
-    use tauri_plugin_updater::UpdaterExt;
-
-    let prefs = coord.backend().get_preferences();
-    let channel = effective_update_channel(channel, &prefs, env!("CARGO_PKG_VERSION"));
-    let mut builder = webview.updater_builder();
-    if let Some(ms) = timeout_ms {
-        builder = builder.timeout(std::time::Duration::from_millis(ms));
-    }
-    if matches!(channel, UpdateChannel::Beta) {
-        let urls = resolve_beta_manifest_endpoints().await?;
-        builder = builder
-            .endpoints(urls)
-            .map_err(|e| format!("set beta endpoints: {e}"))?;
-    }
-    let updater = builder.build().map_err(|e| format!("build updater: {e}"))?;
-    let update = updater
-        .check()
-        .await
-        .map_err(|e| format!("check update failed: {e}"))?;
-
-    let Some(update) = update else {
-        return Ok(None);
-    };
-    // Passing through the date field would require the time crate; the frontend
-    // AutoUpdate.tsx never uses date, so set it to None here and avoid pulling a new dep
-    // into src-tauri/Cargo.toml.
-    let metadata = AppUpdateMetadata {
-        current_version: update.current_version.clone(),
-        version: update.version.clone(),
-        date: None,
-        body: update.body.clone(),
-        raw_json: update.raw_json.clone(),
-        rid: webview.resources_table().add(update),
-    };
-    Ok(Some(metadata))
-}
-
-/// Builds the -beta manifest URL pair from the latest prerelease tag found by
-/// fetch_latest_beta_release.
-/// Order: mirror first (fastgit.cc proxies GitHub), then direct — matching tauri.conf's
-/// existing Stable endpoints so mainland-China access hits the CDN first.
-#[cfg(not(mobile))]
-async fn resolve_beta_manifest_endpoints() -> Result<Vec<url::Url>, String> {
-    let Some(latest) = fetch_latest_beta_release().await? else {
-        return Err("尚未发布过 Beta 版本".to_string());
-    };
-    let tag = latest.tag_name;
-    // {{target}} / {{arch}} placeholders are substituted by the plugin at check time. A
-    // Rust raw string (r#""#) needs no escaped double braces and is cleaner than format!-ing
-    // the literal.
-    let mirror = format!(
-        "https://fastgit.cc/https://github.com/Open-Less/openless/releases/download/{tag}/latest-{{{{target}}}}-{{{{arch}}}}-beta-mirror.json"
-    );
-    let direct = format!(
-        "https://github.com/Open-Less/openless/releases/download/{tag}/latest-{{{{target}}}}-{{{{arch}}}}-beta.json"
-    );
-    let mirror_url = url::Url::parse(&mirror).map_err(|e| format!("parse beta mirror url: {e}"))?;
-    let direct_url = url::Url::parse(&direct).map_err(|e| format!("parse beta direct url: {e}"))?;
-    Ok(vec![mirror_url, direct_url])
 }
 
 #[cfg(mobile)]

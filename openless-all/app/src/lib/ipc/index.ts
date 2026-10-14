@@ -216,16 +216,6 @@ export {
 // chat-panel (shared by QA / Less Computer)
 export { chatPanelFocusKeyboard } from './chat-panel';
 
-// updater
-export type { LatestBetaRelease, AppUpdateMetadata } from './updater';
-export {
-  getUpdateChannel,
-  setUpdateChannel,
-  fetchLatestBetaRelease,
-  appCheckUpdateWithChannel,
-  appDownloadAndInstallAndroidUpdate,
-} from './updater';
-
 // remote-server
 export type { RemoteInputStatus } from './remote-server';
 export {
@@ -292,9 +282,6 @@ export {
   readMarketplaceDetailCache,
   writeMarketplaceDetailCache,
 } from './marketplace-cache';
-
-// splash (2.0 intro-video first-launch marker)
-export { takeSplashPlayback, SPLASH_MAJOR } from './splash';
 
 // utils
 export { openExternal, exportErrorLog, logClientError, debugReadCursorContext } from './utils';

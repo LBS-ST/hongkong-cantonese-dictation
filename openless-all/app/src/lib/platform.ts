@@ -68,7 +68,7 @@ export function inferPlatformCapabilities(): PlatformCapabilities {
       supportsLocalAsr: false,
       supportsLocalQwen3Mlx: false,
       supportsInAppDictation: true,
-      supportsAutoUpdate: true,
+      supportsAutoUpdate: false,
       supportsVoiceEdit: true,
     };
   }
@@ -89,7 +89,7 @@ export function inferPlatformCapabilities(): PlatformCapabilities {
     // keeps MLX visible on macOS until the native capability query is available.
     supportsLocalQwen3Mlx: os === 'mac',
     supportsInAppDictation: false,
-    supportsAutoUpdate: true,
+    supportsAutoUpdate: false,
     supportsVoiceEdit: true,
   };
 }

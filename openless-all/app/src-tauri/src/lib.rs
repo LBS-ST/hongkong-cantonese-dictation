@@ -223,10 +223,6 @@ macro_rules! app_invoke_handler_desktop {
             commands::list_local_ips,
             commands::regenerate_remote_pin,
             commands::set_remote_locale,
-            commands::get_update_channel,
-            commands::set_update_channel,
-            commands::fetch_latest_beta_release,
-            commands::app_check_update_with_channel,
             commands::check_network,
             commands::take_splash_playback,
             commands::get_hotkey_status,
@@ -647,11 +643,6 @@ macro_rules! app_invoke_handler_mobile {
             $crate::commands::export_error_log,
             #[cfg(target_os = "android")]
             $crate::commands::export_error_log_to_downloads,
-            $crate::commands::get_update_channel,
-            $crate::commands::set_update_channel,
-            $crate::commands::fetch_latest_beta_release,
-            $crate::commands::app_check_update_with_channel,
-            $crate::commands::app_download_and_install_android_update,
             $crate::restart_app,
             $crate::reset_accessibility_permission_and_restart_app,
             $crate::log_client_error,
@@ -721,7 +712,6 @@ fn run_desktop() {
             show_main_window(app);
         }))
         .plugin(tauri_plugin_shell::init())
-        .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_dialog::init())
         // 桌面开机自启：mac 写 LaunchAgent plist，windows 写
         // HKCU\Software\Microsoft\Windows\CurrentVersion\Run。前端 toggle 直接

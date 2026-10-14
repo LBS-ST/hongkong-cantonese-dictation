@@ -25,9 +25,6 @@ import { HotkeySettingsProvider } from './state/HotkeySettingsContext';
 // Lazy-load pages per WebView by window purpose to cut resident memory. The capsule
 // gives instant recording feedback — small and first-frame-latency sensitive — so it
 // stays a direct import.
-const AutoUpdateGate = lazy(() =>
-  import('./components/AutoUpdateGate').then((m) => ({ default: m.AutoUpdateGate })),
-);
 const FloatingShell = lazy(() =>
   import('./components/FloatingShell').then((m) => ({ default: m.FloatingShell })),
 );
@@ -473,7 +470,6 @@ function ReadyApp({
           ) : (
             <FloatingShell os={os} />
           ))}
-        {gate === 'ready' && platformCaps?.supportsAutoUpdate === true && <AutoUpdateGate />}
       </HotkeySettingsProvider>
     </Suspense>
   );

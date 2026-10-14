@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
-import { SplashVideo } from './components/SplashVideo';
 import { CoreStartupScreen } from './components/CoreStartupScreen';
 import { detectOS } from './components/WindowChrome';
 import { i18nReady } from './i18n';
@@ -22,9 +21,7 @@ const isSelectionVoiceIntent = windowKind === 'selection-voice-intent';
 const isVoiceEdit = windowKind === 'voice-edit';
 const isLessComputer = windowKind === 'less-computer';
 const isLessComputerGlow = windowKind === 'less-computer-glow';
-// The splash video belongs to the main window only (routes without ?window=):
-// auxiliary windows (capsule / QA / Less Computer …) share the same frontend bundle
-// but must never claim or double-consume the splash.
+// Main window = routes without ?window=; auxiliary windows share the same bundle.
 const isMainWindow = !windowKind;
 const osQuery = params.get('os') as OS | null;
 const os = osQuery ?? detectOS();
@@ -36,7 +33,6 @@ const root = ReactDOM.createRoot(document.getElementById('root')!);
 const renderApp = () => {
   root.render(
     <React.StrictMode>
-      {isMainWindow && <SplashVideo />}
       <App
         isCapsule={isCapsule}
         isCapsuleRail={isCapsuleRail}

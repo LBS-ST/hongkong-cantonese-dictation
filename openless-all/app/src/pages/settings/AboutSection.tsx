@@ -1,19 +1,16 @@
-// About → version info / check updates / font size / doc links.
+// About → version info / font size / doc links.
 // "Personalization" was once its own tab but was left with only font size, so it merged into "About".
-// "Join the Beta channel" moved to the bottom of the Advanced page (see BetaChannelSection); here the
-// icon area keeps only the stable-channel "check updates" button.
+// 唔打啦 ships without an updater, so there is no "check updates" button.
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../../components/Icon';
 import { Row } from '../../components/ui/Row';
-import { getPlatformCapabilities, openExternal } from '../../lib/ipc';
-import type { PlatformCapabilities } from '../../lib/types';
+import { openExternal } from '../../lib/ipc';
 import { APP_VERSION_LABEL } from '../../lib/appVersion';
 import { Card } from '../_atoms';
 import { useConservativeLayout, useLayoutStack } from '../../lib/useMobileLayout';
 import { btnGhostStyle, SectionTitle } from './shared';
-import { CheckUpdateButton } from './CheckUpdateButton';
 
 const HELP_URL = 'https://github.com/Open-Less/openless#readme';
 const RELEASE_NOTES_URL = 'https://github.com/Open-Less/openless/releases';
@@ -25,12 +22,7 @@ export function AboutSection() {
   const compactLayout = baseLayoutStack || conservativeLayout;
   const appIconSize = compactLayout ? 36 : 56;
   const [qqCopied, setQqCopied] = useState(false);
-  const [platformCaps, setPlatformCaps] = useState<PlatformCapabilities | null>(null);
   const qqCopiedRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    void getPlatformCapabilities().then(setPlatformCaps);
-  }, []);
 
   useEffect(
     () => () => {
@@ -96,10 +88,6 @@ export function AboutSection() {
               {t('modal.about.tagline')} · {APP_VERSION_LABEL}
             </div>
           </div>
-          {/* Top right of the icon: stable-channel check-updates button. Beta channel lives on the Advanced page. */}
-          {platformCaps?.supportsAutoUpdate === true && (
-            <CheckUpdateButton channel="stable" compact={compactLayout} />
-          )}
         </div>
       </Card>
 
