@@ -4,7 +4,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "OpenLess",
+        "title": "唔打啦",
         "width": 1240,
         "height": 800,
         "minWidth": 980,
@@ -25,7 +25,7 @@
       {
         "label": "capsule",
         "url": "index.html?window=capsule",
-        "title": "OpenLess Capsule",
+        "title": "唔打啦 Capsule",
         "width": 460,
         "height": 180,
         "decorations": false,
@@ -42,7 +42,7 @@
       {
         "label": "capsule-rail",
         "url": "index.html?window=capsule-rail&os=win",
-        "title": "OpenLess Transcript Rail",
+        "title": "唔打啦 Transcript Rail",
         "width": 460,
         "height": 52,
         "decorations": false,

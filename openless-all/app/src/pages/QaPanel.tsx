@@ -995,7 +995,7 @@ function AssistantLabel() {
       <span className="qa-symbol" aria-hidden="true">
         ✳
       </span>
-      OpenLess
+      唔打啦
     </div>
   );
 }

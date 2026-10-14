@@ -189,8 +189,6 @@ export function RecordingInputSection() {
     void saveKeyboardListAffectingPrefs({ ...prefs, windowsShowOpenlessInKeyboardList });
   const onStartMinimizedChange = (startMinimized: boolean) =>
     savePrefs({ ...prefs, startMinimized });
-  const onAutoUpdateCheckChange = (autoUpdateCheck: boolean) =>
-    savePrefs({ ...prefs, autoUpdateCheck });
 
   // Sliding thumb of the horizontal segmented control for the recording mode
   // (hold-to-talk / auto, etc.): follows the selected item, and the left/width transition
@@ -726,9 +724,6 @@ export function RecordingInputSection() {
           <AutostartRow />
           <SettingRow label={t('settings.recording.startMinimizedLabel')}>
             <Toggle on={prefs.startMinimized} onToggle={onStartMinimizedChange} />
-          </SettingRow>
-          <SettingRow label={t('settings.recording.autoUpdateCheckLabel')}>
-            <Toggle on={prefs.autoUpdateCheck} onToggle={onAutoUpdateCheckChange} />
           </SettingRow>
         </Collapsible>
       )}

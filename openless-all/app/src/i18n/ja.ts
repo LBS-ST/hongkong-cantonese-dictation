@@ -271,7 +271,7 @@ export const ja: typeof zhCN = {
       '辞書、修正规則、スタイルのアイコン、共通設定を同期します。API キー、ログイン情報、デバイス固有の設定は本機に保持されます。',
   },
   app: {
-    name: 'OpenLess',
+    name: '唔打啦',
     tagline: '自然に話し、きれいに書く',
   },
   common: {
@@ -341,7 +341,7 @@ export const ja: typeof zhCN = {
       sending: '質問を送信中…',
       addUnavailable: 'コンテンツを追加 · 未対応',
       browserUnavailable: 'プレビューでは実行できません',
-      answer: 'OpenLess の回答',
+      answer: '唔打啦の回答',
       layoutError: 'ウィンドウを展開できませんでした。閉じてから開き直してください。',
     },
     title: '質問',
@@ -643,7 +643,7 @@ export const ja: typeof zhCN = {
     },
   },
   onboarding: {
-    welcome: 'OpenLess へようこそ',
+    welcome: '唔打啦へようこそ',
     intro: 'ローカルで話し、ローカルで文字に。開始前にシステム権限が 2 つ必要です。',
     accessibilityTitle: 'アクセシビリティ',
     hotkeyTitle: 'グローバルショートカット',
@@ -655,20 +655,20 @@ export const ja: typeof zhCN = {
     actionNotApplicable: '権限不要',
     actionGranted: '許可済み',
     actionOpenSystem: 'システム設定を開く',
-    actionRestart: 'アクセシビリティをリセットして OpenLess を再起動',
+    actionRestart: 'アクセシビリティをリセットして唔打啦を再起動',
     actionGrant: '許可する',
     actionRequestMic: '許可ダイアログを表示',
     micNoDeviceHint:
       'マイクが検出されません。マイクを接続して有効にしてから、もう一度お試しください。',
     accessibilityHint:
-      '許可後は **OpenLess を完全に終了** してから再起動してください（macOS TCC の仕様）。',
+      '許可後は **唔打啦を完全に終了** してから再起動してください（macOS TCC の仕様）。',
     footerHint:
-      'すべての権限が揃うとこのガイドは自動で閉じます。閉じない場合はメニューバーの OpenLess → 終了 から再起動してください。',
+      'すべての権限が揃うとこのガイドは自動で閉じます。閉じない場合はメニューバーの唔打啦 → 終了 から再起動してください。',
     continueToSettings: '設定のみ開く（音声とグローバルショートカットは利用不可）',
     androidContinue: 'アプリに進む',
     androidFooterHint:
       '音声入力にはマイク権限が必要です。上の「許可ダイアログを表示」をタップするか、先にアプリへ進み、概要ページで後から許可してください。',
-    androidTitle: 'OpenLess を設定',
+    androidTitle: '唔打啦を設定',
     androidIntro: 'モバイル権限とサービス設定を順番に完了します。',
     androidStepCounter: '{{current}} / {{total}}',
     androidBack: '戻る',
@@ -676,7 +676,7 @@ export const ja: typeof zhCN = {
     androidFinish: '完了して開始',
     androidSteps: {
       microphoneTitle: 'マイク権限',
-      microphoneDesc: 'Android のシステム権限カードを表示し、OpenLess の録音を許可します。',
+      microphoneDesc: 'Android のシステム権限カードを表示し、唔打啦の録音を許可します。',
       accessibilityTitle: 'アクセシビリティサービス',
       accessibilityDesc: '認識結果を現在の入力欄へ貼り付け、入力環境の検出を補助します。',
       overlayPermissionTitle: 'フローティングウィンドウ権限',
@@ -1113,7 +1113,7 @@ export const ja: typeof zhCN = {
       fullPromptTitle: 'System Prompt',
       fullPromptHint: 'このパック固有の Prompt です。',
       promptChars: '{{count}} 文字',
-      runtimeTitle: 'OpenLess 実行時付加指令',
+      runtimeTitle: '唔打啦実行時付加指令',
       runtimeDesc: '読み取り専用の実行時ヘルパー。',
       runtimeContextTitle: 'コンテキスト前提',
       runtimeContextDesc: '言語とアプリのコンテキストから',
@@ -1541,9 +1541,9 @@ export const ja: typeof zhCN = {
       windowsSendInputNewlineModeCrLf: 'CR+LF Unicode',
       windowsShowOpenlessInKeyboardListLabel: 'キーボード一覧に OpenLess を表示',
       windowsShowOpenlessInKeyboardListDesc:
-        'オフにすると Win+Space で OpenLess に切り替わりません。SendInput とクリップボード貼り付け挿入には影響しません。オンに戻すと一覧に再表示されます。',
+        'オフにすると Win+Space で唔打啦に切り替わりません。SendInput とクリップボード貼り付け挿入には影響しません。オンに戻すと一覧に再表示されます。',
       windowsShowOpenlessInKeyboardListError:
-        'キーボード一覧を更新できません：システムが OpenLess 言語プロファイルの変更を拒否しました。',
+        'キーボード一覧を更新できません：システムが唔打啦言語プロファイルの変更を拒否しました。',
       historyGroupTitle: '履歴とコンテキスト',
       historyRetentionLabel: '履歴保持期間（日）',
       historyRetentionDesc:
@@ -1569,7 +1569,7 @@ export const ja: typeof zhCN = {
       marketplaceDevLoginLabel: 'GitHub ログイン名（アップロード ID）',
       marketplaceDevLoginDesc: 'アップロード者を識別。空欄でアップロード・いいね無効。',
       startupAtBoot: '起動時に自動起動',
-      startupAtBootDesc: 'ログイン時に OpenLess を自動起動。',
+      startupAtBootDesc: 'ログイン時に唔打啦を自動起動。',
       startupAtBootError: '自動起動の切り替えに失敗：{{message}}',
     },
     channels: {
@@ -1651,7 +1651,7 @@ export const ja: typeof zhCN = {
       llmProviderDesc: '選択するとデフォルトの Base URL が自動入力されます。',
       credentialStorageNotice: '資格情報は OS の資格情報ストアに保存されます。',
       codexOAuthNotice:
-        'Codex OAuth はローカルの Codex ログイン状態（~/.codex/auth.json）を使用します。OpenLess は API Key や Base URL を保存しません。',
+        'Codex OAuth はローカルの Codex ログイン状態（~/.codex/auth.json）を使用します。唔打啦は API Key や Base URL を保存しません。',
       asrProviderDesc: '切り替えると対応する認証情報が自動選択されます。',
       asrTitle: 'ASR 音声（転写）',
       asrDesc: '録音した音声をテキストに文字起こしします。',
@@ -1903,7 +1903,7 @@ export const ja: typeof zhCN = {
       cancel: '本回の録音をキャンセル',
       confirm: 'カプセル入力を確定',
       switchStyle: '前のスタイルに切り替え',
-      openApp: 'OpenLess を開く',
+      openApp: '唔打啦を開く',
       stylePackTitle: 'スタイル直行ショートカット',
       stylePackDesc:
         'よく使うスタイルパックにショートカットを割り当てて一発切替；無効中のパックは自動で有効化されます。',
@@ -1927,9 +1927,9 @@ export const ja: typeof zhCN = {
     permissions: {
       title: '権限',
       descAcc:
-        'OpenLess は正常動作のため以下のシステム権限が必要です。許可後は通常、App を完全に終了して再起動する必要があります。',
+        '唔打啦は正常動作のため以下のシステム権限が必要です。許可後は通常、App を完全に終了して再起動する必要があります。',
       descNoAcc:
-        'OpenLess はマイクへのアクセスと、グローバルショートカット監視状態を通じてネイティブフックの正常動作を判定する必要があります。',
+        '唔打啦はマイクへのアクセスと、グローバルショートカット監視状態を通じてネイティブフックの正常動作を判定する必要があります。',
       micLabel: 'マイク',
       micDesc: '音声入力の取得に使用します。',
       accLabel: 'アクセシビリティ',
@@ -1971,10 +1971,10 @@ export const ja: typeof zhCN = {
       androidAccessibilityGrantedStale: '許可済み・未接続',
       androidAccessibilityMessages: {
         not_android: 'アクセシビリティ状態は Android でのみ利用できます。',
-        not_enabled: 'システムのアクセシビリティ設定で OpenLess を有効にしてください。',
+        not_enabled: 'システムのアクセシビリティ設定で唔打啦を有効にしてください。',
         operational: 'アクセシビリティ サービスは稼働中です。',
         authorized_not_connected:
-          'アクセシビリティは許可済みですが未接続です。システム設定で OpenLess を再度有効にしてください。',
+          'アクセシビリティは許可済みですが未接続です。システム設定で唔打啦を再度有効にしてください。',
         status_read_failed: 'アクセシビリティ状態を読み取れませんでした。',
       },
       androidShizukuLabel: 'Shizuku 拡張モード',
@@ -1984,7 +1984,7 @@ export const ja: typeof zhCN = {
       androidShizukuRequestPermission: '権限をリクエスト',
       androidShizukuRecover: 'アクセシビリティを復旧',
       androidShizukuRecoverConfirm:
-        'Shizuku で OpenLess のアクセシビリティサービスを再有効化しますか？書き込み時点で有効なサービスはマージされます。グローバルスイッチがオフの場合、有効化すると登録済みの他サービスも起動する可能性があります。',
+        'Shizuku で唔打啦のアクセシビリティサービスを再有効化しますか？書き込み時点で有効なサービスはマージされます。グローバルスイッチがオフの場合、有効化すると登録済みの他サービスも起動する可能性があります。',
       androidShizukuYes: 'はい',
       androidShizukuNo: 'いいえ',
       androidShizukuAccessibilityOperational: 'アクセシビリティは登録済みで稼働中です。',
@@ -2003,7 +2003,7 @@ export const ja: typeof zhCN = {
         unsupported_backend:
           'この Shizuku バックエンドは古すぎます。Shizuku または Sui を v11 以降に更新してください。',
         not_running: 'Shizuku が起動していません。先に Shizuku または Sui を起動してください。',
-        not_authorized: 'Shizuku が未承認です。OpenLess に権限を付与してください。',
+        not_authorized: 'Shizuku が未承認です。唔打啦に権限を付与してください。',
         binder_dead: 'Shizuku 接続が切断されました。Shizuku を再起動してください。',
         authorized_operational: 'Shizuku 承認済み。アクセシビリティは稼働中です。',
         authorized_registered_stale:
@@ -2018,7 +2018,7 @@ export const ja: typeof zhCN = {
         granted: 'Shizuku 権限が付与されました。',
         denied: 'Shizuku 権限が拒否されました。',
         permission_permanently_denied:
-          'Shizuku 権限がブロックされました。Shizuku を開いて OpenLess を手動で許可してください。',
+          'Shizuku 権限がブロックされました。Shizuku を開いて唔打啦を手動で許可してください。',
         launched: 'Shizuku 承認画面を開きました。',
         launch_failed: 'Shizuku 承認画面を開けませんでした。',
         open_shizuku: 'Shizuku マネージャーを開きました。',
@@ -2110,7 +2110,7 @@ export const ja: typeof zhCN = {
       windowsIme: {
         installed: 'インストール済み。音声入力時に OpenLess IME へ一時的に切り替えます。',
         notInstalled:
-          '未インストール。OpenLess は現在クリップボード / WM_PASTE フォールバックを使用しています。',
+          '未インストール。唔打啦は現在クリップボード / WM_PASTE フォールバックを使用しています。',
         registrationBroken: '登録が破損しています。OpenLess IME を再インストールしてください。',
         notWindows: 'Windows のみ利用可能。',
       },
@@ -2273,29 +2273,29 @@ export const ja: typeof zhCN = {
       updateDialog: {
         available: {
           title: '新しいバージョンがあります',
-          desc: 'OpenLess {{version}} が見つかりました。今すぐ更新しますか？',
+          desc: '唔打啦 {{version}} が見つかりました。今すぐ更新しますか？',
         },
         stableChannelSwitch: {
           title: '正式版に切り替える',
-          desc: '現在のバージョン：OpenLess {{currentVersion}}\n対象バージョン：OpenLess {{version}}\nBeta チャンネルから正式版に切り替えます。続行しますか？',
+          desc: '現在のバージョン：唔打啦 {{currentVersion}}\n対象バージョン：唔打啦 {{version}}\nBeta チャンネルから正式版に切り替えます。続行しますか？',
         },
         downloading: {
           title: 'アップデートをダウンロード中',
-          desc: 'OpenLess {{version}} をダウンロード中です。アプリを開いたままにしてください。',
+          desc: '唔打啦 {{version}} をダウンロード中です。アプリを開いたままにしてください。',
         },
         downloaded: {
           title: 'アップデートの準備完了',
-          desc: 'OpenLess {{version}} のインストールが完了しました。今すぐ自動再起動して適用しますか？',
+          desc: '唔打啦 {{version}} のインストールが完了しました。今すぐ自動再起動して適用しますか？',
         },
         installing: {
           title: 'アップデートをインストール中',
-          desc: 'OpenLess {{version}} をインストール中です。アプリを開いたままにしてください。',
+          desc: '唔打啦 {{version}} をインストール中です。アプリを開いたままにしてください。',
         },
         install: '今すぐ更新',
         androidInstall: 'ダウンロードしてインストーラを開く',
         androidInstalled: {
           title: 'システムインストーラを開きました',
-          desc: '画面の指示に従ってインストールしてください。完了後 OpenLess を再度開くと {{version}} が使えます。',
+          desc: '画面の指示に従ってインストールしてください。完了後唔打啦を再度開くと {{version}} が使えます。',
         },
         downloadingLabel: 'ダウンロード中…',
         installingLabel: 'インストール中…',
@@ -2312,9 +2312,9 @@ export const ja: typeof zhCN = {
     },
   },
   startup: {
-    loading: 'OpenLess を起動中…',
+    loading: '唔打啦を起動中…',
     loadingDesc: 'ローカルサービスに接続し、互換性を確認しています。',
-    failed: 'OpenLess を起動できません',
+    failed: '唔打啦を起動できません',
     recovery:
       '再確認してください。解決しない場合はアプリを完全に終了して開き直してください。更新後に発生した場合は、アプリ全体が同じバージョンであることを確認してください。',
     retry: '再確認',

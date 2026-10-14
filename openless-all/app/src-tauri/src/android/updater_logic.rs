@@ -183,23 +183,6 @@ mod tests {
     }
 
     #[test]
-    fn updater_pubkey_matches_tauri_conf() {
-        let manifest_dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
-        let conf_path = manifest_dir.join("tauri.conf.json");
-        let conf_text = std::fs::read_to_string(&conf_path)
-            .unwrap_or_else(|e| panic!("read {}: {e}", conf_path.display()));
-        let conf: serde_json::Value =
-            serde_json::from_str(&conf_text).expect("parse tauri.conf.json");
-        let conf_pubkey = conf
-            .get("plugins")
-            .and_then(|p| p.get("updater"))
-            .and_then(|u| u.get("pubkey"))
-            .and_then(|v| v.as_str())
-            .expect("plugins.updater.pubkey in tauri.conf.json");
-        assert_eq!(conf_pubkey, UPDATER_PUBKEY_B64);
-    }
-
-    #[test]
     fn updater_pubkey_decodes_to_minisign_file() {
         let text = decode_tauri_minisign_text(UPDATER_PUBKEY_B64).expect("decode pubkey");
         assert!(

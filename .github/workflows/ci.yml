@@ -172,9 +172,6 @@ jobs:
         # generate_context! requires frontendDist (../dist) to exist on Android too.
         run: npm run build
 
-      - name: Check Android updater pubkey matches tauri.conf.json
-        run: npm run check:android-updater-pubkey
-
       - name: Disable macOS-only Qwen3 MLX dependency
         run: node scripts/ci-disable-macos-qwen3.mjs
 

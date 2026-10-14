@@ -2464,7 +2464,7 @@ impl PlatformCapabilities {
                 supports_local_asr: false,
                 supports_local_qwen3_mlx: false,
                 supports_in_app_dictation: true,
-                supports_auto_update: true,
+                supports_auto_update: false,
                 supports_voice_edit: true,
             }
         }
@@ -2503,7 +2503,7 @@ impl PlatformCapabilities {
                 )),
                 supports_local_qwen3_mlx: cfg!(all(target_os = "macos", target_arch = "aarch64")),
                 supports_in_app_dictation: false,
-                supports_auto_update: true,
+                supports_auto_update: false,
                 supports_voice_edit: true,
             }
         }

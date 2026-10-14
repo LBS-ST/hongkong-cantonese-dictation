@@ -22,8 +22,8 @@ if (process.platform !== 'darwin') {
 
 const scripts = dirname(fileURLToPath(import.meta.url));
 const root = mkdtempSync(join(tmpdir(), 'openless-macos-build-'));
-const app = join(root, 'src-tauri/target/release/bundle/macos/OpenLess.app');
-const dmg = join(root, 'src-tauri/target/release/bundle/dmg/OpenLess_1.2.3_x64.dmg');
+const app = join(root, 'src-tauri/target/release/bundle/macos/唔打啦.app');
+const dmg = join(root, 'src-tauri/target/release/bundle/dmg/唔打啦_1.2.3_x64.dmg');
 const builds = join(root, 'src-tauri/target/release/build');
 
 function put(path, content) {
@@ -78,8 +78,8 @@ if [ "$*" = "run check:macos-metal-toolchain" ]; then exit 0; fi
 [[ "$*" == *"-- --locked --timings"* ]]
 [[ "$CARGO_PROFILE_RELEASE_CODEGEN_UNITS" == 16 ]]
 [[ "$CARGO_PROFILE_RELEASE_STRIP" == debuginfo ]]
-app=src-tauri/target/release/bundle/macos/OpenLess.app
-dmg=src-tauri/target/release/bundle/dmg/OpenLess_1.2.3_x64.dmg
+app=src-tauri/target/release/bundle/macos/唔打啦.app
+dmg=src-tauri/target/release/bundle/dmg/唔打啦_1.2.3_x64.dmg
 # Old bundles must be gone before compilation starts, while Cargo stays warm.
 [[ ! -e "$app" && ! -e "$dmg" && ! -e "$app.tar.gz" && ! -e "$app.tar.gz.sig" ]]
 [[ -f src-tauri/target/release/build/qwen3-asr-rs-helper/build-script-build ]]

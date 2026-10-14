@@ -25,8 +25,6 @@ import { DebugToolsSection } from './DebugToolsSection';
 import { VocabularyLearningSection } from './VocabularyLearningSection';
 import { CodingAgentSection } from './CodingAgentSection';
 import { ClaudeConsoleSection } from './ClaudeConsoleSection';
-import { BetaChannelSection } from './BetaChannelSection';
-import { AutoUpdateSection } from './AutoUpdateSection';
 import { AboutSection } from './AboutSection';
 import { getPlatformCapabilities } from '../../lib/platform';
 import { listChannels } from '../../lib/ipc';
@@ -410,16 +408,7 @@ export function AdvancedTab({
   );
 }
 
-// About: version info · update channel · auto-update — "which version am I on and how do I update" in one place.
+// About: version info. 唔打啦 has no updater, so no update channel / auto-update controls.
 export function AboutTab() {
-  const platformCaps = usePlatformCaps();
-  const showUpdateControls = platformCaps?.supportsAutoUpdate === true;
-
-  return (
-    <>
-      <AboutSection />
-      {showUpdateControls && <BetaChannelSection />}
-      {showUpdateControls && <AutoUpdateSection />}
-    </>
-  );
+  return <AboutSection />;
 }

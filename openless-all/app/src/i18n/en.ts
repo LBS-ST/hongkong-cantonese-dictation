@@ -273,14 +273,14 @@ export const en: typeof zhCN = {
     Changed: 'The shortcut changed while saving. Please try again.',
     label: 'Mac Dictation key',
     description:
-      'Replaces the current dictation shortcut with the microphone key. Quitting OpenLess releases it to macOS.',
-    Permission: 'Allow OpenLess in macOS Privacy & Security → Accessibility, then retry.',
+      'Replaces the current dictation shortcut with the microphone key. Quitting 唔打啦 releases it to macOS.',
+    Permission: 'Allow 唔打啦 in macOS Privacy & Security → Accessibility, then retry.',
     Busy: 'Finish the current dictation before changing its shortcut.',
     Unavailable:
       'Could not activate this shortcut. The saved binding is unchanged; retry or choose another key.',
   },
   app: {
-    name: 'OpenLess',
+    name: '唔打啦',
     tagline: 'Speak naturally, write perfectly',
   },
   common: {
@@ -350,7 +350,7 @@ export const en: typeof zhCN = {
       sending: 'Sending your question…',
       addUnavailable: 'Add content · not available yet',
       browserUnavailable: 'Preview cannot run commands',
-      answer: 'OpenLess answer',
+      answer: '唔打啦 answer',
       layoutError: 'Could not expand the window. Close and reopen it.',
     },
     title: 'Ask',
@@ -650,7 +650,7 @@ export const en: typeof zhCN = {
     },
   },
   onboarding: {
-    welcome: 'Welcome to OpenLess',
+    welcome: 'Welcome to 唔打啦',
     intro: 'Speak locally, type locally. Two system permissions are needed before you start.',
     accessibilityTitle: 'Accessibility',
     hotkeyTitle: 'Global hotkey',
@@ -662,19 +662,19 @@ export const en: typeof zhCN = {
     actionNotApplicable: 'Not required',
     actionGranted: 'Granted',
     actionOpenSystem: 'Open System Settings',
-    actionRestart: 'Reset Accessibility and Restart OpenLess',
+    actionRestart: 'Reset Accessibility and Restart 唔打啦',
     actionGrant: 'Grant',
     actionRequestMic: 'Request access',
     micNoDeviceHint: 'No microphone detected. Connect and enable a microphone, then retry.',
     accessibilityHint:
-      'After granting, you must **fully quit OpenLess** and reopen it (a macOS TCC requirement).',
+      'After granting, you must **fully quit 唔打啦** and reopen it (a macOS TCC requirement).',
     footerHint:
-      'This onboarding closes automatically once both permissions are granted. If it persists, quit OpenLess from the menu bar and relaunch.',
+      'This onboarding closes automatically once both permissions are granted. If it persists, quit 唔打啦 from the menu bar and relaunch.',
     continueToSettings: 'Open settings only (voice and global shortcuts unavailable)',
     androidContinue: 'Continue to app',
     androidFooterHint:
       'Microphone access is required for dictation. Tap Request access above, or continue and grant it later from Overview.',
-    androidTitle: 'Set up OpenLess',
+    androidTitle: 'Set up 唔打啦',
     androidIntro: 'Complete mobile permissions and services step by step.',
     androidStepCounter: 'Step {{current}} of {{total}}',
     androidBack: 'Back',
@@ -683,12 +683,12 @@ export const en: typeof zhCN = {
     androidSteps: {
       microphoneTitle: 'Microphone permission',
       microphoneDesc:
-        'Show the Android system permission sheet and allow OpenLess to record voice.',
+        'Show the Android system permission sheet and allow 唔打啦 to record voice.',
       accessibilityTitle: 'Accessibility service',
       accessibilityDesc:
         'Paste recognition results back into the active input field and help detect the input context.',
       overlayPermissionTitle: 'Floating window permission',
-      overlayPermissionDesc: 'Allow OpenLess to show the recording control over other apps.',
+      overlayPermissionDesc: 'Allow 唔打啦 to show the recording control over other apps.',
       overlayConfigTitle: 'Floating window settings',
       overlayConfigDesc: 'Configure visibility, activation, swipe actions, and button size.',
       asrTitle: 'ASR cloud service',
@@ -1123,7 +1123,7 @@ export const en: typeof zhCN = {
       fullPromptTitle: 'System Prompt',
       fullPromptHint: 'The prompt owned by this pack.',
       promptChars: '{{count}} chars',
-      runtimeTitle: 'OpenLess Runtime Directives',
+      runtimeTitle: '唔打啦 Runtime Directives',
       runtimeDesc: 'Read-only runtime helpers.',
       runtimeContextTitle: 'Context premise',
       runtimeContextDesc: 'From language and app context',
@@ -1491,7 +1491,7 @@ export const en: typeof zhCN = {
       capsuleTranscriptFontSize: 'Transcript font size',
       capsuleStyleLabel: 'Capsule style',
       capsuleStyleSiri: 'Shimmer Siri style',
-      capsuleStyleClassic: 'OpenLess default style',
+      capsuleStyleClassic: '唔打啦 default style',
       stableTranscriptionLabel: 'Stable mode (record, then transcribe)',
       stableTranscriptionDesc:
         'When enabled, ASR connects only after recording stops and receives the complete audio. Results arrive later, but connection delays and network instability during recording cannot interrupt capture.',
@@ -1554,7 +1554,7 @@ export const en: typeof zhCN = {
       windowsSendInputNewlineModeCrLf: 'CR+LF Unicode',
       windowsShowOpenlessInKeyboardListLabel: 'Show OpenLess in keyboard list',
       windowsShowOpenlessInKeyboardListDesc:
-        'When off, Win+Space will not cycle to OpenLess. SendInput and clipboard-paste insertion are unaffected. Turn this back on to restore the entry.',
+        'When off, Win+Space will not cycle to 唔打啦. SendInput and clipboard-paste insertion are unaffected. Turn this back on to restore the entry.',
       windowsShowOpenlessInKeyboardListError:
         'Could not update the keyboard list: the system rejected changing the OpenLess language profile.',
       historyGroupTitle: 'History & context',
@@ -1582,7 +1582,7 @@ export const en: typeof zhCN = {
       marketplaceDevLoginLabel: 'GitHub login (upload identity)',
       marketplaceDevLoginDesc: 'Identifies the uploader. Blank disables upload and likes.',
       startupAtBoot: 'Launch at login',
-      startupAtBootDesc: 'Start OpenLess automatically when you sign in.',
+      startupAtBootDesc: 'Start 唔打啦 automatically when you sign in.',
       startupAtBootError: 'Failed to toggle launch at login: {{message}}',
     },
     channels: {
@@ -1665,7 +1665,7 @@ export const en: typeof zhCN = {
       llmProviderDesc: 'Selecting a preset auto-fills the default Base URL.',
       credentialStorageNotice: 'Credentials are stored in the OS credential vault.',
       codexOAuthNotice:
-        'Codex OAuth uses the local Codex login state (~/.codex/auth.json). OpenLess does not store an API key or Base URL for this provider.',
+        'Codex OAuth uses the local Codex login state (~/.codex/auth.json). 唔打啦 does not store an API key or Base URL for this provider.',
       asrProviderDesc: 'Switching providers automatically loads the matching credentials.',
       asrTitle: 'ASR (transcription)',
       asrDesc: 'Used to turn recorded speech into text.',
@@ -1919,7 +1919,7 @@ export const en: typeof zhCN = {
       cancel: 'Cancel current recording',
       confirm: 'Confirm capsule insertion',
       switchStyle: 'Switch to previous style',
-      openApp: 'Open OpenLess',
+      openApp: 'Open 唔打啦',
       stylePackTitle: 'Style shortcuts',
       stylePackDesc:
         'Bind a shortcut to each favorite style pack for one-press switching; disabled packs are re-enabled automatically.',
@@ -1944,9 +1944,9 @@ export const en: typeof zhCN = {
     permissions: {
       title: 'Permissions',
       descAcc:
-        'OpenLess needs the following system permissions to work. After granting, fully quit and relaunch the app for changes to take effect.',
+        '唔打啦 needs the following system permissions to work. After granting, fully quit and relaunch the app for changes to take effect.',
       descNoAcc:
-        'OpenLess needs microphone access and uses the global hotkey listener state to verify the native hook is running.',
+        '唔打啦 needs microphone access and uses the global hotkey listener state to verify the native hook is running.',
       micLabel: 'Microphone',
       micDesc: 'Used to capture your voice input.',
       accLabel: 'Accessibility',
@@ -1988,10 +1988,10 @@ export const en: typeof zhCN = {
       androidAccessibilityGrantedStale: 'Authorized, not connected',
       androidAccessibilityMessages: {
         not_android: 'Accessibility status is only available on Android.',
-        not_enabled: 'Enable OpenLess in system accessibility settings.',
+        not_enabled: 'Enable 唔打啦 in system accessibility settings.',
         operational: 'Accessibility service is running.',
         authorized_not_connected:
-          'Accessibility is authorized but not connected. Re-enable OpenLess in system settings.',
+          'Accessibility is authorized but not connected. Re-enable 唔打啦 in system settings.',
         status_read_failed: 'Could not read accessibility status.',
       },
       androidShizukuLabel: 'Shizuku enhancement',
@@ -2001,7 +2001,7 @@ export const en: typeof zhCN = {
       androidShizukuRequestPermission: 'Request authorization',
       androidShizukuRecover: 'Recover accessibility',
       androidShizukuRecoverConfirm:
-        'Use Shizuku to try re-enabling the OpenLess accessibility service? OpenLess will merge with services already enabled when the write starts. If the global accessibility switch is off, enabling it may also start other registered services.',
+        'Use Shizuku to try re-enabling the 唔打啦 accessibility service? 唔打啦 will merge with services already enabled when the write starts. If the global accessibility switch is off, enabling it may also start other registered services.',
       androidShizukuYes: 'yes',
       androidShizukuNo: 'no',
       androidShizukuAccessibilityOperational: 'Accessibility is registered and running.',
@@ -2021,7 +2021,7 @@ export const en: typeof zhCN = {
         unsupported_backend:
           'This Shizuku backend is too old. Update Shizuku or Sui to v11 or newer.',
         not_running: 'Shizuku is not running. Start Shizuku or Sui first.',
-        not_authorized: 'Shizuku is not authorized. Grant OpenLess permission.',
+        not_authorized: 'Shizuku is not authorized. Grant 唔打啦 permission.',
         binder_dead: 'Shizuku connection lost. Restart Shizuku.',
         authorized_operational: 'Shizuku authorized. Accessibility is running.',
         authorized_registered_stale:
@@ -2036,7 +2036,7 @@ export const en: typeof zhCN = {
         granted: 'Shizuku permission granted.',
         denied: 'Shizuku permission denied.',
         permission_permanently_denied:
-          'Shizuku authorization was blocked. Open Shizuku and allow OpenLess manually.',
+          'Shizuku authorization was blocked. Open Shizuku and allow 唔打啦 manually.',
         launched: 'Opened Shizuku authorization.',
         launch_failed: 'Could not open Shizuku authorization.',
         open_shizuku: 'Opened Shizuku manager.',
@@ -2140,7 +2140,7 @@ export const en: typeof zhCN = {
       },
       windowsIme: {
         installed: 'Installed. Voice input temporarily switches to the OpenLess IME.',
-        notInstalled: 'Not installed. OpenLess is using the clipboard/WM_PASTE fallback.',
+        notInstalled: 'Not installed. 唔打啦 is using the clipboard/WM_PASTE fallback.',
         registrationBroken: 'Registration is broken. Reinstall the OpenLess IME.',
         notWindows: 'Only available on Windows.',
       },
@@ -2304,29 +2304,29 @@ export const en: typeof zhCN = {
       updateDialog: {
         available: {
           title: 'Update available',
-          desc: 'OpenLess {{version}} is available. Update now?',
+          desc: '唔打啦 {{version}} is available. Update now?',
         },
         stableChannelSwitch: {
           title: 'Switch to Stable',
-          desc: 'Current version: OpenLess {{currentVersion}}\nTarget version: OpenLess {{version}}\nThis switches from the Beta channel to Stable. Continue?',
+          desc: 'Current version: 唔打啦 {{currentVersion}}\nTarget version: 唔打啦 {{version}}\nThis switches from the Beta channel to Stable. Continue?',
         },
         downloading: {
           title: 'Downloading update',
-          desc: 'Downloading OpenLess {{version}}. Keep the app open.',
+          desc: 'Downloading 唔打啦 {{version}}. Keep the app open.',
         },
         downloaded: {
           title: 'Update ready',
-          desc: 'OpenLess {{version}} has been installed. Restart automatically now to apply it?',
+          desc: '唔打啦 {{version}} has been installed. Restart automatically now to apply it?',
         },
         installing: {
           title: 'Installing update',
-          desc: 'Installing OpenLess {{version}}. Keep the app open.',
+          desc: 'Installing 唔打啦 {{version}}. Keep the app open.',
         },
         install: 'Update now',
         androidInstall: 'Download and open installer',
         androidInstalled: {
           title: 'System installer opened',
-          desc: 'Follow the system prompts to finish installing. Reopen OpenLess to use {{version}}.',
+          desc: 'Follow the system prompts to finish installing. Reopen 唔打啦 to use {{version}}.',
         },
         downloadingLabel: 'Downloading…',
         installingLabel: 'Installing…',
@@ -2343,9 +2343,9 @@ export const en: typeof zhCN = {
     },
   },
   startup: {
-    loading: 'Starting OpenLess…',
+    loading: 'Starting 唔打啦…',
     loadingDesc: 'Connecting to the local service and checking compatibility.',
-    failed: 'OpenLess could not start',
+    failed: '唔打啦 could not start',
     recovery:
       'Check again. If the problem continues, fully quit and reopen the app. If this started after an upgrade, make sure the complete app is on the same version.',
     retry: 'Check again',
@@ -2501,7 +2501,7 @@ export const en: typeof zhCN = {
     storageReset: 'Reset to default',
     storageReveal: 'Open models folder',
     storageDesc:
-      'Custom storage creates OpenLess/models under the selected folder and migrates existing models. OpenLess cancels downloads and releases loaded models before moving files.',
+      'Custom storage creates OpenLess/models under the selected folder and migrates existing models. 唔打啦 cancels downloads and releases loaded models before moving files.',
     storageChooseTitle: 'Choose local model storage parent folder',
     storageChangeConfirm:
       'Existing local models will be moved to {{path}}/OpenLess/models. Downloads will be cancelled and loaded models released first. Continue?',

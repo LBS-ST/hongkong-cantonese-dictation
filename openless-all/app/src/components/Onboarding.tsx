@@ -580,7 +580,7 @@ function BrandHeader({
     >
       <img
         src="AppIcon.png"
-        alt="OpenLess"
+        alt="唔打啦"
         style={{
           width: compact ? 48 : 52,
           height: compact ? 48 : 52,
