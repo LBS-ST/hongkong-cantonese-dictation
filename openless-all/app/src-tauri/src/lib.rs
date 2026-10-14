@@ -127,7 +127,7 @@ use std::time::Duration;
 
 const LOG_ROTATE_LIMIT_BYTES: u64 = 10 * 1024 * 1024;
 #[cfg(target_os = "macos")]
-const OPENLESS_BUNDLE_ID: &str = "com.openless.app";
+const OPENLESS_BUNDLE_ID: &str = "com.lbs-smarttech.mudala";
 
 /// Positions the QA window at the bottom-center of the screen on first show only, so the
 /// user-dragged position survives hide → show cycles. See issue #118 v2.

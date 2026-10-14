@@ -19,7 +19,7 @@ assert.match(buildScript, /arm64\)[\s\S]*tauri\.macos-mlx\.conf\.json/);
 assert.doesNotMatch(buildScript, /--bundles app/);
 assert.doesNotMatch(buildScript, /codesign --force/);
 assert.doesNotMatch(buildScript, /hdiutil create/);
-assert.match(buildScript, /OpenLess\.app\.tar\.gz/);
+assert.match(buildScript, /\$APP_NAME\.app\.tar\.gz/);
 assert.match(buildScript, /stapler validate/);
 assert.match(buildScript, /Contents\/Resources\/mlx\.metallib/);
 assert.match(buildScript, /Contents\/MacOS\/mlx\.metallib/);

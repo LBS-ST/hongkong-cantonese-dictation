@@ -12,7 +12,10 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-APP="src-tauri/target/release/bundle/macos/OpenLess.app"
+# Must match productName / identifier in src-tauri/tauri.conf.json.
+APP_NAME="唔打啦"
+BUNDLE_ID="com.lbs-smarttech.mudala"
+APP="src-tauri/target/release/bundle/macos/$APP_NAME.app"
 INFO="$APP/Contents/Info.plist"
 DMG_DIR="src-tauri/target/release/bundle/dmg"
 INSTALL="${INSTALL:-1}"
@@ -67,7 +70,7 @@ if [ -n "${TAURI_SIGNING_PRIVATE_KEY:-}" ] || [ -n "${TAURI_SIGNING_PRIVATE_KEY_
   TAURI_BUILD_ARGS+=(--config '{"bundle":{"createUpdaterArtifacts":true}}')
 fi
 APP_VERSION="$(node -p "require('./package.json').version")"
-DMG_PATH="$DMG_DIR/OpenLess_${APP_VERSION}_${MAC_BUNDLE_ARCH}.dmg"
+DMG_PATH="$DMG_DIR/${APP_NAME}_${APP_VERSION}_${MAC_BUNDLE_ARCH}.dmg"
 
 # Remove deliverables, keep Cargo caches. Hot builds reuse binaries with old timestamps, so
 # bundle freshness can't be judged from compiled-file mtimes; a failed Tauri run must not leave
@@ -144,12 +147,12 @@ if [ "$MAC_BUNDLE_ARCH" = "aarch64" ]; then
   }
   trap cleanup_dmg_mount EXIT
   hdiutil attach "$DMG_PATH" -readonly -nobrowse -mountpoint "$DMG_MOUNT" > /dev/null
-  DMG_METALLIB="$DMG_MOUNT/OpenLess.app/Contents/Resources/mlx.metallib"
+  DMG_METALLIB="$DMG_MOUNT/$APP_NAME.app/Contents/Resources/mlx.metallib"
   if [ ! -s "$DMG_METALLIB" ]; then
-    echo "✗ DMG 中缺少 OpenLess.app/Contents/Resources/mlx.metallib"
+    echo "✗ DMG 中缺少 $APP_NAME.app/Contents/Resources/mlx.metallib"
     exit 1
   fi
-  if [ -e "$DMG_MOUNT/OpenLess.app/Contents/MacOS/mlx.metallib" ]; then
+  if [ -e "$DMG_MOUNT/$APP_NAME.app/Contents/MacOS/mlx.metallib" ]; then
     echo "✗ DMG 中的 mlx.metallib 不能放在 Contents/MacOS"
     exit 1
   fi
@@ -162,13 +165,13 @@ if [ "$MAC_BUNDLE_ARCH" = "aarch64" ]; then
   trap - EXIT
 
   if [ -n "${TAURI_SIGNING_PRIVATE_KEY:-}" ] || [ -n "${TAURI_SIGNING_PRIVATE_KEY_PATH:-}" ]; then
-    UPDATER_ARCHIVE="src-tauri/target/release/bundle/macos/OpenLess.app.tar.gz"
+    UPDATER_ARCHIVE="src-tauri/target/release/bundle/macos/$APP_NAME.app.tar.gz"
     if [ ! -f "$UPDATER_ARCHIVE" ]; then
       echo "✗ 未找到 Tauri updater archive：$UPDATER_ARCHIVE"
       exit 1
     fi
     UPDATER_METALLIB_SHA="$(tar -xOf "$UPDATER_ARCHIVE" \
-      OpenLess.app/Contents/Resources/mlx.metallib | shasum -a 256 | awk '{print $1}')"
+      "$APP_NAME.app/Contents/Resources/mlx.metallib" | shasum -a 256 | awk '{print $1}')"
     if [ "$UPDATER_METALLIB_SHA" != "$APP_METALLIB_SHA" ]; then
       echo "✗ app 与 updater 中的 mlx.metallib SHA-256 不一致"
       exit 1
@@ -220,16 +223,16 @@ done < <(find "$DMG_DIR" -maxdepth 1 -name '*.dmg' -print)
 
 if [ "$INSTALL" = "1" ]; then
   echo "▶ 装到 /Applications"
-  pkill -f "OpenLess.app/Contents/MacOS/openless" 2> /dev/null || true
+  pkill -f "$APP_NAME.app/Contents/MacOS/" 2> /dev/null || true
   sleep 1
   # Reset TCC before every reinstall: the ad-hoc signing hash changes on each build, so old
   # authorizations break immediately; without a reset, "checked in System Settings" silently
   # stops working.
-  tccutil reset Accessibility com.openless.app 2> /dev/null || true
-  tccutil reset Microphone com.openless.app 2> /dev/null || true
-  rm -rf /Applications/OpenLess.app
+  tccutil reset Accessibility "$BUNDLE_ID" 2> /dev/null || true
+  tccutil reset Microphone "$BUNDLE_ID" 2> /dev/null || true
+  rm -rf "/Applications/$APP_NAME.app"
   cp -R "$APP" /Applications/
-  xattr -dr com.apple.quarantine /Applications/OpenLess.app 2> /dev/null || true
-  echo "✓ 装好了：/Applications/OpenLess.app"
-  echo "  打开方式：open /Applications/OpenLess.app"
+  xattr -dr com.apple.quarantine "/Applications/$APP_NAME.app" 2> /dev/null || true
+  echo "✓ 装好了：/Applications/$APP_NAME.app"
+  echo "  打开方式：open \"/Applications/$APP_NAME.app\""
 fi

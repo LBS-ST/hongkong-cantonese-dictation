@@ -1,11 +1,16 @@
 <p align="center">
-  <img src="openless-all/app/src-tauri/icons/128x128@2x.png" alt="OpenLess" width="128" height="128" />
+  <img src="openless-all/app/src-tauri/icons/128x128@2x.png" alt="唔打啦" width="128" height="128" />
 </p>
 
-<h1 align="center">OpenLess</h1>
+<h1 align="center">唔打啦（Mudala）</h1>
 
 <p align="center">
-  <strong>Open-source voice input for macOS, Windows &amp; Linux</strong>
+  <strong>Offline Hong Kong Cantonese dictation for macOS</strong>
+</p>
+
+<p align="center">
+  A fork of <a href="https://github.com/Open-Less/openless">OpenLess</a> (AGPL-3.0-only). OpenLess's original copyright notices and license are retained — see <a href="#cantonese-offline-fork--model-attribution">attribution</a>.<br/>
+  The links and badges below point to the upstream OpenLess project.
 </p>
 
 <p align="center">
@@ -435,12 +440,14 @@ This acknowledgement does not imply official endorsement or affiliation.
 
 ## Cantonese offline fork & model attribution
 
-This repository is a fork of [OpenLess](https://github.com/Open-Less/openless) (AGPL-3.0-only) that runs fully offline as Hong Kong Cantonese dictation: the only speech engine is the local SenseVoice model through sherpa-onnx, recognition is locked to Cantonese (`yue`), and LLM polish is off so colloquial Cantonese is kept as spoken. OpenLess's original copyright notices and license are retained unchanged.
+唔打啦 (Mudala, Jyutping *m4 daa2 laa3*) is a fork of [OpenLess](https://github.com/Open-Less/openless) (AGPL-3.0-only) that runs fully offline as Hong Kong Cantonese dictation: the only speech engine is the local SenseVoice model through sherpa-onnx, recognition is locked to Cantonese (`yue`), and LLM polish is off so colloquial Cantonese is kept as spoken. OpenLess's original copyright notices and license are retained unchanged.
 
 - **SenseVoice Small** by FunAudioLLM / Alibaba Tongyi Lab ([FunAudioLLM/SenseVoice](https://github.com/FunAudioLLM/SenseVoice)), used under the [FunASR Model License](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE). The model is not bundled in this repository. The app downloads [`csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17`](https://huggingface.co/csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17) on request.
 - **sherpa-onnx** by k2-fsa ([k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx), Apache-2.0) provides the on-device inference runtime and the ONNX export of the model.
 
 ## License
+
+唔打啦 (Mudala) is a fork of OpenLess and is distributed under the same [AGPL-3.0-only license](LICENSE); OpenLess's copyright notices are retained. The upstream licensing notice follows:
 
 OpenLess 2.0.0-Beta.1 is released under the [AGPL-3.0-only license](LICENSE).
 Published 1.x releases remain available under their original MIT license.

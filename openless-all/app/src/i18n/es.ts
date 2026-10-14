@@ -272,15 +272,15 @@ export const es: typeof zhCN = {
     Changed: 'El atajo cambió mientras se guardaba. Inténtalo de nuevo.',
     label: 'Tecla de dictado de Mac',
     description:
-      'Sustituye el atajo de dictado actual por la tecla del micrófono. Al salir de OpenLess, la tecla se devuelve a macOS.',
+      'Sustituye el atajo de dictado actual por la tecla del micrófono. Al salir de 唔打啦, la tecla se devuelve a macOS.',
     Permission:
-      'Permite OpenLess en «Privacidad y seguridad → Accesibilidad» de macOS y vuelve a intentarlo.',
+      'Permite 唔打啦 en «Privacidad y seguridad → Accesibilidad» de macOS y vuelve a intentarlo.',
     Busy: 'Termina el dictado en curso antes de cambiar el atajo.',
     Unavailable:
       'No se pudo activar el atajo; la asignación guardada no cambió. Reinténtalo o elige otra tecla.',
   },
   app: {
-    name: 'OpenLess',
+    name: '唔打啦',
     tagline: 'Habla con naturalidad, escribe con precisión',
   },
   common: {
@@ -351,7 +351,7 @@ export const es: typeof zhCN = {
       sending: 'Enviando tu pregunta…',
       addUnavailable: 'Añadir contenido · aún no disponible',
       browserUnavailable: 'La vista previa no ejecuta comandos',
-      answer: 'Respuesta de OpenLess',
+      answer: 'Respuesta de 唔打啦',
       layoutError: 'No se pudo ampliar la ventana. Ciérrala y vuelve a abrirla.',
     },
     title: 'Preguntar',
@@ -655,7 +655,7 @@ export const es: typeof zhCN = {
     },
   },
   onboarding: {
-    welcome: 'Te damos la bienvenida a OpenLess',
+    welcome: 'Te damos la bienvenida a 唔打啦',
     intro:
       'Habla y escribe desde tu dispositivo. Antes de empezar necesitamos dos permisos del sistema.',
     accessibilityTitle: 'Accesibilidad',
@@ -668,20 +668,20 @@ export const es: typeof zhCN = {
     actionNotApplicable: 'No es necesario',
     actionGranted: 'Concedido',
     actionOpenSystem: 'Abrir Ajustes del Sistema',
-    actionRestart: 'Restablecer Accesibilidad y reiniciar OpenLess',
+    actionRestart: 'Restablecer Accesibilidad y reiniciar 唔打啦',
     actionGrant: 'Conceder',
     actionRequestMic: 'Solicitar acceso',
     micNoDeviceHint:
       'No se ha detectado ningún micrófono. Conecta y activa uno, y vuelve a intentarlo.',
     accessibilityHint:
-      'Después de conceder el permiso, debes **cerrar OpenLess por completo** y volver a abrirlo (requisito de TCC en macOS).',
+      'Después de conceder el permiso, debes **cerrar 唔打啦 por completo** y volver a abrirlo (requisito de TCC en macOS).',
     footerHint:
-      'Esta configuración inicial se cerrará cuando se concedan ambos permisos. Si no se cierra, sal de OpenLess desde la barra de menús y vuelve a abrirlo.',
+      'Esta configuración inicial se cerrará cuando se concedan ambos permisos. Si no se cierra, sal de 唔打啦 desde la barra de menús y vuelve a abrirlo.',
     continueToSettings: 'Abrir solo los ajustes (sin voz ni atajos globales)',
     androidContinue: 'Continuar a la aplicación',
     androidFooterHint:
       'El dictado requiere acceso al micrófono. Pulsa «Solicitar acceso» arriba o continúa y concédelo después desde Resumen.',
-    androidTitle: 'Configurar OpenLess',
+    androidTitle: 'Configurar 唔打啦',
     androidIntro: 'Configura paso a paso los permisos y servicios del móvil.',
     androidStepCounter: 'Paso {{current}} de {{total}}',
     androidBack: 'Atrás',
@@ -689,13 +689,13 @@ export const es: typeof zhCN = {
     androidFinish: 'Finalizar y entrar',
     androidSteps: {
       microphoneTitle: 'Permiso de micrófono',
-      microphoneDesc: 'Abre el diálogo de permisos de Android y permite que OpenLess grabe tu voz.',
+      microphoneDesc: 'Abre el diálogo de permisos de Android y permite que 唔打啦 grabe tu voz.',
       accessibilityTitle: 'Servicio de accesibilidad',
       accessibilityDesc:
         'Inserta el resultado del reconocimiento en el campo activo y ayuda a detectar el contexto de entrada.',
       overlayPermissionTitle: 'Permiso de ventana flotante',
       overlayPermissionDesc:
-        'Permite que OpenLess muestre el control de grabación sobre otras aplicaciones.',
+        'Permite que 唔打啦 muestre el control de grabación sobre otras aplicaciones.',
       overlayConfigTitle: 'Ajustes de la ventana flotante',
       overlayConfigDesc:
         'Configura la visibilidad, la activación, los gestos de deslizamiento y el tamaño del botón.',
@@ -1139,7 +1139,7 @@ export const es: typeof zhCN = {
       fullPromptTitle: 'Instrucciones del sistema',
       fullPromptHint: 'Las instrucciones propias de este paquete.',
       promptChars: '{{count}} caracteres',
-      runtimeTitle: 'Directivas de ejecución de OpenLess',
+      runtimeTitle: 'Directivas de ejecución de 唔打啦',
       runtimeDesc: 'Complementos de ejecución de solo lectura.',
       runtimeContextTitle: 'Información de contexto',
       runtimeContextDesc: 'Del idioma y el contexto de la aplicación',
@@ -1512,7 +1512,7 @@ export const es: typeof zhCN = {
       capsuleTranscriptFontSize: 'Tamaño de la transcripción',
       capsuleStyleLabel: 'Estilo de cápsula',
       capsuleStyleSiri: 'Estilo luminoso Siri',
-      capsuleStyleClassic: 'Estilo predeterminado de OpenLess',
+      capsuleStyleClassic: 'Estilo predeterminado de 唔打啦',
       stableTranscriptionLabel: 'Modo estable (grabar y luego transcribir)',
       stableTranscriptionDesc:
         'Al activarlo, ASR se conecta solo después de detener la grabación y recibe el audio completo. El resultado tarda más, pero la captura no se ve afectada por retrasos de conexión ni por inestabilidad de red durante la grabación.',
@@ -1576,9 +1576,9 @@ export const es: typeof zhCN = {
       windowsSendInputNewlineModeCrLf: 'Unicode CR+LF',
       windowsShowOpenlessInKeyboardListLabel: 'Mostrar OpenLess en la lista de teclados',
       windowsShowOpenlessInKeyboardListDesc:
-        'Al desactivarlo, Win+Space no pasará por OpenLess. No afecta a SendInput ni al pegado. Vuelve a activarlo para restaurar la entrada.',
+        'Al desactivarlo, Win+Space no pasará por 唔打啦. No afecta a SendInput ni al pegado. Vuelve a activarlo para restaurar la entrada.',
       windowsShowOpenlessInKeyboardListError:
-        'No se pudo actualizar la lista de teclados: el sistema rechazó el cambio del perfil de idioma de OpenLess.',
+        'No se pudo actualizar la lista de teclados: el sistema rechazó el cambio del perfil de idioma de 唔打啦.',
       historyGroupTitle: 'Historial y contexto',
       historyRetentionLabel: 'Conservación del historial (días)',
       historyRetentionDesc:
@@ -1608,7 +1608,7 @@ export const es: typeof zhCN = {
       marketplaceDevLoginDesc:
         'Identifica a quien sube los paquetes. Si está vacío, no podrás subir ni marcar «Me gusta».',
       startupAtBoot: 'Abrir al iniciar sesión',
-      startupAtBootDesc: 'Inicia OpenLess automáticamente cuando inicies sesión.',
+      startupAtBootDesc: 'Inicia 唔打啦 automáticamente cuando inicies sesión.',
       startupAtBootError: 'No se pudo cambiar el inicio automático: {{message}}',
     },
     channels: {
@@ -1692,7 +1692,7 @@ export const es: typeof zhCN = {
       credentialStorageNotice:
         'Las credenciales se guardan en el almacén seguro del sistema operativo.',
       codexOAuthNotice:
-        'Codex OAuth usa la sesión local de Codex (~/.codex/auth.json). OpenLess no guarda una clave API ni una URL base para este proveedor.',
+        'Codex OAuth usa la sesión local de Codex (~/.codex/auth.json). 唔打啦 no guarda una clave API ni una URL base para este proveedor.',
       asrProviderDesc: 'Al cambiar de proveedor, se cargan automáticamente sus credenciales.',
       asrTitle: 'ASR (transcripción)',
       asrDesc: 'Convierte las grabaciones de voz en texto.',
@@ -1951,7 +1951,7 @@ export const es: typeof zhCN = {
       cancel: 'Cancelar la grabación actual',
       confirm: 'Confirmar inserción de la cápsula',
       switchStyle: 'Cambiar al estilo anterior',
-      openApp: 'Abrir OpenLess',
+      openApp: 'Abrir 唔打啦',
       stylePackTitle: 'Atajos de estilos',
       stylePackDesc:
         'Asigna atajos a tus paquetes favoritos para cambiar con una pulsación. Los paquetes desactivados se volverán a activar automáticamente.',
@@ -1977,9 +1977,9 @@ export const es: typeof zhCN = {
     permissions: {
       title: 'Permisos',
       descAcc:
-        'OpenLess necesita estos permisos del sistema. Tras concederlos, cierra la aplicación por completo y vuelve a abrirla.',
+        '唔打啦 necesita estos permisos del sistema. Tras concederlos, cierra la aplicación por completo y vuelve a abrirla.',
       descNoAcc:
-        'OpenLess necesita acceso al micrófono. El estado del detector de atajos globales permite comprobar que el componente nativo está activo.',
+        '唔打啦 necesita acceso al micrófono. El estado del detector de atajos globales permite comprobar que el componente nativo está activo.',
       micLabel: 'Micrófono',
       micDesc: 'Permite capturar tu voz.',
       accLabel: 'Accesibilidad',
@@ -2008,7 +2008,7 @@ export const es: typeof zhCN = {
       hotkeyFailed: 'El detector falló',
       windowsImeLabel: 'Motor del método de entrada de Windows',
       windowsImeDesc:
-        'Inserta el texto dictado mediante el servicio de texto TSF de OpenLess, que permanece activo junto a tu método de entrada, para evitar las limitaciones del portapapeles.',
+        'Inserta el texto dictado mediante el servicio de texto TSF de 唔打啦, que permanece activo junto a tu método de entrada, para evitar las limitaciones del portapapeles.',
       windowsImeInstalled: 'Instalado',
       windowsImeUnavailable: 'No disponible',
       androidImeLabel: 'Método de entrada (IME)',
@@ -2022,10 +2022,10 @@ export const es: typeof zhCN = {
       androidAccessibilityGrantedStale: 'Autorizado, sin conexión',
       androidAccessibilityMessages: {
         not_android: 'El estado de accesibilidad solo está disponible en Android.',
-        not_enabled: 'Activa OpenLess en los ajustes de accesibilidad del sistema.',
+        not_enabled: 'Activa 唔打啦 en los ajustes de accesibilidad del sistema.',
         operational: 'El servicio de accesibilidad está en ejecución.',
         authorized_not_connected:
-          'Accesibilidad está autorizada, pero no conectada. Vuelve a activar OpenLess en los ajustes del sistema.',
+          'Accesibilidad está autorizada, pero no conectada. Vuelve a activar 唔打啦 en los ajustes del sistema.',
         status_read_failed: 'No se pudo consultar el estado de accesibilidad.',
       },
       androidShizukuLabel: 'Mejoras con Shizuku',
@@ -2035,7 +2035,7 @@ export const es: typeof zhCN = {
       androidShizukuRequestPermission: 'Solicitar autorización',
       androidShizukuRecover: 'Recuperar accesibilidad',
       androidShizukuRecoverConfirm:
-        '¿Usar Shizuku para intentar reactivar el servicio de accesibilidad de OpenLess? Se conservarán los servicios activados al iniciar el cambio. Si el interruptor global está desactivado, activarlo también podría iniciar otros servicios registrados.',
+        '¿Usar Shizuku para intentar reactivar el servicio de accesibilidad de 唔打啦? Se conservarán los servicios activados al iniciar el cambio. Si el interruptor global está desactivado, activarlo también podría iniciar otros servicios registrados.',
       androidShizukuYes: 'sí',
       androidShizukuNo: 'no',
       androidShizukuAccessibilityOperational: 'Accesibilidad está registrada y en ejecución.',
@@ -2055,7 +2055,7 @@ export const es: typeof zhCN = {
         unsupported_backend:
           'Este motor de Shizuku es demasiado antiguo. Actualiza Shizuku o Sui a la versión 11 o posterior.',
         not_running: 'Shizuku no está en ejecución. Inicia primero Shizuku o Sui.',
-        not_authorized: 'Shizuku no está autorizado. Concede el permiso a OpenLess.',
+        not_authorized: 'Shizuku no está autorizado. Concede el permiso a 唔打啦.',
         binder_dead: 'Se perdió la conexión con Shizuku. Reinícialo.',
         authorized_operational: 'Shizuku autorizado. Accesibilidad está en ejecución.',
         authorized_registered_stale:
@@ -2072,7 +2072,7 @@ export const es: typeof zhCN = {
         granted: 'Permiso de Shizuku concedido.',
         denied: 'Permiso de Shizuku denegado.',
         permission_permanently_denied:
-          'La autorización de Shizuku está bloqueada. Abre Shizuku y permite OpenLess manualmente.',
+          'La autorización de Shizuku está bloqueada. Abre Shizuku y permite 唔打啦 manualmente.',
         launched: 'Se ha abierto la autorización de Shizuku.',
         launch_failed: 'No se pudo abrir la autorización de Shizuku.',
         open_shizuku: 'Se ha abierto el administrador de Shizuku.',
@@ -2180,18 +2180,18 @@ export const es: typeof zhCN = {
         qa: 'Preguntar',
       },
       windowsIme: {
-        installed: 'Instalado. La entrada de voz cambia temporalmente al IME de OpenLess.',
-        notInstalled: 'Sin instalar. OpenLess usa la alternativa de portapapeles / WM_PASTE.',
-        registrationBroken: 'El registro está dañado. Reinstala el IME de OpenLess.',
+        installed: 'Instalado. La entrada de voz cambia temporalmente al IME de 唔打啦.',
+        notInstalled: 'Sin instalar. 唔打啦 usa la alternativa de portapapeles / WM_PASTE.',
+        registrationBroken: 'El registro está dañado. Reinstala el IME de 唔打啦.',
         notWindows: 'Solo disponible en Windows.',
       },
     },
     inputMethod: {
-      guidanceTitle: 'Método de entrada de OpenLess',
+      guidanceTitle: 'Método de entrada de 唔打啦',
       enableSystemIme:
         'En Ajustes de Android → Teclado / Métodos de entrada, activa OpenLess Voice y selecciónalo cuando lo necesites.',
       longPressLogo:
-        'En el teclado de OpenLess, mantén pulsado el logo de la esquina superior izquierda para abrir los ajustes nativos del teclado.',
+        'En el teclado de 唔打啦, mantén pulsado el logo de la esquina superior izquierda para abrir los ajustes nativos del teclado.',
     },
     advanced: {
       multimodalPipelineTitle: 'Reconocimiento multimodal (experimental)',
@@ -2350,29 +2350,29 @@ export const es: typeof zhCN = {
       updateDialog: {
         stableChannelSwitch: {
           title: 'Cambiar al canal estable',
-          desc: 'Versión actual: OpenLess {{currentVersion}}\nVersión de destino: OpenLess {{version}}\nEsto cambia del canal beta al estable. ¿Continuar?',
+          desc: 'Versión actual: 唔打啦 {{currentVersion}}\nVersión de destino: 唔打啦 {{version}}\nEsto cambia del canal beta al estable. ¿Continuar?',
         },
         available: {
           title: 'Actualización disponible',
-          desc: 'OpenLess {{version}} está disponible. ¿Actualizar ahora?',
+          desc: '唔打啦 {{version}} está disponible. ¿Actualizar ahora?',
         },
         downloading: {
           title: 'Descargando actualización',
-          desc: 'Descargando OpenLess {{version}}. Mantén la aplicación abierta.',
+          desc: 'Descargando 唔打啦 {{version}}. Mantén la aplicación abierta.',
         },
         downloaded: {
           title: 'Actualización lista',
-          desc: 'OpenLess {{version}} se ha instalado. ¿Reiniciar automáticamente ahora para aplicarlo?',
+          desc: '唔打啦 {{version}} se ha instalado. ¿Reiniciar automáticamente ahora para aplicarlo?',
         },
         installing: {
           title: 'Instalando actualización',
-          desc: 'Instalando OpenLess {{version}}. Mantén la aplicación abierta.',
+          desc: 'Instalando 唔打啦 {{version}}. Mantén la aplicación abierta.',
         },
         install: 'Actualizar ahora',
         androidInstall: 'Descargar y abrir instalador',
         androidInstalled: {
           title: 'Instalador del sistema abierto',
-          desc: 'Sigue las indicaciones del sistema para terminar la instalación. Vuelve a abrir OpenLess para usar {{version}}.',
+          desc: 'Sigue las indicaciones del sistema para terminar la instalación. Vuelve a abrir 唔打啦 para usar {{version}}.',
         },
         downloadingLabel: 'Descargando…',
         installingLabel: 'Instalando…',
@@ -2389,9 +2389,9 @@ export const es: typeof zhCN = {
     },
   },
   startup: {
-    loading: 'Iniciando OpenLess…',
+    loading: 'Iniciando 唔打啦…',
     loadingDesc: 'Conectando con el servicio local y comprobando la compatibilidad.',
-    failed: 'OpenLess no pudo iniciarse',
+    failed: '唔打啦 no pudo iniciarse',
     recovery:
       'Vuelve a comprobarlo. Si el problema continúa, cierra la aplicación por completo y ábrela otra vez. Si empezó después de actualizar, comprueba que todos los componentes de la aplicación tengan la misma versión.',
     retry: 'Volver a comprobar',
@@ -2551,7 +2551,7 @@ export const es: typeof zhCN = {
     storageReset: 'Restaurar ubicación predeterminada',
     storageReveal: 'Abrir carpeta de modelos',
     storageDesc:
-      'La ubicación personalizada crea OpenLess/models dentro de la carpeta elegida y traslada los modelos existentes. Antes de moverlos, OpenLess cancela las descargas y libera los modelos cargados.',
+      'La ubicación personalizada crea OpenLess/models dentro de la carpeta elegida y traslada los modelos existentes. Antes de moverlos, 唔打啦 cancela las descargas y libera los modelos cargados.',
     storageChooseTitle: 'Elegir carpeta superior para los modelos locales',
     storageChangeConfirm:
       'Los modelos locales se trasladarán a {{path}}/OpenLess/models. Primero se cancelarán las descargas y se liberarán los modelos cargados. ¿Continuar?',

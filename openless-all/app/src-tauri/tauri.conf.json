@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "OpenLess",
+  "productName": "唔打啦",
   "version": "2.0.0-Beta.4+build.20260930",
-  "identifier": "com.openless.app",
+  "identifier": "com.lbs-smarttech.mudala",
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run check:macos-metal-toolchain && npm run build",
@@ -15,7 +15,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "OpenLess",
+        "title": "唔打啦",
         "width": 1300,
         "height": 835,
         "minWidth": 980,
@@ -33,7 +33,7 @@
       {
         "label": "capsule",
         "url": "index.html?window=capsule",
-        "title": "OpenLess Capsule",
+        "title": "唔打啦 Capsule",
         "width": 460,
         "height": 180,
         "decorations": false,

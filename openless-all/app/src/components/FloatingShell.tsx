@@ -112,7 +112,7 @@ export function FloatingShell({
 }: FloatingShellProps) {
   const os = osProp ?? detectOS();
   return (
-    <WindowChrome os={os} title="OpenLess" height="100%">
+    <WindowChrome os={os} title="唔打啦" height="100%">
       <FloatingShellBody os={os} initialTab={initialTab} initialSettings={initialSettings} />
     </WindowChrome>
   );

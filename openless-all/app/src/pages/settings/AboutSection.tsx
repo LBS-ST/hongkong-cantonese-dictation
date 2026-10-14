@@ -81,7 +81,7 @@ export function AboutSection() {
                 whiteSpace: 'nowrap',
               }}
             >
-              OpenLess
+              唔打啦
             </div>
             <div
               style={{

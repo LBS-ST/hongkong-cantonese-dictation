@@ -1,11 +1,16 @@
 <p align="center">
-  <img src="openless-all/app/src-tauri/icons/128x128@2x.png" alt="OpenLess" width="128" height="128" />
+  <img src="openless-all/app/src-tauri/icons/128x128@2x.png" alt="唔打啦" width="128" height="128" />
 </p>
 
-<h1 align="center">OpenLess</h1>
+<h1 align="center">唔打啦（Mudala）</h1>
 
 <p align="center">
-  <strong>面向 macOS、Windows 与 Linux 的开源语音输入工具</strong>
+  <strong>macOS 离线香港粤语听写</strong>
+</p>
+
+<p align="center">
+  Fork 自 <a href="https://github.com/Open-Less/openless">OpenLess</a>（AGPL-3.0-only），保留 OpenLess 原版版权声明及许可证，详见<a href="#粤语离线-fork-与模型来源">来源说明</a>。<br/>
+  下方链接及徽章指向上游 OpenLess 项目。
 </p>
 
 <p align="center">
@@ -440,7 +445,16 @@ OpenLess 同样认可并感谢 LinuxDo 社区开放、务实、对开发者友�
 
 本致谢不意味着任何官方背书或隶属关系。
 
+## 粤语离线 Fork 与模型来源
+
+唔打啦（Mudala，粤拼 *m4 daa2 laa3*）是 [OpenLess](https://github.com/Open-Less/openless)（AGPL-3.0-only）的 fork，作为香港粤语听写完全离线运行：唯一语音引擎是经 sherpa-onnx 运行的本地 SenseVoice 模型，识别锁定为粤语（`yue`），并关闭 LLM 润色以保留口语粤语原文。OpenLess 原版版权声明及许可证维持不变。
+
+- **SenseVoice Small**，由 FunAudioLLM / 阿里巴巴通义实验室开发（[FunAudioLLM/SenseVoice](https://github.com/FunAudioLLM/SenseVoice)），按 [FunASR Model License](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE) 使用。模型不随本仓库分发，App 会按需下载 [`csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17`](https://huggingface.co/csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17)。
+- **sherpa-onnx**，由 k2-fsa 开发（[k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx)，Apache-2.0），提供端侧推理运行时及模型的 ONNX 导出。
+
 ## 许可证
+
+唔打啦（Mudala）是 OpenLess 的 fork，沿用相同的 [AGPL-3.0-only 许可证](LICENSE) 发布，并保留 OpenLess 的版权声明。以下为上游许可说明：
 
 OpenLess 2.0.0-Beta.1 基于 [AGPL-3.0-only 许可证](LICENSE) 发布。
 已发布的 1.x 版本继续沿用原 MIT 许可证。

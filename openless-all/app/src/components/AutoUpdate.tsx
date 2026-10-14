@@ -365,7 +365,7 @@ export function UpdateDialog({
               ? t('settings.about.updateDialog.androidInstalled.desc', {
                   version,
                   defaultValue:
-                    '系统安装器已打开，请按提示完成安装。安装后重新打开 OpenLess 即可使用 {{version}}。',
+                    '系统安装器已打开，请按提示完成安装。安装后重新打开 唔打啦 即可使用 {{version}}。',
                 })
               : installError
                 ? t('settings.about.updateDialog.installError.desc', {
