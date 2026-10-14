@@ -16,16 +16,9 @@ impl CorrectionRuleStore {
     pub fn new() -> Result<Self> {
         let dir = data_dir()?;
         ensure_dir(&dir)?;
-        let inner = Arc::new(openless_core::CorrectionRuleStore::at_data_dir(dir));
-        if openless_core::offline_lock::ENFORCED {
-            // Offline Cantonese build: ship the Hong Kong ASR corrections as editable rules.
-            match inner.seed_builtin_rules(&openless_core::offline_lock::hong_kong_correction_rules()) {
-                Ok(0) => {}
-                Ok(added) => log::info!("[corrections] seeded {added} built-in HK rules"),
-                Err(error) => log::warn!("[corrections] seeding built-in HK rules failed: {error}"),
-            }
-        }
-        Ok(Self { inner })
+        Ok(Self {
+            inner: Arc::new(openless_core::CorrectionRuleStore::at_data_dir(dir)),
+        })
     }
 
     fn new_at(path: PathBuf) -> Self {

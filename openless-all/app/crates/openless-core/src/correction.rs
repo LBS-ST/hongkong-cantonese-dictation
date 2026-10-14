@@ -156,6 +156,17 @@ impl CorrectionRuleStore {
     /// many rules were added.
     pub fn seed_builtin_rules(&self, builtins: &[CorrectionRule]) -> Result<usize, BackendError> {
         let marker = self.path.with_extension("builtin-seed.json");
+        // Fast path: every built-in was already offered → no gate mutation, no file write.
+        let already_offered: Vec<String> = std::fs::read(&marker)
+            .ok()
+            .and_then(|bytes| serde_json::from_slice(&bytes).ok())
+            .unwrap_or_default();
+        if builtins
+            .iter()
+            .all(|builtin| already_offered.contains(&builtin.id))
+        {
+            return Ok(0);
+        }
         crate::cloud_sync_e2ee_store::gate::with_registered_mutation(
             &self.path,
             crate::cloud_sync_e2ee_store::gate::ChangeOrigin::User,
@@ -168,11 +179,13 @@ impl CorrectionRuleStore {
                 };
                 let mut rules = self.read_locked()?;
                 let mut added = 0;
+                let mut newly_offered = 0;
                 for builtin in builtins {
                     if offered.contains(&builtin.id) {
                         continue;
                     }
                     offered.push(builtin.id.clone());
+                    newly_offered += 1;
                     if !rules.iter().any(|rule| rule.id == builtin.id) {
                         rules.push(builtin.clone());
                         added += 1;
@@ -181,9 +194,12 @@ impl CorrectionRuleStore {
                 if added > 0 {
                     self.write_locked(&rules)?;
                 }
-                let json = serde_json::to_vec_pretty(&offered)
-                    .map_err(|_| persistence_error("encode builtin correction marker"))?;
-                atomic_write(&marker, &json)?;
+                // The marker only changes when an id is offered for the first time.
+                if newly_offered > 0 {
+                    let json = serde_json::to_vec_pretty(&offered)
+                        .map_err(|_| persistence_error("encode builtin correction marker"))?;
+                    atomic_write(&marker, &json)?;
+                }
                 Ok(added)
             },
         )
@@ -578,8 +594,26 @@ mod tests {
             .map(|rule| rule.id)
             .collect();
         assert_eq!(ids, vec![user.id.clone(), "builtin.test".to_string()]);
-        // Next launch: nothing new.
+        // Next launch: nothing new, and neither the marker nor the rules are rewritten.
+        let marker = dir.join("correction-rules.builtin-seed.json");
+        let marker_mtime = std::fs::metadata(&marker).unwrap().modified().unwrap();
+        let rules_mtime = std::fs::metadata(dir.join("correction-rules.json"))
+            .unwrap()
+            .modified()
+            .unwrap();
+        std::thread::sleep(std::time::Duration::from_millis(20));
         assert_eq!(store.seed_builtin_rules(&[builtin.clone()]).unwrap(), 0);
+        assert_eq!(
+            std::fs::metadata(&marker).unwrap().modified().unwrap(),
+            marker_mtime
+        );
+        assert_eq!(
+            std::fs::metadata(dir.join("correction-rules.json"))
+                .unwrap()
+                .modified()
+                .unwrap(),
+            rules_mtime
+        );
         // The user deletes the built-in; it must not come back.
         store.remove("builtin.test").unwrap();
         assert_eq!(store.seed_builtin_rules(&[builtin.clone()]).unwrap(), 0);
