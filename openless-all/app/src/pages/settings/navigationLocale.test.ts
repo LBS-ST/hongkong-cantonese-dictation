@@ -42,8 +42,9 @@ for (const [locale, translation] of Object.entries({ 'zh-CN': zhCN, 'zh-TW': zhT
       keywords: i18n.t(`modal.searchKeywords.${item.id}`),
     };
   });
-  if (searchSettingsSections(sections, 'API')[0]?.id !== 'services')
-    throw new Error(`${locale}: API search cannot reach service configuration`);
+  // 唔打啦 removed the 服務 section; search must not route to it.
+  if (searchSettingsSections(sections, 'API').some((item) => item.id === 'services'))
+    throw new Error(`${locale}: search still reaches the removed services section`);
   if (!i18n.t('modal.searchCount', { count: 2 }).includes('2'))
     throw new Error(`${locale}: result count is not rendered`);
 }

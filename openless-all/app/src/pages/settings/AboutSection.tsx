@@ -1,19 +1,11 @@
-// About → version info / font size / doc links.
+// About → app name + tagline + version.
 // "Personalization" was once its own tab but was left with only font size, so it merged into "About".
 // 唔打啦 ships without an updater, so there is no "check updates" button.
 
-import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Icon } from '../../components/Icon';
-import { Row } from '../../components/ui/Row';
-import { openExternal } from '../../lib/ipc';
 import { APP_VERSION_LABEL } from '../../lib/appVersion';
 import { Card } from '../_atoms';
 import { useConservativeLayout, useLayoutStack } from '../../lib/useMobileLayout';
-import { btnGhostStyle, SectionTitle } from './shared';
-
-const HELP_URL = 'https://github.com/Open-Less/openless#readme';
-const RELEASE_NOTES_URL = 'https://github.com/Open-Less/openless/releases';
 
 export function AboutSection() {
   const { t } = useTranslation();
@@ -21,26 +13,9 @@ export function AboutSection() {
   const conservativeLayout = useConservativeLayout();
   const compactLayout = baseLayoutStack || conservativeLayout;
   const appIconSize = compactLayout ? 36 : 56;
-  const [qqCopied, setQqCopied] = useState(false);
-  const qqCopiedRef = useRef<number | null>(null);
-
-  useEffect(
-    () => () => {
-      if (qqCopiedRef.current) clearTimeout(qqCopiedRef.current);
-    },
-    [],
-  );
-
-  const copyQq = () => {
-    navigator.clipboard?.writeText('1078960553');
-    setQqCopied(true);
-    if (qqCopiedRef.current) clearTimeout(qqCopiedRef.current);
-    qqCopiedRef.current = window.setTimeout(() => setQqCopied(false), 1500);
-  };
-
   return (
     <>
-      {/* ─── Version info + check updates (stable) ─────────────────────── */}
+      {/* ─── Version info ─────────────────────── */}
       <Card>
         <div
           className="ol-inline-composite"
@@ -91,69 +66,6 @@ export function AboutSection() {
         </div>
       </Card>
 
-      {/* Personalization (font size) removed as requested (page slimming). */}
-
-      {/* ─── Documentation links ─────────────────────────────────────── */}
-      <Card>
-        <SectionTitle>{t('settings.about.linksTitle')}</SectionTitle>
-        <Row label={t('modal.about.source')}>
-          <button
-            style={btnGhostStyle}
-            onClick={() => openExternal('https://github.com/Open-Less/openless')}
-          >
-            GitHub
-          </button>
-        </Row>
-        <Row label={t('modal.about.docs')}>
-          <button style={btnGhostStyle} onClick={() => openExternal(HELP_URL)}>
-            {t('modal.about.docsBtn')}
-          </button>
-        </Row>
-        <Row label={t('modal.sections.helpCenter')}>
-          <button style={btnGhostStyle} onClick={() => openExternal(HELP_URL)}>
-            {t('modal.sections.helpCenter')}
-          </button>
-        </Row>
-        <Row label={t('modal.sections.releaseNotes')}>
-          <button style={btnGhostStyle} onClick={() => openExternal(RELEASE_NOTES_URL)}>
-            {t('modal.sections.releaseNotes')}
-          </button>
-        </Row>
-        <Row label={t('modal.about.feedback')}>
-          <button
-            style={btnGhostStyle}
-            onClick={() => openExternal('https://github.com/Open-Less/openless/issues')}
-          >
-            {t('modal.about.feedbackBtn')}
-          </button>
-        </Row>
-        <Row label={t('modal.about.qq')}>
-          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-            <kbd
-              style={{
-                padding: '4px 10px',
-                fontSize: 12,
-                fontFamily: 'var(--ol-font-mono)',
-                borderRadius: 6,
-                background: 'var(--ol-surface-2)',
-                border: '0.5px solid var(--ol-line-strong)',
-                boxShadow: '0 1px 0 rgba(0,0,0,0.04)',
-                color: 'var(--ol-ink-2)',
-              }}
-            >
-              1078960553
-            </kbd>
-            <button onClick={copyQq} title={t('modal.about.copyQq')} style={btnGhostStyle}>
-              <Icon name="copy" size={14} />
-            </button>
-            {qqCopied && (
-              <span style={{ fontSize: 11, color: 'var(--ol-ok)', whiteSpace: 'nowrap' }}>
-                {t('common.copied')}
-              </span>
-            )}
-          </div>
-        </Row>
-      </Card>
     </>
   );
 }

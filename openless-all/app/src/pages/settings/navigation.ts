@@ -48,7 +48,6 @@ export const SETTINGS_SECTIONS: SettingsNavigationItem[] = [
   { id: 'general', icon: 'mic' },
   { id: 'inputMethod', icon: 'keyboard' },
   { id: 'shortcuts', icon: 'bolt' },
-  { id: 'services', icon: 'cloud' },
   { id: 'appearance', icon: 'settings' },
   { id: 'privacy', icon: 'shield' },
   { id: 'advanced', icon: 'sparkle' },

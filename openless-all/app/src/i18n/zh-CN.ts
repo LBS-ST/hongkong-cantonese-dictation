@@ -46,7 +46,7 @@ export const zhCN = {
     customServerHint: '留空则使用官方同步服务器。地址必须是 https:// 开头的根地址。',
     protocolTitle: '云同步协议与隐私提醒',
     protocolIntro:
-      'OpenLess 及个人开发者尊重您的隐私，并致力于保护您的资料。请阅读以下说明，再决定是否继续。',
+      '唔打啦 及个人开发者尊重您的隐私，并致力于保护您的资料。请阅读以下说明，再决定是否继续。',
     protocolPasswordTitle: '请妥善保存同步密码',
     protocolPassword:
       '同步密码和解密密钥仅用于本机加密与解锁，不会发送给云同步服务。若密码遗失且没有仍可解锁的设备，我们无法找回加密内容。',
@@ -55,7 +55,7 @@ export const zhCN = {
       '配置、服务 API 密钥和历史文本会先在本机加密，发往云端和保存在云端的备份内容均为密文。云同步服务无法据此读取或调用您的服务 API 密钥，也不会使用这些内容执行模型请求。',
     protocolExcludedTitle: '登录状态与可见信息',
     protocolExcluded:
-      '同步密码、解密密钥、OpenLess 管理的 GitHub/OAuth 登录状态、访问令牌及设备私钥不进入备份。账号认证会单独处理必要凭据；服务器仍可见账号标识、密文大小、版本及同步时间。',
+      '同步密码、解密密钥、唔打啦 管理的 GitHub/OAuth 登录状态、访问令牌及设备私钥不进入备份。账号认证会单独处理必要凭据；服务器仍可见账号标识、密文大小、版本及同步时间。',
     protocolCheck: '我已阅读协议与隐私提醒，了解同步范围，并会妥善保管同步密码。',
     protocolBack: '返回同步范围',
     protocolConfirm: '我已阅读并确认',
@@ -581,8 +581,6 @@ export const zhCN = {
   shell: {
     shortcutLabel: '录音快捷键',
     shortcutHint: '开始 / 停止',
-    betaTag: 'BETA',
-    betaNote: '本地存储，可选云端备份',
     navHint: {
       overview: '状态总览：用量统计、提供商与权限健康检查',
       history: '听写历史：搜索、回放与复制过往转写',
@@ -1412,14 +1410,14 @@ export const zhCN = {
       microphoneMonitorError: '输入电平监听失败：{{message}}',
       capsuleLabel: '录音胶囊',
       capsuleDesc: '录音 / 转写时显示屏幕底部胶囊。',
-      capsuleStyleTypeless: 'Typeless 传统风格',
+      capsuleStyleTypeless: '传统风格',
       capsuleTranscriptLabel: '显示流式原文',
       capsuleTranscriptDesc:
         '在胶囊中显示语音识别原文，替换音频条；关闭后恢复原有显示。非流式识别将在结果返回后显示。',
       capsuleTranscriptFontSize: '原文字号',
       capsuleStyleLabel: '胶囊样式',
       capsuleStyleSiri: '流光 Siri 风格',
-      capsuleStyleClassic: 'Openless 默认风格',
+      capsuleStyleClassic: '默认风格',
       stableTranscriptionLabel: '稳定模式（先录音后识别）',
       stableTranscriptionDesc:
         '开启后，录音期间不连接 ASR，停止后才提交整段音频。结果出现更晚，但录音不受建连延迟和录音期间网络抖动影响。',
@@ -1475,11 +1473,11 @@ export const zhCN = {
       windowsSendInputNewlineModeEnter: 'Enter（多数编辑器）',
       windowsSendInputNewlineModeShiftEnter: 'Shift+Enter（聊天输入框）',
       windowsSendInputNewlineModeCrLf: 'CR+LF Unicode',
-      windowsShowOpenlessInKeyboardListLabel: '在键盘列表中显示 OpenLess',
+      windowsShowOpenlessInKeyboardListLabel: '在键盘列表中显示 唔打啦',
       windowsShowOpenlessInKeyboardListDesc:
         '关闭后 Win+Space 切换输入法时不会出现唔打啦；SendInput 与剪贴板粘贴插入不受影响。重新开启本项可恢复显示。',
       windowsShowOpenlessInKeyboardListError:
-        '无法更新键盘列表：系统拒绝更改 OpenLess 语言配置文件。',
+        '无法更新键盘列表：系统拒绝更改 唔打啦 语言配置文件。',
       historyGroupTitle: '历史与上下文',
       historyRetentionLabel: '历史保留天数',
       historyRetentionDesc: '超过保留天数的历史在写入新条目时被清理；0 = 不按时间清理。',
@@ -1861,7 +1859,7 @@ export const zhCN = {
       hotkeyFailed: '监听失败',
       windowsImeLabel: 'Windows 输入法后端',
       windowsImeDesc:
-        '通过与输入法并存的 OpenLess TSF 文本服务插入文字，不切换输入法，绕过剪贴板限制。',
+        '通过与输入法并存的 唔打啦 TSF 文本服务插入文字，不切换输入法，绕过剪贴板限制。',
       windowsImeInstalled: '已安装',
       windowsImeUnavailable: '不可用',
       androidImeLabel: '输入法 (IME)',
@@ -2018,16 +2016,16 @@ export const zhCN = {
         qa: '追问',
       },
       windowsIme: {
-        installed: '已安装，按需切到 OpenLess 输入法。',
+        installed: '已安装，按需切到 唔打啦 输入法。',
         notInstalled: '未安装，走剪贴板 / WM_PASTE 兜底。',
-        registrationBroken: '注册损坏，请重装 OpenLess 输入法。',
+        registrationBroken: '注册损坏，请重装 唔打啦 输入法。',
         notWindows: '仅 Windows 可用。',
       },
     },
     inputMethod: {
-      guidanceTitle: 'OpenLess 输入法',
-      enableSystemIme: '请在系统设置 → 键盘 / 输入法中启用 OpenLess Voice，并在需要时切换到它。',
-      longPressLogo: '在 OpenLess 输入法键盘中长按左上角的 logo，可打开原生键盘设置。',
+      guidanceTitle: '唔打啦 输入法',
+      enableSystemIme: '请在系统设置 → 键盘 / 输入法中启用 唔打啦 Voice，并在需要时切换到它。',
+      longPressLogo: '在 唔打啦 输入法键盘中长按左上角的 logo，可打开原生键盘设置。',
     },
     advanced: {
       multimodalPipelineTitle: '多模态识别管线',
@@ -2075,8 +2073,8 @@ export const zhCN = {
       zh: '简体中文',
       zhTW: '繁體中文',
       en: 'English',
-      ja: '日本語 (Beta)',
-      ko: '한국어 (Beta)',
+      ja: '日本語',
+      ko: '한국어',
       restartHint: '部分原生菜单（系统托盘等）可能需要重启 App 才会切换。',
     },
     layout: {
@@ -2263,7 +2261,7 @@ export const zhCN = {
       appearance: '主题 深色 浅色 暗色 语言 字号 排版 布局 热力图',
       privacy: '权限 麦克风 辅助功能 历史 录音 存储 隐私 导出',
       advanced: 'Less Computer Claude Agent 调试 日志 实验 手改学词 vocabulary learning',
-      about: '版本 Beta 稳定 更新 升级',
+      about: '版本 稳定 更新 升级',
     },
 
     sections: {
@@ -2293,7 +2291,6 @@ export const zhCN = {
       checkUpdate: '检查更新',
       checkUpdateBtn: '检查',
       docs: '文档',
-      docsBtn: 'openless.app/docs ↗',
       feedback: '反馈渠道',
       feedbackBtn: 'GitHub Issues ↗',
       source: '源码',

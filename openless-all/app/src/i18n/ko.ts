@@ -53,7 +53,7 @@ export const ko: typeof zhCN = {
       '비워두면 공식 동기화 서버를 사용합니다. 주소는 https://로 시작하는 루트 URL이어야 합니다.',
     protocolTitle: '클라우드 동기화 약관 및 개인정보 안내',
     protocolIntro:
-      'OpenLess와 독립 개발자는 개인정보를 존중하고 데이터를 보호하기 위해 노력합니다. 계속하기 전에 아래 안내를 읽어 주세요.',
+      '唔打啦와 독립 개발자는 개인정보를 존중하고 데이터를 보호하기 위해 노력합니다. 계속하기 전에 아래 안내를 읽어 주세요.',
     protocolPasswordTitle: '동기화 비밀번호를 안전하게 보관하세요',
     protocolPassword:
       '동기화 비밀번호와 복호화 키는 기기에서만 사용되며 동기화 서비스로 전송되지 않습니다. 비밀번호를 잃고 백업을 잠금 해제할 기기도 없다면 내용을 복구할 수 없습니다.',
@@ -62,7 +62,7 @@ export const ko: typeof zhCN = {
       '설정, API 키, 텍스트 기록은 이 기기에서 암호화됩니다. 백업은 암호문으로 전송되고 저장됩니다. 동기화 서비스는 이를 통해 API 키를 읽거나 사용하지 못하며 모델 요청에도 이용하지 않습니다.',
     protocolExcludedTitle: '로그인 상태와 확인 가능한 정보',
     protocolExcluded:
-      '동기화 비밀번호, 복호화 키, OpenLess가 관리하는 GitHub/OAuth 로그인 상태, 액세스 토큰, 기기 개인 키는 백업에 포함되지 않습니다. 계정 인증에는 필요한 자격 증명을 별도로 사용합니다. 서버는 계정 식별자, 암호문 크기, 버전 및 동기화 시간을 볼 수 있습니다.',
+      '동기화 비밀번호, 복호화 키, 唔打啦가 관리하는 GitHub/OAuth 로그인 상태, 액세스 토큰, 기기 개인 키는 백업에 포함되지 않습니다. 계정 인증에는 필요한 자격 증명을 별도로 사용합니다. 서버는 계정 식별자, 암호문 크기, 버전 및 동기화 시간을 볼 수 있습니다.',
     protocolCheck:
       '약관과 개인정보 안내를 읽고 범위를 이해했으며 동기화 비밀번호를 안전하게 보관하겠습니다.',
     protocolBack: '동기화 범위로 돌아가기',
@@ -599,8 +599,6 @@ export const ko: typeof zhCN = {
   shell: {
     shortcutLabel: '녹음 단축키',
     shortcutHint: '시작 / 정지',
-    betaTag: 'BETA',
-    betaNote: '로컬 저장, 선택적 클라우드 백업',
     navHint: {
       overview: '상태 개요: 사용량 통계, 제공자 및 권한 상태',
       history: '받아쓰기 기록: 과거 전사 검색·재생·복사',
@@ -1460,14 +1458,14 @@ export const ko: typeof zhCN = {
       microphoneMonitorError: '입력 레벨 모니터링 실패: {{message}}',
       capsuleLabel: '녹음 캡슐',
       capsuleDesc: '녹음 / 전사 중 화면 하단에 반투명 캡슐을 표시합니다.',
-      capsuleStyleTypeless: 'Typeless 컴팩트 스타일',
+      capsuleStyleTypeless: '컴팩트 스타일',
       capsuleTranscriptLabel: '실시간 원문 표시',
       capsuleTranscriptDesc:
         '오디오 막대 대신 인식된 원문을 표시합니다. 끄면 기존 표시로 돌아갑니다. 비스트리밍 인식은 결과 수신 후 표시됩니다.',
       capsuleTranscriptFontSize: '원문 글자 크기',
       capsuleStyleLabel: '캡슐 스타일',
       capsuleStyleSiri: '시리 광선 스타일',
-      capsuleStyleClassic: 'Openless 기본 스타일',
+      capsuleStyleClassic: '기본 스타일',
       stableTranscriptionLabel: '안정 모드 (녹음 후 전사)',
       stableTranscriptionDesc:
         '켜면 녹음 중에는 ASR에 연결하지 않고 중지한 뒤 전체 오디오를 전송합니다. 결과는 늦게 표시되지만 연결 지연이나 녹음 중 네트워크 불안정이 녹음에 영향을 주지 않습니다.',
@@ -1528,7 +1526,7 @@ export const ko: typeof zhCN = {
       windowsSendInputNewlineModeEnter: 'Enter(대부분 편집기)',
       windowsSendInputNewlineModeShiftEnter: 'Shift+Enter(채팅 입력창)',
       windowsSendInputNewlineModeCrLf: 'CR+LF Unicode',
-      windowsShowOpenlessInKeyboardListLabel: '키보드 목록에 OpenLess 표시',
+      windowsShowOpenlessInKeyboardListLabel: '키보드 목록에 唔打啦 표시',
       windowsShowOpenlessInKeyboardListDesc:
         '끄면 Win+Space로 唔打啦에 전환되지 않습니다. SendInput 및 클립보드 붙여넣기 삽입에는 영향 없습니다. 다시 켜면 목록에 복원됩니다.',
       windowsShowOpenlessInKeyboardListError:
@@ -1944,7 +1942,7 @@ export const ko: typeof zhCN = {
       hotkeyFailed: '감지 실패',
       windowsImeLabel: 'Windows 입력기 백엔드',
       windowsImeDesc:
-        '입력기와 함께 동작하는 OpenLess TSF 텍스트 서비스로 텍스트를 삽입하여, 입력기를 전환하지 않고 클립보드 입력 제한을 회피합니다.',
+        '입력기와 함께 동작하는 唔打啦 TSF 텍스트 서비스로 텍스트를 삽입하여, 입력기를 전환하지 않고 클립보드 입력 제한을 회피합니다.',
       windowsImeInstalled: '설치됨',
       windowsImeUnavailable: '사용 불가',
       androidImeLabel: '입력기 (IME)',
@@ -2094,18 +2092,18 @@ export const ko: typeof zhCN = {
         qa: '질문',
       },
       windowsIme: {
-        installed: '설치됨. 음성 입력 시 OpenLess 입력기로 일시 전환됩니다.',
+        installed: '설치됨. 음성 입력 시 唔打啦 입력기로 일시 전환됩니다.',
         notInstalled: '설치되지 않음. 唔打啦 는 현재 클립보드 / WM_PASTE 폴백을 사용합니다.',
-        registrationBroken: '등록이 손상되었습니다. OpenLess 입력기를 재설치하세요.',
+        registrationBroken: '등록이 손상되었습니다. 唔打啦 입력기를 재설치하세요.',
         notWindows: 'Windows 만 사용 가능.',
       },
     },
     inputMethod: {
-      guidanceTitle: 'OpenLess 입력 방법',
+      guidanceTitle: '唔打啦 입력 방법',
       enableSystemIme:
-        'Android 설정 → 키보드 / 입력 방법에서 OpenLess Voice를 활성화하고 필요할 때 선택하세요.',
+        'Android 설정 → 키보드 / 입력 방법에서 唔打啦 Voice를 활성화하고 필요할 때 선택하세요.',
       longPressLogo:
-        'OpenLess 키보드의 왼쪽 위 로고를 길게 누르면 기본 키보드 설정을 열 수 있습니다.',
+        '唔打啦 키보드의 왼쪽 위 로고를 길게 누르면 기본 키보드 설정을 열 수 있습니다.',
     },
     advanced: {
       multimodalPipelineTitle: '멀티모달 인식 파이프라인 ',
@@ -2157,8 +2155,8 @@ export const ko: typeof zhCN = {
       zh: '简体中文',
       zhTW: '繁體中文',
       en: 'English',
-      ja: '日本語 (Beta)',
-      ko: '한국어 (Beta)',
+      ja: '日本語',
+      ko: '한국어',
       restartHint: '일부 네이티브 메뉴(트레이 등)는 앱 재시작 후 반영될 수 있습니다.',
     },
     layout: {
@@ -2352,7 +2350,7 @@ export const ko: typeof zhCN = {
       privacy: '권한 마이크 접근성 기록 녹음 저장 개인정보 내보내기',
       advanced:
         'Less Computer Claude Agent 멀티모달 Omni 디버그 로그 실험 수정으로 단어 학습 vocabulary learning',
-      about: '버전 Beta 안정 업데이트 업그레이드',
+      about: '버전 안정 업데이트 업그레이드',
     },
 
     sections: {
@@ -2383,7 +2381,6 @@ export const ko: typeof zhCN = {
       checkUpdate: '업데이트 확인',
       checkUpdateBtn: '확인',
       docs: '문서',
-      docsBtn: 'openless.app/docs ↗',
       feedback: '피드백 채널',
       feedbackBtn: 'GitHub Issues ↗',
       source: '소스',

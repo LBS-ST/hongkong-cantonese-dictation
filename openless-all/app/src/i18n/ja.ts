@@ -53,7 +53,7 @@ export const ja: typeof zhCN = {
       '空欄の場合は公式の同期サーバーを使用します。アドレスは https:// で始まるルート URL である必要があります。',
     protocolTitle: 'クラウド同期の同意事項とプライバシー',
     protocolIntro:
-      'OpenLess と開発者はプライバシーを尊重し、データの保護に取り組んでいます。続行する前に、以下をご確認ください。',
+      '唔打啦 と開発者はプライバシーを尊重し、データの保護に取り組んでいます。続行する前に、以下をご確認ください。',
     protocolPasswordTitle: '同期パスワードを大切に保管してください',
     protocolPassword:
       '同期パスワードと復号キーは端末内で使用され、同期サービスには送信されません。パスワードを紛失し、解除できる端末もない場合、内容を復元することはできません。',
@@ -62,7 +62,7 @@ export const ja: typeof zhCN = {
       '設定、API キー、テキスト履歴はこの端末で暗号化されます。バックアップは暗号文として送信・保存されます。同期サービスはその内容から API キーを読み取ったり使用したりせず、モデルへのリクエストにも利用しません。',
     protocolExcludedTitle: 'ログイン状態と確認可能な情報',
     protocolExcluded:
-      '同期パスワード、復号キー、OpenLess が管理する GitHub/OAuth ログイン状態、アクセストークン、端末の秘密鍵はバックアップに含まれません。アカウント認証には必要な認証情報を別途使用します。サーバーにはアカウント識別子、暗号文のサイズ、版、同期日時が見えます。',
+      '同期パスワード、復号キー、唔打啦 が管理する GitHub/OAuth ログイン状態、アクセストークン、端末の秘密鍵はバックアップに含まれません。アカウント認証には必要な認証情報を別途使用します。サーバーにはアカウント識別子、暗号文のサイズ、版、同期日時が見えます。',
     protocolCheck:
       '同意事項とプライバシーの説明を読み、対象を理解しました。同期パスワードを適切に保管します。',
     protocolBack: '同期対象に戻る',
@@ -605,8 +605,6 @@ export const ja: typeof zhCN = {
   shell: {
     shortcutLabel: '録音ショートカット',
     shortcutHint: '開始 / 停止',
-    betaTag: 'BETA',
-    betaNote: 'ローカル保存、任意でクラウドバックアップ',
     navHint: {
       overview: 'ステータス概要：使用状況・プロバイダー・権限の状態',
       history: '入力履歴：過去の書き起こしを検索・再生・コピー',
@@ -1471,14 +1469,14 @@ export const ja: typeof zhCN = {
       microphoneMonitorError: '入力レベルの監視に失敗：{{message}}',
       capsuleLabel: '録音カプセル',
       capsuleDesc: '録音 / 転写中、画面下部に半透明のカプセルを表示。',
-      capsuleStyleTypeless: 'Typeless コンパクトスタイル',
+      capsuleStyleTypeless: 'コンパクトスタイル',
       capsuleTranscriptLabel: '文字起こしをリアルタイム表示',
       capsuleTranscriptDesc:
         '音声バーの代わりに認識した原文を表示します。オフにすると元の表示に戻ります。非ストリーミング認識は結果の受信後に表示します。',
       capsuleTranscriptFontSize: '文字起こしの文字サイズ',
       capsuleStyleLabel: 'カプセルスタイル',
       capsuleStyleSiri: '光条 Siri スタイル',
-      capsuleStyleClassic: 'Openless デフォルトスタイル',
+      capsuleStyleClassic: 'デフォルトスタイル',
       stableTranscriptionLabel: '安定モード（録音後に文字起こし）',
       stableTranscriptionDesc:
         '有効にすると、録音中は ASR に接続せず、停止後に音声全体を送信します。結果は遅くなりますが、接続遅延や録音中のネットワーク変動に録音が影響されません。',
@@ -1539,7 +1537,7 @@ export const ja: typeof zhCN = {
       windowsSendInputNewlineModeEnter: 'Enter（多くのエディタ）',
       windowsSendInputNewlineModeShiftEnter: 'Shift+Enter（チャット入力）',
       windowsSendInputNewlineModeCrLf: 'CR+LF Unicode',
-      windowsShowOpenlessInKeyboardListLabel: 'キーボード一覧に OpenLess を表示',
+      windowsShowOpenlessInKeyboardListLabel: 'キーボード一覧に 唔打啦 を表示',
       windowsShowOpenlessInKeyboardListDesc:
         'オフにすると Win+Space で唔打啦に切り替わりません。SendInput とクリップボード貼り付け挿入には影響しません。オンに戻すと一覧に再表示されます。',
       windowsShowOpenlessInKeyboardListError:
@@ -1957,7 +1955,7 @@ export const ja: typeof zhCN = {
       hotkeyFailed: '監視失敗',
       windowsImeLabel: 'Windows 入力メソッドバックエンド',
       windowsImeDesc:
-        '入力方式と併存する OpenLess TSF テキストサービス経由で文字を挿入し、IME を切り替えずにクリップボード入力の制限を回避します。',
+        '入力方式と併存する 唔打啦 TSF テキストサービス経由で文字を挿入し、IME を切り替えずにクリップボード入力の制限を回避します。',
       windowsImeInstalled: 'インストール済み',
       windowsImeUnavailable: '利用不可',
       androidImeLabel: '入力メソッド (IME)',
@@ -2108,19 +2106,19 @@ export const ja: typeof zhCN = {
         qa: '質問',
       },
       windowsIme: {
-        installed: 'インストール済み。音声入力時に OpenLess IME へ一時的に切り替えます。',
+        installed: 'インストール済み。音声入力時に 唔打啦 IME へ一時的に切り替えます。',
         notInstalled:
           '未インストール。唔打啦は現在クリップボード / WM_PASTE フォールバックを使用しています。',
-        registrationBroken: '登録が破損しています。OpenLess IME を再インストールしてください。',
+        registrationBroken: '登録が破損しています。唔打啦 IME を再インストールしてください。',
         notWindows: 'Windows のみ利用可能。',
       },
     },
     inputMethod: {
-      guidanceTitle: 'OpenLess 入力方法',
+      guidanceTitle: '唔打啦 入力方法',
       enableSystemIme:
-        'Android の設定 → キーボード / 入力方法で OpenLess Voice を有効にし、必要に応じて切り替えてください。',
+        'Android の設定 → キーボード / 入力方法で 唔打啦 Voice を有効にし、必要に応じて切り替えてください。',
       longPressLogo:
-        'OpenLess キーボードの左上にあるロゴを長押しすると、端末のキーボード設定を開けます。',
+        '唔打啦 キーボードの左上にあるロゴを長押しすると、端末のキーボード設定を開けます。',
     },
     advanced: {
       multimodalPipelineTitle: 'マルチモーダル認識パイプライン',
@@ -2173,8 +2171,8 @@ export const ja: typeof zhCN = {
       zh: '简体中文',
       zhTW: '繁體中文',
       en: 'English',
-      ja: '日本語 (Beta)',
-      ko: '한국어 (Beta)',
+      ja: '日本語',
+      ko: '한국어',
       restartHint: '一部のネイティブメニュー（トレイ等）は再起動後に反映されます。',
     },
     layout: {
@@ -2370,7 +2368,7 @@ export const ja: typeof zhCN = {
       privacy: '権限 マイク アクセシビリティ 履歴 録音 保存 プライバシー エクスポート',
       advanced:
         'Less Computer Claude Agent マルチモーダル Omni デバッグ ログ 実験 修正から単語を学習 vocabulary learning',
-      about: 'バージョン Beta 安定 更新 アップデート',
+      about: 'バージョン 安定 更新 アップデート',
     },
 
     sections: {
@@ -2401,7 +2399,6 @@ export const ja: typeof zhCN = {
       checkUpdate: 'アップデート確認',
       checkUpdateBtn: '確認',
       docs: 'ドキュメント',
-      docsBtn: 'openless.app/docs ↗',
       feedback: 'フィードバックチャネル',
       feedbackBtn: 'GitHub Issues ↗',
       source: 'ソース',

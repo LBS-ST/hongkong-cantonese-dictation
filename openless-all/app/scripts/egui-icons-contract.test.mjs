@@ -36,6 +36,8 @@ for (const [section, icon] of Object.entries({
 })) {
   assert.ok(settings.includes(`Self::${section} => SettingsIcon::${icon}`), `${section} settings rail icon differs from Tauri`);
   assert.ok(settings.includes(`SettingsIcon::${icon} => IconName::${icon}`), `${icon} must use the Lucide SVG`);
+  // 唔打啦 removed the Tauri 服務 section (offline build); the egui rail keeps it.
+  if (section === 'Services') continue;
   assert.match(tauriSettings, new RegExp(`id: '${section.toLowerCase()}', icon: '${icon.toLowerCase()}'`));
 }
 const tools = nav.slice(nav.indexOf('"nav.group_tools"'), nav.indexOf('"nav.settings"'));

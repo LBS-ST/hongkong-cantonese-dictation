@@ -49,7 +49,7 @@ export const es: typeof zhCN = {
       'Déjelo en blanco para usar el servidor de sincronización oficial. La dirección debe comenzar con https:// y ser una URL raíz.',
     protocolTitle: 'Acuerdo de sincronización y privacidad',
     protocolIntro:
-      'OpenLess y sus desarrolladores independientes respetan tu privacidad y protegen tus datos. Lee este aviso antes de continuar.',
+      '唔打啦 y sus desarrolladores independientes respetan tu privacidad y protegen tus datos. Lee este aviso antes de continuar.',
     protocolPasswordTitle: 'Guarda tu contraseña de sincronización',
     protocolPassword:
       'La contraseña y la clave de descifrado se usan localmente y no se envían al servicio. Si pierdes la contraseña y ningún dispositivo puede desbloquear la copia, no podremos recuperar su contenido.',
@@ -58,7 +58,7 @@ export const es: typeof zhCN = {
       'Los ajustes, claves API e historial de texto se cifran en este dispositivo. La copia se envía y almacena cifrada. El servicio no puede leer ni utilizar tus claves API y no usa estos datos para ejecutar solicitudes a modelos.',
     protocolExcludedTitle: 'Inicio de sesión y metadatos visibles',
     protocolExcluded:
-      'La copia excluye la contraseña, claves de descifrado, estado de GitHub/OAuth gestionado por OpenLess, tokens de acceso y claves privadas del dispositivo. La autenticación de la cuenta trata sus credenciales por separado. El servidor aún puede ver la cuenta, el tamaño del cifrado, las versiones y las fechas de sincronización.',
+      'La copia excluye la contraseña, claves de descifrado, estado de GitHub/OAuth gestionado por 唔打啦, tokens de acceso y claves privadas del dispositivo. La autenticación de la cuenta trata sus credenciales por separado. El servidor aún puede ver la cuenta, el tamaño del cifrado, las versiones y las fechas de sincronización.',
     protocolCheck:
       'He leído el acuerdo y el aviso, entiendo el alcance y guardaré mi contraseña de forma segura.',
     protocolBack: 'Volver al alcance',
@@ -616,8 +616,6 @@ export const es: typeof zhCN = {
   shell: {
     shortcutLabel: 'Atajo de grabación',
     shortcutHint: 'Iniciar / Detener',
-    betaTag: 'BETA',
-    betaNote: 'Almacenamiento local y copia en la nube opcional',
     navHint: {
       overview: 'Resumen: estadísticas de uso y estado de los servicios y permisos',
       history: 'Historial de dictado: busca, reproduce y copia transcripciones anteriores',
@@ -1505,14 +1503,14 @@ export const es: typeof zhCN = {
       microphoneMonitorError: 'No se pudo supervisar el nivel de entrada: {{message}}',
       capsuleLabel: 'Cápsula de grabación',
       capsuleDesc: 'Muestra una cápsula en la parte inferior de la pantalla mientras grabas.',
-      capsuleStyleTypeless: 'Estilo compacto Typeless',
+      capsuleStyleTypeless: 'Estilo compacto',
       capsuleTranscriptLabel: 'Mostrar transcripción en directo',
       capsuleTranscriptDesc:
         'Muestra el texto reconocido en lugar de las barras de audio. Sin streaming, aparece al recibir el resultado. Desactiva para restaurar la vista original.',
       capsuleTranscriptFontSize: 'Tamaño de la transcripción',
       capsuleStyleLabel: 'Estilo de cápsula',
       capsuleStyleSiri: 'Estilo luminoso Siri',
-      capsuleStyleClassic: 'Estilo predeterminado de 唔打啦',
+      capsuleStyleClassic: 'Estilo predeterminado',
       stableTranscriptionLabel: 'Modo estable (grabar y luego transcribir)',
       stableTranscriptionDesc:
         'Al activarlo, ASR se conecta solo después de detener la grabación y recibe el audio completo. El resultado tarda más, pero la captura no se ve afectada por retrasos de conexión ni por inestabilidad de red durante la grabación.',
@@ -1574,7 +1572,7 @@ export const es: typeof zhCN = {
       windowsSendInputNewlineModeEnter: 'Enter (mayoría de editores)',
       windowsSendInputNewlineModeShiftEnter: 'Shift+Enter (campos de chat)',
       windowsSendInputNewlineModeCrLf: 'Unicode CR+LF',
-      windowsShowOpenlessInKeyboardListLabel: 'Mostrar OpenLess en la lista de teclados',
+      windowsShowOpenlessInKeyboardListLabel: 'Mostrar 唔打啦 en la lista de teclados',
       windowsShowOpenlessInKeyboardListDesc:
         'Al desactivarlo, Win+Space no pasará por 唔打啦. No afecta a SendInput ni al pegado. Vuelve a activarlo para restaurar la entrada.',
       windowsShowOpenlessInKeyboardListError:
@@ -2189,7 +2187,7 @@ export const es: typeof zhCN = {
     inputMethod: {
       guidanceTitle: 'Método de entrada de 唔打啦',
       enableSystemIme:
-        'En Ajustes de Android → Teclado / Métodos de entrada, activa OpenLess Voice y selecciónalo cuando lo necesites.',
+        'En Ajustes de Android → Teclado / Métodos de entrada, activa 唔打啦 Voice y selecciónalo cuando lo necesites.',
       longPressLogo:
         'En el teclado de 唔打啦, mantén pulsado el logo de la esquina superior izquierda para abrir los ajustes nativos del teclado.',
     },
@@ -2247,8 +2245,8 @@ export const es: typeof zhCN = {
       zh: '简体中文',
       zhTW: '繁體中文',
       en: 'English',
-      ja: '日本語 (Beta)',
-      ko: '한국어 (Beta)',
+      ja: '日本語',
+      ko: '한국어',
       restartHint:
         'Algunos menús nativos, como la bandeja del sistema, pueden requerir reiniciar la aplicación para cambiar por completo.',
     },
@@ -2453,7 +2451,7 @@ export const es: typeof zhCN = {
         'permiso micrófono accesibilidad historial grabación almacenamiento privacidad exportar',
       advanced:
         'Less Computer Claude agente depuración registros experimento Aprender de las correcciones vocabulary learning',
-      about: 'versión Beta estable actualización actualizar',
+      about: 'versión estable actualización actualizar',
     },
     sections: {
       appearance: 'Apariencia e idioma',
@@ -2483,7 +2481,6 @@ export const es: typeof zhCN = {
       checkUpdate: 'Buscar actualizaciones',
       checkUpdateBtn: 'Buscar',
       docs: 'Documentación',
-      docsBtn: 'openless.app/docs ↗',
       feedback: 'Canal de comentarios',
       feedbackBtn: 'GitHub Issues ↗',
       source: 'Código fuente',

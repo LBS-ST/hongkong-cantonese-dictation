@@ -20,7 +20,6 @@ import { Translation } from '../pages/Translation';
 import { SelectionAsk } from '../pages/SelectionAsk';
 import { QuickNote } from '../pages/QuickNote';
 import { Corrections } from '../pages/Corrections';
-import { IS_BETA_BUILD } from '../lib/appVersion';
 import {
   HOTKEY_MODE_MIGRATION_ACK_KEY,
   HOTKEY_MODE_MIGRATION_DEFERRED_KEY,
@@ -333,8 +332,7 @@ function FloatingShellBody({
                 os === 'mac' ? `${MAC_TRAFFIC_LIGHT_CLEARANCE}px 10px 12px` : '10px 10px 12px',
             }}
           >
-            {/* Version row: replaces the old "OpenLess" brand spot, filling the gap
-              above the nav; the BETA badge shares the version number's baseline. */}
+            {/* Spacer row above the nav (former brand spot). */}
             <div
               style={{
                 display: 'flex',
@@ -347,26 +345,6 @@ function FloatingShellBody({
                 color: 'var(--ol-ink-4)',
               }}
             >
-              {IS_BETA_BUILD && (
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    padding: '1px 6px',
-                    fontSize: 10,
-                    lineHeight: '14px',
-                    fontWeight: 600,
-                    letterSpacing: '0.05em',
-                    textTransform: 'uppercase',
-                    color: 'var(--ol-blue)',
-                    background: 'transparent',
-                    border: '0.5px solid var(--ol-pill-blue-border)',
-                    borderRadius: 5,
-                  }}
-                >
-                  {t('shell.betaTag')}
-                </span>
-              )}
             </div>
 
             {/* nav — flat items + expandable groups. Flat: overview/history/vocab.

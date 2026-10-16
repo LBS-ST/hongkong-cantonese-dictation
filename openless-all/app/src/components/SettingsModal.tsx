@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { Icon } from './Icon';
 import { SavedToast } from './SavedToast';
 import { useSavedToastListener } from '../lib/savedEvent';
-import { openExternal } from '../lib/ipc';
 import { getPlatformCapabilities, getCachedPlatformCapabilities } from '../lib/platform';
 import { useMobileLayout, useConservativeLayout } from '../lib/useMobileLayout';
 import type { OS } from './WindowChrome';
@@ -19,7 +18,6 @@ import {
   AboutTab,
   GeneralTab,
   InputMethodTab,
-  ServicesTab,
   PrivacyTab,
   AdvancedTab,
   ShortcutsTab,
@@ -46,11 +44,6 @@ interface SettingsModalProps {
   closing?: boolean;
 }
 
-const LINKS = [
-  { id: 'helpCenter', icon: 'help', href: 'https://github.com/Open-Less/openless#readme' },
-  { id: 'releaseNotes', icon: 'doc', href: 'https://github.com/Open-Less/openless/releases' },
-];
-
 export function SettingsModal({
   os,
   onClose,
@@ -63,7 +56,12 @@ export function SettingsModal({
   const providerForm = useProviderForm();
   const mobile = useMobileLayout();
   const conservative = useConservativeLayout();
-  const [section, setSection] = useState<SettingsSectionId>(initialSettingsSection ?? 'general');
+  // The 服務 section was removed from the nav; callers that still ask for it land on general.
+  const [section, setSection] = useState<SettingsSectionId>(
+    initialSettingsSection && initialSettingsSection !== 'services'
+      ? initialSettingsSection
+      : 'general',
+  );
   const [advancedPage, setAdvancedPage] = useState<AdvancedPageId | null>(null);
   const [query, setQuery] = useState('');
   const [platformCaps, setPlatformCaps] = useState(getCachedPlatformCapabilities);
@@ -481,7 +479,6 @@ export function SettingsModal({
                   );
                 })}
               </nav>
-              {!mobile && <HelpLinks />}
             </aside>
             <div
               ref={setChannelContainer}
@@ -616,9 +613,7 @@ export function SettingsModal({
                       overflow: 'auto',
                       padding: mobile
                         ? '0 16px calc(20px + env(safe-area-inset-bottom, 0px))'
-                        : section === 'services'
-                          ? '0 28px 6px'
-                          : '0 28px 28px',
+                        : '0 28px 28px',
                     }}
                   >
                     {searching && (
@@ -693,7 +688,6 @@ export function SettingsModal({
                       {section === 'inputMethod' && <InputMethodTab />}
                       {section === 'shortcuts' && <ShortcutsTab />}
                       {section === 'appearance' && <AppearanceTab />}
-                      {section === 'services' && <ServicesTab />}
                       {section === 'privacy' && <PrivacyTab />}
                       {section === 'advanced' && (
                         <AdvancedTab
@@ -704,7 +698,6 @@ export function SettingsModal({
                       )}
                       {section === 'about' && <AboutTab />}
                     </div>
-                    {mobile && !searching && <HelpLinks />}
                   </div>
                 </div>
               </ChannelEditorHostContext.Provider>
@@ -713,36 +706,6 @@ export function SettingsModal({
         </div>
       </div>
     </ProviderLeaveContext.Provider>
-  );
-}
-
-function HelpLinks() {
-  const { t } = useTranslation();
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 4,
-        paddingTop: 16,
-        marginTop: 20,
-        borderTop: '0.5px solid var(--ol-line-soft)',
-      }}
-    >
-      {LINKS.map((link) => (
-        <button
-          key={link.id}
-          type="button"
-          onClick={() => void openExternal(link.href)}
-          className="ol-nav-btn"
-          style={navButtonStyle}
-        >
-          <Icon name={link.icon} size={14} />
-          <span style={{ flex: 1 }}>{t(`modal.sections.${link.id}`)}</span>
-          <Icon name="external" size={11} />
-        </button>
-      ))}
-    </div>
   );
 }
 

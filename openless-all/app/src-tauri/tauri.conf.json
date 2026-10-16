@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "唔打啦",
-  "version": "2.0.0-Beta.4+build.20260930",
+  "version": "2.0.0",
   "identifier": "com.lbs-smarttech.mudala",
   "build": {
     "beforeDevCommand": "npm run dev",

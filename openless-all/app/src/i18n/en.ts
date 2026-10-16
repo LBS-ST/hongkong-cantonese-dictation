@@ -51,7 +51,7 @@ export const en: typeof zhCN = {
       'Leave blank to use the official sync server. The address must start with https:// and be a root URL.',
     protocolTitle: 'Cloud sync agreement and privacy notice',
     protocolIntro:
-      'OpenLess and its independent developers respect your privacy and work to protect your data. Read this notice before continuing.',
+      '唔打啦 and its independent developers respect your privacy and work to protect your data. Read this notice before continuing.',
     protocolPasswordTitle: 'Keep your sync password safe',
     protocolPassword:
       'Your sync password and decryption key are used locally and are never sent to the sync service. If you lose the password and have no device that can still unlock the backup, we cannot recover its contents.',
@@ -60,7 +60,7 @@ export const en: typeof zhCN = {
       'Settings, service API keys and text history are encrypted locally. Backup content is sent and stored as ciphertext. The sync service cannot read or use your API keys from it, and does not use this content to run model requests.',
     protocolExcludedTitle: 'Sign-in state and visible metadata',
     protocolExcluded:
-      'The backup excludes your sync password, decryption keys, OpenLess-managed GitHub/OAuth sign-in state, access tokens and device private keys. Account authentication handles necessary credentials separately. The server can still see account identifiers, ciphertext size, versions and sync times.',
+      'The backup excludes your sync password, decryption keys, 唔打啦-managed GitHub/OAuth sign-in state, access tokens and device private keys. Account authentication handles necessary credentials separately. The server can still see account identifiers, ciphertext size, versions and sync times.',
     protocolCheck:
       'I have read the agreement and privacy notice, understand the scope, and will keep my sync password safe.',
     protocolBack: 'Back to sync scope',
@@ -612,8 +612,6 @@ export const en: typeof zhCN = {
   shell: {
     shortcutLabel: 'Recording shortcut',
     shortcutHint: 'Start / Stop',
-    betaTag: 'BETA',
-    betaNote: 'Local storage, optional cloud backup',
     navHint: {
       overview: 'Status overview: usage stats, provider & permission health',
       history: 'Dictation history: search, replay and copy past transcripts',
@@ -1484,14 +1482,14 @@ export const en: typeof zhCN = {
       microphoneMonitorError: 'Failed to monitor input level: {{message}}',
       capsuleLabel: 'Recording capsule',
       capsuleDesc: 'Show a translucent capsule at the bottom of the screen while recording.',
-      capsuleStyleTypeless: 'Typeless compact style',
+      capsuleStyleTypeless: 'Compact style',
       capsuleTranscriptLabel: 'Show live transcript',
       capsuleTranscriptDesc:
         'Show recognized speech in the capsule instead of audio bars. Turn off to restore the original display. Non-streaming recognition appears when results arrive.',
       capsuleTranscriptFontSize: 'Transcript font size',
       capsuleStyleLabel: 'Capsule style',
       capsuleStyleSiri: 'Shimmer Siri style',
-      capsuleStyleClassic: '唔打啦 default style',
+      capsuleStyleClassic: 'Default style',
       stableTranscriptionLabel: 'Stable mode (record, then transcribe)',
       stableTranscriptionDesc:
         'When enabled, ASR connects only after recording stops and receives the complete audio. Results arrive later, but connection delays and network instability during recording cannot interrupt capture.',
@@ -1552,11 +1550,11 @@ export const en: typeof zhCN = {
       windowsSendInputNewlineModeEnter: 'Enter (most editors)',
       windowsSendInputNewlineModeShiftEnter: 'Shift+Enter (chat input boxes)',
       windowsSendInputNewlineModeCrLf: 'CR+LF Unicode',
-      windowsShowOpenlessInKeyboardListLabel: 'Show OpenLess in keyboard list',
+      windowsShowOpenlessInKeyboardListLabel: 'Show 唔打啦 in keyboard list',
       windowsShowOpenlessInKeyboardListDesc:
         'When off, Win+Space will not cycle to 唔打啦. SendInput and clipboard-paste insertion are unaffected. Turn this back on to restore the entry.',
       windowsShowOpenlessInKeyboardListError:
-        'Could not update the keyboard list: the system rejected changing the OpenLess language profile.',
+        'Could not update the keyboard list: the system rejected changing the 唔打啦 language profile.',
       historyGroupTitle: 'History & context',
       historyRetentionLabel: 'History retention (days)',
       historyRetentionDesc:
@@ -1974,7 +1972,7 @@ export const en: typeof zhCN = {
       hotkeyFailed: 'Listener failed',
       windowsImeLabel: 'Windows input method backend',
       windowsImeDesc:
-        'Inserts dictated text through the OpenLess TSF text service, which stays active alongside your input method, to avoid clipboard insertion limits.',
+        'Inserts dictated text through the 唔打啦 TSF text service, which stays active alongside your input method, to avoid clipboard insertion limits.',
       windowsImeInstalled: 'Installed',
       windowsImeUnavailable: 'Unavailable',
       androidImeLabel: 'Input method (IME)',
@@ -2139,18 +2137,18 @@ export const en: typeof zhCN = {
         qa: 'Ask',
       },
       windowsIme: {
-        installed: 'Installed. Voice input temporarily switches to the OpenLess IME.',
+        installed: 'Installed. Voice input temporarily switches to the 唔打啦 IME.',
         notInstalled: 'Not installed. 唔打啦 is using the clipboard/WM_PASTE fallback.',
-        registrationBroken: 'Registration is broken. Reinstall the OpenLess IME.',
+        registrationBroken: 'Registration is broken. Reinstall the 唔打啦 IME.',
         notWindows: 'Only available on Windows.',
       },
     },
     inputMethod: {
-      guidanceTitle: 'OpenLess input method',
+      guidanceTitle: '唔打啦 input method',
       enableSystemIme:
-        'In Android Settings → Keyboard / Input methods, enable OpenLess Voice and switch to it when needed.',
+        'In Android Settings → Keyboard / Input methods, enable 唔打啦 Voice and switch to it when needed.',
       longPressLogo:
-        'In the OpenLess keyboard, long-press the logo in the upper-left corner to open native keyboard settings.',
+        'In the 唔打啦 keyboard, long-press the logo in the upper-left corner to open native keyboard settings.',
     },
     advanced: {
       multimodalPipelineTitle: 'Multimodal recognition pipeline',
@@ -2204,8 +2202,8 @@ export const en: typeof zhCN = {
       zh: '简体中文',
       zhTW: '繁體中文',
       en: 'English',
-      ja: '日本語 (Beta)',
-      ko: '한국어 (Beta)',
+      ja: '日本語',
+      ko: '한국어',
       restartHint:
         'Some native menus (system tray, etc.) may require an app restart to fully switch.',
     },
@@ -2403,7 +2401,7 @@ export const en: typeof zhCN = {
       appearance: 'theme dark light language font text size layout heatmap',
       privacy: 'permission microphone accessibility history recording storage privacy export',
       advanced: 'Less Computer Claude Agent debug logs experiment vocabulary learning',
-      about: 'version Beta stable update upgrade',
+      about: 'version stable update upgrade',
     },
 
     sections: {
@@ -2434,7 +2432,6 @@ export const en: typeof zhCN = {
       checkUpdate: 'Check for updates',
       checkUpdateBtn: 'Check',
       docs: 'Docs',
-      docsBtn: 'openless.app/docs ↗',
       feedback: 'Feedback channel',
       feedbackBtn: 'GitHub Issues ↗',
       source: 'Source',

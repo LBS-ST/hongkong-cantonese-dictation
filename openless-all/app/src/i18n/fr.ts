@@ -48,7 +48,7 @@ export const fr: typeof zhCN = {
       "Laissez vide pour utiliser le serveur de synchronisation officiel. L'adresse doit commencer par https:// et être une URL racine.",
     protocolTitle: 'Accord de synchronisation et confidentialité',
     protocolIntro:
-      'OpenLess et ses développeurs indépendants respectent votre vie privée et protègent vos données. Lisez cette notice avant de continuer.',
+      '唔打啦 et ses développeurs indépendants respectent votre vie privée et protègent vos données. Lisez cette notice avant de continuer.',
     protocolPasswordTitle: 'Conservez votre mot de passe',
     protocolPassword:
       'Le mot de passe et la clé de déchiffrement restent utilisés localement et ne sont jamais envoyés au service. Si vous perdez le mot de passe et qu’aucun appareil ne peut déverrouiller la sauvegarde, nous ne pouvons pas récupérer son contenu.',
@@ -57,7 +57,7 @@ export const fr: typeof zhCN = {
       'Réglages, clés API et historique texte sont chiffrés sur cet appareil. La sauvegarde est transmise et stockée chiffrée. Le service ne peut ni lire ni utiliser vos clés API et n’emploie pas ces contenus pour appeler des modèles.',
     protocolExcludedTitle: 'Connexion et métadonnées visibles',
     protocolExcluded:
-      'La sauvegarde exclut le mot de passe, les clés de déchiffrement, l’état GitHub/OAuth géré par OpenLess, les jetons d’accès et les clés privées de l’appareil. L’authentification du compte traite séparément les identifiants nécessaires. Le serveur voit encore le compte, la taille chiffrée, les versions et les dates de synchronisation.',
+      'La sauvegarde exclut le mot de passe, les clés de déchiffrement, l’état GitHub/OAuth géré par 唔打啦, les jetons d’accès et les clés privées de l’appareil. L’authentification du compte traite séparément les identifiants nécessaires. Le serveur voit encore le compte, la taille chiffrée, les versions et les dates de synchronisation.',
     protocolCheck:
       'J’ai lu l’accord et la notice, je comprends le périmètre et conserverai mon mot de passe en sécurité.',
     protocolBack: 'Revenir au périmètre',
@@ -625,8 +625,6 @@ export const fr: typeof zhCN = {
   shell: {
     shortcutLabel: 'Raccourci d’enregistrement',
     shortcutHint: 'Démarrer / Arrêter',
-    betaTag: 'BETA',
-    betaNote: 'Stockage local, sauvegarde cloud facultative',
     navHint: {
       overview: 'Vue d’ensemble : statistiques d’utilisation et état des services et autorisations',
       history:
@@ -1525,14 +1523,14 @@ export const fr: typeof zhCN = {
       microphoneMonitorError: 'Impossible de surveiller le niveau d’entrée : {{message}}',
       capsuleLabel: 'Capsule d’enregistrement',
       capsuleDesc: 'Affiche une capsule en bas de l’écran pendant l’enregistrement.',
-      capsuleStyleTypeless: 'Style compact Typeless',
+      capsuleStyleTypeless: 'Style compact',
       capsuleTranscriptLabel: 'Afficher la transcription en direct',
       capsuleTranscriptDesc:
         'Affiche le texte reconnu à la place des barres audio. Sans streaming, le texte apparaît à réception du résultat. Désactivez pour retrouver l’affichage initial.',
       capsuleTranscriptFontSize: 'Taille de la transcription',
       capsuleStyleLabel: 'Style de capsule',
       capsuleStyleSiri: 'Style lumineux Siri',
-      capsuleStyleClassic: 'Style par défaut d’唔打啦',
+      capsuleStyleClassic: 'Style par défaut',
       stableTranscriptionLabel: 'Mode stable (enregistrer puis transcrire)',
       stableTranscriptionDesc:
         'Une fois activé, l’ASR se connecte après l’arrêt et reçoit l’enregistrement complet. Le résultat arrive plus tard, mais la capture n’est pas perturbée par le délai de connexion ni par les variations du réseau pendant l’enregistrement.',
@@ -1595,7 +1593,7 @@ export const fr: typeof zhCN = {
       windowsSendInputNewlineModeEnter: 'Enter (plupart des éditeurs)',
       windowsSendInputNewlineModeShiftEnter: 'Shift+Enter (champs de discussion)',
       windowsSendInputNewlineModeCrLf: 'Unicode CR+LF',
-      windowsShowOpenlessInKeyboardListLabel: 'Afficher OpenLess dans la liste des claviers',
+      windowsShowOpenlessInKeyboardListLabel: 'Afficher 唔打啦 dans la liste des claviers',
       windowsShowOpenlessInKeyboardListDesc:
         'Si cette option est désactivée, Win+Space ne passe plus par 唔打啦. SendInput et le collage ne sont pas affectés. Réactivez-la pour restaurer l’entrée.',
       windowsShowOpenlessInKeyboardListError:
@@ -2218,7 +2216,7 @@ export const fr: typeof zhCN = {
     inputMethod: {
       guidanceTitle: 'Méthode de saisie 唔打啦',
       enableSystemIme:
-        'Dans les paramètres Android → Clavier / Méthodes de saisie, activez OpenLess Voice et sélectionnez-le si nécessaire.',
+        'Dans les paramètres Android → Clavier / Méthodes de saisie, activez 唔打啦 Voice et sélectionnez-le si nécessaire.',
       longPressLogo:
         'Dans le clavier 唔打啦, maintenez le logo en haut à gauche pour ouvrir les réglages natifs du clavier.',
     },
@@ -2278,8 +2276,8 @@ export const fr: typeof zhCN = {
       zh: '简体中文',
       zhTW: '繁體中文',
       en: 'English',
-      ja: '日本語 (Beta)',
-      ko: '한국어 (Beta)',
+      ja: '日本語',
+      ko: '한국어',
       restartHint:
         'Certains menus natifs, comme la zone de notification, peuvent nécessiter un redémarrage pour changer complètement de langue.',
     },
@@ -2488,7 +2486,7 @@ export const fr: typeof zhCN = {
         'autorisation microphone accessibilité historique enregistrement stockage confidentialité exporter',
       advanced:
         'Less Computer Claude agent débogage journaux expérience Apprendre des corrections vocabulary learning',
-      about: 'version Beta stable mise à jour actualisation',
+      about: 'version stable mise à jour actualisation',
     },
     sections: {
       appearance: 'Apparence et langue',
@@ -2518,7 +2516,6 @@ export const fr: typeof zhCN = {
       checkUpdate: 'Rechercher des mises à jour',
       checkUpdateBtn: 'Rechercher',
       docs: 'Documentation',
-      docsBtn: 'openless.app/docs ↗',
       feedback: 'Canal de commentaires',
       feedbackBtn: 'GitHub Issues ↗',
       source: 'Code source',
