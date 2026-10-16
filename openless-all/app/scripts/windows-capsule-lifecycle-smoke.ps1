@@ -14,7 +14,7 @@ if (-not (Test-Path $ExePath)) {
   throw "OpenLess executable not found: $ExePath"
 }
 
-$logPath = Join-Path $env:LOCALAPPDATA "OpenLess\Logs\openless.log"
+$logPath = Join-Path $env:LOCALAPPDATA "Mudala\Logs\openless.log"
 $existingOpenLess = @(Get-Process openless -ErrorAction SilentlyContinue)
 foreach ($existingProcess in $existingOpenLess) {
   Stop-Process -Id $existingProcess.Id -Force -ErrorAction SilentlyContinue

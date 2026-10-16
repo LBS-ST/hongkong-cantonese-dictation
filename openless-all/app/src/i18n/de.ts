@@ -2568,10 +2568,10 @@ export const de: typeof zhCN = {
     storageReset: 'Auf Standard zurücksetzen',
     storageReveal: 'Modellordner öffnen',
     storageDesc:
-      'Bei einem eigenen Speicherort wird OpenLess/models im gewählten Ordner erstellt und vorhandene Modelle werden dorthin verschoben. Zuvor bricht 唔打啦 Downloads ab und entlädt geladene Modelle.',
+      'Bei einem eigenen Speicherort wird Mudala/models im gewählten Ordner erstellt und vorhandene Modelle werden dorthin verschoben. Zuvor bricht 唔打啦 Downloads ab und entlädt geladene Modelle.',
     storageChooseTitle: 'Übergeordneten Speicherordner für lokale Modelle wählen',
     storageChangeConfirm:
-      'Vorhandene lokale Modelle werden nach {{path}}/OpenLess/models verschoben. Zuvor werden Downloads abgebrochen und geladene Modelle entladen. Fortfahren?',
+      'Vorhandene lokale Modelle werden nach {{path}}/Mudala/models verschoben. Zuvor werden Downloads abgebrochen und geladene Modelle entladen. Fortfahren?',
     storageResetConfirm:
       'Vorhandene lokale Modelle werden in den Systemstandardordner zurückverschoben. Aktueller Ordner: {{path}}. Fortfahren?',
     modelDir: 'Modellverzeichnis',

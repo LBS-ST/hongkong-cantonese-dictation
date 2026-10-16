@@ -2548,10 +2548,10 @@ export const es: typeof zhCN = {
     storageReset: 'Restaurar ubicación predeterminada',
     storageReveal: 'Abrir carpeta de modelos',
     storageDesc:
-      'La ubicación personalizada crea OpenLess/models dentro de la carpeta elegida y traslada los modelos existentes. Antes de moverlos, 唔打啦 cancela las descargas y libera los modelos cargados.',
+      'La ubicación personalizada crea Mudala/models dentro de la carpeta elegida y traslada los modelos existentes. Antes de moverlos, 唔打啦 cancela las descargas y libera los modelos cargados.',
     storageChooseTitle: 'Elegir carpeta superior para los modelos locales',
     storageChangeConfirm:
-      'Los modelos locales se trasladarán a {{path}}/OpenLess/models. Primero se cancelarán las descargas y se liberarán los modelos cargados. ¿Continuar?',
+      'Los modelos locales se trasladarán a {{path}}/Mudala/models. Primero se cancelarán las descargas y se liberarán los modelos cargados. ¿Continuar?',
     storageResetConfirm:
       'Los modelos locales volverán a la carpeta predeterminada del sistema. Carpeta actual: {{path}}. ¿Continuar?',
     modelDir: 'Directorio del modelo',

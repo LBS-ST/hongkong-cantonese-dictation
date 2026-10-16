@@ -19,12 +19,12 @@ pub fn default_models_root() -> Result<PathBuf> {
 /// Converts a user-selected parent directory into the actual models root.
 ///
 /// The UI has the user pick an ordinary directory; OpenLess always creates
-/// `OpenLess/models/` under it instead of scattering model files from multiple
+/// `Mudala/models/` under it instead of scattering model files from multiple
 /// engines directly in the chosen directory root.
 pub fn models_root_for_base_dir(base_dir: Option<&str>) -> Result<PathBuf> {
     let trimmed = base_dir.map(str::trim).filter(|value| !value.is_empty());
     let dir = match trimmed {
-        Some(base) => PathBuf::from(base).join("OpenLess").join("models"),
+        Some(base) => PathBuf::from(base).join("Mudala").join("models"),
         None => return default_models_root(),
     };
     ensure_dir(&dir)?;
@@ -212,7 +212,7 @@ mod tests {
         let root = models_root_for_base_dir(Some(tmp.to_string_lossy().as_ref()))
             .expect("build custom models root");
 
-        assert_eq!(root, tmp.join("OpenLess").join("models"));
+        assert_eq!(root, tmp.join("Mudala").join("models"));
         assert!(root.is_dir());
 
         let _ = fs::remove_dir_all(&tmp);

@@ -2,9 +2,9 @@
 //! platform-backed credentials vault.
 //!
 //! Storage roots:
-//! - macOS:   `~/Library/Application Support/OpenLess`
-//! - Windows: `%APPDATA%\OpenLess`
-//! - Android: `{Context.getFilesDir()}/OpenLess` (never `/data/local/tmp`)
+//! - macOS:   `~/Library/Application Support/Mudala`
+//! - Windows: `%APPDATA%\Mudala`
+//! - Android: `{Context.getFilesDir()}/Mudala` (never `/data/local/tmp`)
 //!
 //! Credential storage policy: provider credentials are stored in the OS
 //! credential vault (macOS Keychain, Windows Credential Manager).
@@ -65,27 +65,27 @@ pub(crate) fn data_dir() -> Result<PathBuf> {
         Ok(PathBuf::from(home)
             .join("Library")
             .join("Application Support")
-            .join("OpenLess"))
+            .join("Mudala"))
     }
 
     #[cfg(target_os = "windows")]
     {
         let appdata = std::env::var("APPDATA").context("APPDATA not set")?;
-        Ok(PathBuf::from(appdata).join("OpenLess"))
+        Ok(PathBuf::from(appdata).join("Mudala"))
     }
 
     #[cfg(all(unix, not(target_os = "macos"), not(target_os = "android")))]
     {
         if let Ok(xdg) = std::env::var("XDG_DATA_HOME") {
             if !xdg.is_empty() {
-                return Ok(PathBuf::from(xdg).join("OpenLess"));
+                return Ok(PathBuf::from(xdg).join("Mudala"));
             }
         }
         let home = std::env::var("HOME").context("HOME not set")?;
         Ok(PathBuf::from(home)
             .join(".local")
             .join("share")
-            .join("OpenLess"))
+            .join("Mudala"))
     }
 
     #[cfg(target_os = "android")]

@@ -660,7 +660,7 @@ pub struct UserPreferences {
     pub local_asr_keep_loaded_secs: u32,
     /// Custom parent directory for local models. Empty = the default
     /// `models/` under app data. When set, the actual model root is
-    /// `<local_asr_models_base_dir>/OpenLess/models/`, letting users isolate
+    /// `<local_asr_models_base_dir>/Mudala/models/`, letting users isolate
     /// OpenLess model files in any ordinary disk directory.
     #[serde(default)]
     pub local_asr_models_base_dir: String,

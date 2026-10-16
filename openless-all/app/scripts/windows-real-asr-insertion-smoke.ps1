@@ -57,7 +57,7 @@ function Test-CredentialValue($Value) {
 }
 
 function Get-OpenLessCredentialStatus {
-  $path = Join-Path $env:APPDATA "OpenLess\credentials.json"
+  $path = Join-Path $env:APPDATA "Mudala\credentials.json"
   if (-not (Test-Path $path)) {
     return [pscustomobject]@{ Path = $path; Present = $false; VolcengineConfigured = $false; ArkConfigured = $false }
   }
@@ -910,10 +910,10 @@ if (-not $credentialStatus.VolcengineConfigured -or -not $credentialStatus.ArkCo
   Write-Warning "Legacy credentials.json is incomplete ($($missingCredentialParts -join ', ')); $providerCredentialNote Continuing because the app may use the OS credential vault."
 }
 
-$logPath = Join-Path $env:LOCALAPPDATA "OpenLess\Logs\openless.log"
-$historyPath = Join-Path $env:APPDATA "OpenLess\history.json"
-$preferencesPath = Join-Path $env:APPDATA "OpenLess\preferences.json"
-$credentialsPath = Join-Path $env:APPDATA "OpenLess\credentials.json"
+$logPath = Join-Path $env:LOCALAPPDATA "Mudala\Logs\openless.log"
+$historyPath = Join-Path $env:APPDATA "Mudala\history.json"
+$preferencesPath = Join-Path $env:APPDATA "Mudala\preferences.json"
+$credentialsPath = Join-Path $env:APPDATA "Mudala\credentials.json"
 $inputTarget = $null
 $openless = $null
 $previousPreferences = $null

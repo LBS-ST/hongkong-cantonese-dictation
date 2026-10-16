@@ -201,7 +201,7 @@ function Wait-ProcessWindow($ProcessName, $After, $TimeoutSeconds) {
   return $null
 }
 
-$logPath = Join-Path $env:LOCALAPPDATA "OpenLess\Logs\openless.log"
+$logPath = Join-Path $env:LOCALAPPDATA "Mudala\Logs\openless.log"
 Remove-Item -LiteralPath $logPath -Force -ErrorAction SilentlyContinue
 Get-Process openless -ErrorAction SilentlyContinue | Stop-Process -Force
 

@@ -2465,10 +2465,10 @@ export const ja: typeof zhCN = {
     storageReset: '既定に戻す',
     storageReveal: 'モデルフォルダを開く',
     storageDesc:
-      'カスタム保存先では選択フォルダ配下に OpenLess/models を作成し、既存モデルを移行します。移行前にダウンロードをキャンセルし、読み込み済みモデルを解放します。',
+      'カスタム保存先では選択フォルダ配下に Mudala/models を作成し、既存モデルを移行します。移行前にダウンロードをキャンセルし、読み込み済みモデルを解放します。',
     storageChooseTitle: 'ローカルモデル保存先の親フォルダを選択',
     storageChangeConfirm:
-      '既存のローカルモデルを {{path}}/OpenLess/models に移動します。先にダウンロードをキャンセルし、読み込み済みモデルを解放します。続行しますか？',
+      '既存のローカルモデルを {{path}}/Mudala/models に移動します。先にダウンロードをキャンセルし、読み込み済みモデルを解放します。続行しますか？',
     storageResetConfirm:
       '既存のローカルモデルをシステム既定フォルダに戻します。現在のフォルダ: {{path}}。続行しますか？',
     modelDir: 'モデルフォルダ',

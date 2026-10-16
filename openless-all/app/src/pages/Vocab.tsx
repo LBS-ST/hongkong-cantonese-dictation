@@ -8,7 +8,7 @@
 //     "edit / delete" actions
 //   - Editing uses a modal (update_vocab keeps id/hits); scene presets stay a card section
 //   - Correction rules moved to the "tools → correction rules" page (Corrections.tsx)
-// Data is stored in ~/Library/Application Support/OpenLess/dictionary.json (same name as Swift).
+// Data is stored in ~/Library/Application Support/Mudala/dictionary.json (same name as Swift).
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

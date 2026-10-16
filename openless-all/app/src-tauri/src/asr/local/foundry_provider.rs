@@ -326,7 +326,7 @@ fn remove_partial_temp_wav(path: &Path) {
 #[cfg(target_os = "windows")]
 fn foundry_temp_dir() -> PathBuf {
     std::env::temp_dir()
-        .join("OpenLess")
+        .join("Mudala")
         .join("foundry-local-asr")
 }
 

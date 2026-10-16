@@ -1,5 +1,5 @@
 // History.tsx — backed by the Tauri commands list_history / delete_history_entry / clear_history.
-// Real data lives in ~/Library/Application Support/OpenLess/history.json.
+// Real data lives in ~/Library/Application Support/Mudala/history.json.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

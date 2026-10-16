@@ -1708,7 +1708,7 @@ fn reset_tcc_service_for_restart(service: &str, reason: &str) {
     }
 }
 
-/// Writes logs to both stderr and ~/Library/Logs/OpenLess/openless.log (matches Swift `Log.swift`).
+/// Writes logs to both stderr and ~/Library/Logs/Mudala/openless.log (matches Swift `Log.swift`).
 pub(crate) fn init_file_logger() {
     use simplelog::{
         ColorChoice, CombinedLogger, ConfigBuilder, LevelFilter, TermLogger, TerminalMode,
@@ -1775,14 +1775,14 @@ pub fn log_dir_path() -> std::path::PathBuf {
             return std::path::PathBuf::from(home)
                 .join("Library")
                 .join("Logs")
-                .join("OpenLess");
+                .join("Mudala");
         }
     }
     #[cfg(target_os = "windows")]
     {
         if let Ok(local) = std::env::var("LOCALAPPDATA") {
             return std::path::PathBuf::from(local)
-                .join("OpenLess")
+                .join("Mudala")
                 .join("Logs");
         }
     }
@@ -1792,7 +1792,7 @@ pub fn log_dir_path() -> std::path::PathBuf {
             return std::path::PathBuf::from(home)
                 .join(".local")
                 .join("share")
-                .join("OpenLess")
+                .join("Mudala")
                 .join("logs");
         }
     }
@@ -1807,7 +1807,7 @@ pub fn log_dir_path() -> std::path::PathBuf {
     }
     #[cfg(not(target_os = "android"))]
     {
-        std::env::temp_dir().join("OpenLess")
+        std::env::temp_dir().join("Mudala")
     }
 }
 

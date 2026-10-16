@@ -242,8 +242,8 @@ function Invoke-HotkeyAttempt($ExpectedPattern, $UnexpectedPattern, $Label) {
   }
 }
 
-$logPath = Join-Path $env:LOCALAPPDATA "OpenLess\Logs\openless.log"
-$preferencesPath = Join-Path $env:APPDATA "OpenLess\preferences.json"
+$logPath = Join-Path $env:LOCALAPPDATA "Mudala\Logs\openless.log"
+$preferencesPath = Join-Path $env:APPDATA "Mudala\preferences.json"
 $previousPreferences = Set-HoldHotkeyPreference $preferencesPath
 
 $globalMicPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone"

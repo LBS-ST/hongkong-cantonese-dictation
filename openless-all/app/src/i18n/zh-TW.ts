@@ -2354,10 +2354,10 @@ export const zhTW: typeof zhCN = {
     storageReset: '還原預設',
     storageReveal: '開啟模型總目錄',
     storageDesc:
-      '自訂目錄會在所選位置下建立 OpenLess/models，並自動遷移現有模型；遷移前會取消下載和釋放已載入模型。',
+      '自訂目錄會在所選位置下建立 Mudala/models，並自動遷移現有模型；遷移前會取消下載和釋放已載入模型。',
     storageChooseTitle: '選擇本地模型儲存父目錄',
     storageChangeConfirm:
-      '將把現有本地模型遷移到 {{path}}/OpenLess/models。遷移前會自動取消下載並釋放已載入模型。是否繼續？',
+      '將把現有本地模型遷移到 {{path}}/Mudala/models。遷移前會自動取消下載並釋放已載入模型。是否繼續？',
     storageResetConfirm: '將把現有本地模型遷回系統預設目錄。當前目錄：{{path}}。是否繼續？',
     modelDir: '模型目錄',
     revealDir: '開啟目錄',

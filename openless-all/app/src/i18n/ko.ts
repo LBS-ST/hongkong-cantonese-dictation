@@ -2447,10 +2447,10 @@ export const ko: typeof zhCN = {
     storageReset: '기본값으로 복원',
     storageReveal: '모델 폴더 열기',
     storageDesc:
-      '사용자 지정 저장소는 선택한 폴더 아래에 OpenLess/models 를 만들고 기존 모델을 이동합니다. 이동 전에 다운로드를 취소하고 로드된 모델을 해제합니다.',
+      '사용자 지정 저장소는 선택한 폴더 아래에 Mudala/models 를 만들고 기존 모델을 이동합니다. 이동 전에 다운로드를 취소하고 로드된 모델을 해제합니다.',
     storageChooseTitle: '로컬 모델 저장 상위 폴더 선택',
     storageChangeConfirm:
-      '기존 로컬 모델을 {{path}}/OpenLess/models 로 이동합니다. 먼저 다운로드를 취소하고 로드된 모델을 해제합니다. 계속할까요?',
+      '기존 로컬 모델을 {{path}}/Mudala/models 로 이동합니다. 먼저 다운로드를 취소하고 로드된 모델을 해제합니다. 계속할까요?',
     storageResetConfirm:
       '기존 로컬 모델을 시스템 기본 폴더로 되돌립니다. 현재 폴더: {{path}}. 계속할까요?',
     modelDir: '모델 폴더',

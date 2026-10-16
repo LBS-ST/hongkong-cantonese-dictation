@@ -1477,12 +1477,12 @@ fn is_reserved_extra_header_name(name: &str) -> bool {
 
 fn credentials_path() -> Result<PathBuf> {
     // macOS: ~/.openless/credentials.json (与 Swift 同源)
-    // Windows: %APPDATA%\OpenLess\credentials.json (Windows 没有标准 HOME 环境变量)
+    // Windows: %APPDATA%\Mudala\credentials.json (Windows 没有标准 HOME 环境变量)
     #[cfg(target_os = "windows")]
     {
         let appdata = std::env::var("APPDATA").context("APPDATA not set")?;
         return Ok(PathBuf::from(appdata)
-            .join("OpenLess")
+            .join("Mudala")
             .join(LEGACY_CREDS_FILE));
     }
     #[cfg(not(target_os = "windows"))]

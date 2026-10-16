@@ -978,7 +978,7 @@ impl LocalAsrApi for LocalAsrService {
             }
             let next_root = next
                 .as_ref()
-                .map(|path| path.join("OpenLess").join("models"))
+                .map(|path| path.join("Mudala").join("models"))
                 .unwrap_or(default_models_root);
             let previous_root = model_store.models_root_dir();
             model_store.cancel_all_downloads_and_wait().await?;

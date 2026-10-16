@@ -2498,10 +2498,10 @@ export const en: typeof zhCN = {
     storageReset: 'Reset to default',
     storageReveal: 'Open models folder',
     storageDesc:
-      'Custom storage creates OpenLess/models under the selected folder and migrates existing models. 唔打啦 cancels downloads and releases loaded models before moving files.',
+      'Custom storage creates Mudala/models under the selected folder and migrates existing models. 唔打啦 cancels downloads and releases loaded models before moving files.',
     storageChooseTitle: 'Choose local model storage parent folder',
     storageChangeConfirm:
-      'Existing local models will be moved to {{path}}/OpenLess/models. Downloads will be cancelled and loaded models released first. Continue?',
+      'Existing local models will be moved to {{path}}/Mudala/models. Downloads will be cancelled and loaded models released first. Continue?',
     storageResetConfirm:
       'Existing local models will be moved back to the system default folder. Current folder: {{path}}. Continue?',
     modelDir: 'Model directory',

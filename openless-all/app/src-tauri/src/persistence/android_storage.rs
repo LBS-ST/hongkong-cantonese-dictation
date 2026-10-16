@@ -80,7 +80,7 @@ pub fn init_android_storage_roots() -> Result<()> {
         })
     })?;
 
-    let data_dir = files_dir.join("OpenLess");
+    let data_dir = files_dir.join("Mudala");
     let log_dir = files_dir.join("logs");
     std::fs::create_dir_all(&data_dir)
         .with_context(|| format!("create Android data dir {}", data_dir.display()))?;
@@ -117,7 +117,7 @@ pub(crate) fn android_data_dir() -> Result<PathBuf> {
         return Ok(dir.clone());
     }
     let files = android_app_files_dir()?;
-    let data = files.join("OpenLess");
+    let data = files.join("Mudala");
     std::fs::create_dir_all(&data)
         .with_context(|| format!("create Android data dir {}", data.display()))?;
     let _ = ANDROID_DATA_DIR.set(data.clone());

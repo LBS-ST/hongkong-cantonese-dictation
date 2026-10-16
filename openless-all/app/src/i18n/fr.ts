@@ -2583,10 +2583,10 @@ export const fr: typeof zhCN = {
     storageReset: 'Rétablir l’emplacement par défaut',
     storageReveal: 'Ouvrir le dossier des modèles',
     storageDesc:
-      'Le stockage personnalisé crée OpenLess/models dans le dossier choisi et y déplace les modèles existants. 唔打啦 annule les téléchargements et libère les modèles chargés avant de déplacer les fichiers.',
+      'Le stockage personnalisé crée Mudala/models dans le dossier choisi et y déplace les modèles existants. 唔打啦 annule les téléchargements et libère les modèles chargés avant de déplacer les fichiers.',
     storageChooseTitle: 'Choisir le dossier parent des modèles locaux',
     storageChangeConfirm:
-      'Les modèles locaux seront déplacés vers {{path}}/OpenLess/models. Les téléchargements seront d’abord annulés et les modèles chargés libérés. Continuer ?',
+      'Les modèles locaux seront déplacés vers {{path}}/Mudala/models. Les téléchargements seront d’abord annulés et les modèles chargés libérés. Continuer ?',
     storageResetConfirm:
       'Les modèles locaux seront replacés dans le dossier système par défaut. Dossier actuel : {{path}}. Continuer ?',
     modelDir: 'Répertoire du modèle',

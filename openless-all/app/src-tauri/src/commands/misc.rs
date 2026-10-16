@@ -220,8 +220,8 @@ pub async fn stop_microphone_level_monitor(app: AppHandle) {
 
 /// Copy the current session's openless.log to a user-chosen location (the frontend obtains
 /// target_path via plugin-dialog). The path comes from lib::log_dir_path() —
-/// mac: ~/Library/Logs/OpenLess/openless.log,
-/// windows: %LOCALAPPDATA%\OpenLess\Logs\openless.log.
+/// mac: ~/Library/Logs/Mudala/openless.log,
+/// windows: %LOCALAPPDATA%\Mudala\Logs\openless.log.
 ///
 /// On Android the dialog returns a `content://` URI which `std::fs::copy` cannot handle; write
 /// through the JNI ContentResolver instead, avoiding the 0-byte files caused by
