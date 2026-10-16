@@ -12,22 +12,21 @@
 
 ## Part A — Rebrand 遺留清理
 
-### A1. 錄音設定「風格」選單 → 只留兩個
+### A1. 錄音設定「風格」選單 → 清走英文品牌字
 - **檔案**：`openless-all/app/src/pages/settings/RecordingInputSection.tsx`（約行 473–488）
 - **現狀**：3 個選項
-  - `siri` = 「流光 Siri 風格」（目前預設值 `prefs.capsuleStyle ?? 'siri'`）
+  - `siri` = 「流光 Siri 風格」（預設值 `prefs.capsuleStyle ?? 'siri'`）
   - `classic` = 「Openless 預設風格」← 有「Openless」字
   - `typeless` = 「Typeless 傳統風格」← 有「Typeless」字
-- **改成**：只留 2 個
+- **改成**：3 個選項全部保留，只清走英文品牌字
   - `classic` → 標籤「預設風格」
   - `typeless` → 標籤「傳統風格」
-  - 刪走 `siri` 選項
-- **預設值**：由 `siri` 改做 `classic`（即「預設風格」= 預設）
+  - `siri` → 「流光 Siri 風格」**不改**（Alex 明示保留）
+- **預設值**：維持 `siri`，唔改。
 - **i18n key**（`openless-all/app/src/i18n/*.ts`，8 個語系都要改）：
   - `settings.recording.capsuleStyleClassic` → 「預設風格」（zh-TW）
   - `settings.recording.capsuleStyleTypeless` → 「傳統風格」
-  - `settings.recording.capsuleStyleSiri` → 可刪或留空（選項已移除）
-- **⚠️ 注意**：`CapsuleStylePreview`（`TypelessCapsule.tsx`）同 `Capsule.tsx` 有 `siri` 分支（Siri orb），刪 `siri` 選項時要確保冇 render crash；`siri` 分支 code 可以保留（只係 UI 唔再畀揀），但預設值必須改做 `classic`。
+  - `settings.recording.capsuleStyleSiri` → 唔改
 
 ### A2. 刪走 Settings「服務」section
 - **檔案**：`openless-all/app/src/pages/settings/navigation.ts`（約行 51 `{ id: 'services', icon: 'cloud' }`）
@@ -69,7 +68,7 @@
 - 喺 `openless-all/app/src/`（含 `i18n/`、`components/`、`pages/`）grep 以下字眼，清走**用戶見到**嘅殘留：
   - `OpenLess` / `openless` / `Open-Less`（i18n `docsBtn: 'openless.app/docs ↗'` 呢類）
   - `Typeless` / `TypeLess`（i18n 標籤、`windowsShowOpenlessInKeyboardListLabel` 呢類 Windows-only 字）
-  - `Siri`（i18n 標籤）
+- ⚠️ `Siri` 字眼**唔使改**（Alex 明示「流光 Siri 風格」保留）。
 - 注意：`mockData.ts` / 測試檔 / 內部 event name（`openless:ui-preferences-changed`）/ Rust 檔名（`openless-core`）**唔使改**——只改用戶喺 UI 見到嘅字。
 
 ---
@@ -97,7 +96,7 @@
 ---
 
 ## 驗收（Alex 實機測試清單）
-1. 錄音設定「風格」只有「預設風格」「傳統風格」兩個，冇英文品牌字。
+1. 錄音設定「風格」三個選項：`流光 Siri 風格`（保留）、`預設風格`、`傳統風格`，冇 OpenLess/Typeless 英文品牌字。
 2. Settings 冇「服務」section。
 3. Settings 側欄底部同 About 頁冇「幫助中心」「釋出日記」。
 4. About 頁冇任何 OpenLess / openless 字眼同外部 GitHub 連結，只顯示「唔打啦」＋版本。
