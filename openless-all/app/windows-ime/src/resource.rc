@@ -1,5 +1,8 @@
 #include <winver.h>
 
+// UTF-8 source: the version strings below contain 唔打啦.
+#pragma code_page(65001)
+
 1 VERSIONINFO
 FILEVERSION 0,1,0,0
 PRODUCTVERSION 0,1,0,0
@@ -17,12 +20,12 @@ BEGIN
   BEGIN
     BLOCK "040904b0"
     BEGIN
-      VALUE "CompanyName", "OpenLess"
-      VALUE "FileDescription", "OpenLess Voice Input TSF IME"
+      VALUE "CompanyName", "唔打啦"
+      VALUE "FileDescription", "唔打啦 TSF IME"
       VALUE "FileVersion", "0.1.0.0"
       VALUE "InternalName", "OpenLessIme.dll"
       VALUE "OriginalFilename", "OpenLessIme.dll"
-      VALUE "ProductName", "OpenLess Voice Input"
+      VALUE "ProductName", "唔打啦"
       VALUE "ProductVersion", "0.1.0.0"
     END
   END

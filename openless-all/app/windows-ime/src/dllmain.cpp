@@ -36,7 +36,7 @@ _Check_return_ STDAPI DllGetClassObject(_In_ REFCLSID clsid, _In_ REFIID iid,
   }
   *object = nullptr;
 
-  if (clsid != CLSID_OpenLessTextService) {
+  if (clsid != CLSID_MudalaTextService) {
     return CLASS_E_CLASSNOTAVAILABLE;
   }
 

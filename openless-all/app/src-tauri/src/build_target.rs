@@ -3,10 +3,12 @@ pub(crate) fn classify_target_os(target: &str, cargo_cfg_target_os: Option<&str>
         Some("android") => "android",
         Some("macos") => "macos",
         Some("linux") => "linux",
+        Some("windows") => "windows",
         Some(_) => "",
         None if target.contains("-android") || target.contains("-androideabi") => "android",
         None if target.ends_with("-apple-darwin") => "macos",
         None if target.contains("-linux-") => "linux",
+        None if target.contains("-windows-") => "windows",
         None => "",
     }
 }
@@ -36,6 +38,25 @@ mod tests {
         assert_eq!(
             classify_target_os("aarch64-apple-darwin", Some("macos")),
             "macos"
+        );
+    }
+
+    #[test]
+    fn cargo_target_os_classifies_windows_targets() {
+        for target in ["x86_64-pc-windows-msvc", "x86_64-pc-windows-gnu"] {
+            assert_eq!(classify_target_os(target, Some("windows")), "windows");
+        }
+    }
+
+    #[test]
+    fn fallback_classifies_windows_target_triples() {
+        assert_eq!(
+            classify_target_os("x86_64-pc-windows-msvc", None),
+            "windows"
+        );
+        assert_eq!(
+            classify_target_os("x86_64-pc-windows-gnu", None),
+            "windows"
         );
     }
 

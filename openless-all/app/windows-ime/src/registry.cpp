@@ -7,9 +7,9 @@
 
 namespace {
 
-constexpr wchar_t kClsidKey[] = L"Software\\Classes\\CLSID\\{6B9F3F4F-5EE7-42D6-9C61-9F80B03A5D7D}";
+constexpr wchar_t kClsidKey[] = L"Software\\Classes\\CLSID\\{3515ED82-D97F-4298-8C00-2AF7B2137F7A}";
 constexpr wchar_t kInprocServer32Key[] =
-    L"Software\\Classes\\CLSID\\{6B9F3F4F-5EE7-42D6-9C61-9F80B03A5D7D}\\InprocServer32";
+    L"Software\\Classes\\CLSID\\{3515ED82-D97F-4298-8C00-2AF7B2137F7A}\\InprocServer32";
 constexpr REGSAM kRegistryWriteAccess = KEY_WRITE;
 
 HRESULT HResultFromWin32Error(LSTATUS status) {
@@ -43,7 +43,7 @@ HRESULT RegisterComServer(HINSTANCE module) {
     return hr;
   }
 
-  hr = SetStringValue(clsid_key, nullptr, kOpenLessImeName);
+  hr = SetStringValue(clsid_key, nullptr, kMudalaImeName);
   RegCloseKey(clsid_key);
   if (FAILED(hr)) {
     return hr;
@@ -124,18 +124,18 @@ HRESULT RegisterLanguageProfile() {
     return hr;
   }
 
-  profiles->Unregister(CLSID_OpenLessTextService);
+  profiles->Unregister(CLSID_MudalaTextService);
 
-  hr = profiles->Register(CLSID_OpenLessTextService);
+  hr = profiles->Register(CLSID_MudalaTextService);
   if (SUCCEEDED(hr)) {
-    hr = profiles->AddLanguageProfile(CLSID_OpenLessTextService, kOpenLessLangId,
-                                      GUID_OpenLessProfile, const_cast<wchar_t *>(kOpenLessImeName),
-                                      static_cast<ULONG>(ARRAYSIZE(kOpenLessImeName) - 1), nullptr,
+    hr = profiles->AddLanguageProfile(CLSID_MudalaTextService, kOpenLessLangId,
+                                      GUID_MudalaProfile, const_cast<wchar_t *>(kMudalaImeName),
+                                      static_cast<ULONG>(ARRAYSIZE(kMudalaImeName) - 1), nullptr,
                                       0, 0);
   }
   if (SUCCEEDED(hr)) {
-    hr = profiles->EnableLanguageProfile(CLSID_OpenLessTextService, kOpenLessLangId,
-                                         GUID_OpenLessProfile, TRUE);
+    hr = profiles->EnableLanguageProfile(CLSID_MudalaTextService, kOpenLessLangId,
+                                         GUID_MudalaProfile, TRUE);
   }
 
   profiles->Release();
@@ -150,12 +150,12 @@ HRESULT RegisterLanguageProfile() {
     return hr;
   }
 
-  manager->UnregisterProfile(CLSID_OpenLessTextService, kOpenLessLegacyKeyboardLangId,
-                             GUID_OpenLessProfile, 0);
-  manager->UnregisterProfile(CLSID_OpenLessTextService, kOpenLessLangId, GUID_OpenLessProfile, 0);
+  manager->UnregisterProfile(CLSID_MudalaTextService, kOpenLessLegacyKeyboardLangId,
+                             GUID_MudalaProfile, 0);
+  manager->UnregisterProfile(CLSID_MudalaTextService, kOpenLessLangId, GUID_MudalaProfile, 0);
   hr = manager->RegisterProfile(
-      CLSID_OpenLessTextService, kOpenLessLangId, GUID_OpenLessProfile, kOpenLessImeName,
-      static_cast<ULONG>(ARRAYSIZE(kOpenLessImeName) - 1), nullptr, 0, 0, nullptr, 0, TRUE,
+      CLSID_MudalaTextService, kOpenLessLangId, GUID_MudalaProfile, kMudalaImeName,
+      static_cast<ULONG>(ARRAYSIZE(kMudalaImeName) - 1), nullptr, 0, 0, nullptr, 0, TRUE,
       TF_IPP_CAPS_IMMERSIVESUPPORT | TF_IPP_CAPS_SYSTRAYSUPPORT);
   manager->Release();
   return hr;
@@ -176,24 +176,24 @@ HRESULT RegisterKeyboardCategory() {
 
   // Drop the keyboard category older releases registered, so an upgrade moves
   // the text service out of the keyboard list.
-  category_mgr->UnregisterCategory(CLSID_OpenLessTextService, GUID_TFCAT_TIP_KEYBOARD,
-                                   CLSID_OpenLessTextService);
-  category_mgr->UnregisterCategory(CLSID_OpenLessTextService, GUID_TFCAT_TIP_SPEECH,
-                                   CLSID_OpenLessTextService);
-  category_mgr->UnregisterCategory(CLSID_OpenLessTextService, GUID_TFCAT_TIPCAP_IMMERSIVESUPPORT,
-                                   CLSID_OpenLessTextService);
-  category_mgr->UnregisterCategory(CLSID_OpenLessTextService, GUID_TFCAT_TIPCAP_SYSTRAYSUPPORT,
-                                   CLSID_OpenLessTextService);
+  category_mgr->UnregisterCategory(CLSID_MudalaTextService, GUID_TFCAT_TIP_KEYBOARD,
+                                   CLSID_MudalaTextService);
+  category_mgr->UnregisterCategory(CLSID_MudalaTextService, GUID_TFCAT_TIP_SPEECH,
+                                   CLSID_MudalaTextService);
+  category_mgr->UnregisterCategory(CLSID_MudalaTextService, GUID_TFCAT_TIPCAP_IMMERSIVESUPPORT,
+                                   CLSID_MudalaTextService);
+  category_mgr->UnregisterCategory(CLSID_MudalaTextService, GUID_TFCAT_TIPCAP_SYSTRAYSUPPORT,
+                                   CLSID_MudalaTextService);
 
-  hr = category_mgr->RegisterCategory(CLSID_OpenLessTextService, GUID_TFCAT_TIP_SPEECH,
-                                      CLSID_OpenLessTextService);
+  hr = category_mgr->RegisterCategory(CLSID_MudalaTextService, GUID_TFCAT_TIP_SPEECH,
+                                      CLSID_MudalaTextService);
   if (SUCCEEDED(hr)) {
     hr = category_mgr->RegisterCategory(
-        CLSID_OpenLessTextService, GUID_TFCAT_TIPCAP_IMMERSIVESUPPORT, CLSID_OpenLessTextService);
+        CLSID_MudalaTextService, GUID_TFCAT_TIPCAP_IMMERSIVESUPPORT, CLSID_MudalaTextService);
   }
   if (SUCCEEDED(hr)) {
-    hr = category_mgr->RegisterCategory(CLSID_OpenLessTextService, GUID_TFCAT_TIPCAP_SYSTRAYSUPPORT,
-                                        CLSID_OpenLessTextService);
+    hr = category_mgr->RegisterCategory(CLSID_MudalaTextService, GUID_TFCAT_TIPCAP_SYSTRAYSUPPORT,
+                                        CLSID_MudalaTextService);
   }
   category_mgr->Release();
   return hr;
@@ -215,13 +215,13 @@ HRESULT UnregisterLanguageProfile() {
   ITfInputProcessorProfileMgr *manager = nullptr;
   hr = CreateProfileManager(&manager);
   if (SUCCEEDED(hr)) {
-    manager->UnregisterProfile(CLSID_OpenLessTextService, kOpenLessLegacyKeyboardLangId,
-                               GUID_OpenLessProfile, 0);
-    manager->UnregisterProfile(CLSID_OpenLessTextService, kOpenLessLangId, GUID_OpenLessProfile, 0);
+    manager->UnregisterProfile(CLSID_MudalaTextService, kOpenLessLegacyKeyboardLangId,
+                               GUID_MudalaProfile, 0);
+    manager->UnregisterProfile(CLSID_MudalaTextService, kOpenLessLangId, GUID_MudalaProfile, 0);
     manager->Release();
   }
 
-  hr = profiles->Unregister(CLSID_OpenLessTextService);
+  hr = profiles->Unregister(CLSID_MudalaTextService);
   profiles->Release();
   return hr;
 }
@@ -239,17 +239,17 @@ HRESULT UnregisterKeyboardCategory() {
     return hr;
   }
 
-  category_mgr->UnregisterCategory(CLSID_OpenLessTextService, GUID_TFCAT_TIP_KEYBOARD,
-                                   CLSID_OpenLessTextService);
-  hr = category_mgr->UnregisterCategory(CLSID_OpenLessTextService, GUID_TFCAT_TIP_SPEECH,
-                                        CLSID_OpenLessTextService);
+  category_mgr->UnregisterCategory(CLSID_MudalaTextService, GUID_TFCAT_TIP_KEYBOARD,
+                                   CLSID_MudalaTextService);
+  hr = category_mgr->UnregisterCategory(CLSID_MudalaTextService, GUID_TFCAT_TIP_SPEECH,
+                                        CLSID_MudalaTextService);
   if (SUCCEEDED(hr)) {
     hr = category_mgr->UnregisterCategory(
-        CLSID_OpenLessTextService, GUID_TFCAT_TIPCAP_IMMERSIVESUPPORT, CLSID_OpenLessTextService);
+        CLSID_MudalaTextService, GUID_TFCAT_TIPCAP_IMMERSIVESUPPORT, CLSID_MudalaTextService);
   }
   if (SUCCEEDED(hr)) {
     hr = category_mgr->UnregisterCategory(
-        CLSID_OpenLessTextService, GUID_TFCAT_TIPCAP_SYSTRAYSUPPORT, CLSID_OpenLessTextService);
+        CLSID_MudalaTextService, GUID_TFCAT_TIPCAP_SYSTRAYSUPPORT, CLSID_MudalaTextService);
   }
   category_mgr->Release();
   return hr;

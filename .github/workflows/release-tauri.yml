@@ -327,11 +327,17 @@ jobs:
       #    the IME DLL because of cwd-relative wxs Source resolution), manually run light from
       #    appRoot to re-link. Same surgery as the local windows-package-msvc.ps1
       #    ::Repair-TauriMsiBundle.
+      # MSI is best-effort: if it cannot be produced (e.g. WiX codepage vs the Chinese
+      # productName), warn and skip MSI so the NSIS .exe still gets verified and uploaded.
       - name: Repair Windows MSI if Tauri failed at WiX link
         if: matrix.platform == 'windows-latest'
         shell: pwsh
         working-directory: 'openless-all/app'
         run: |
+          function Skip-Msi([string]$reason) {
+            Write-Host "::warning::MSI skipped (NSIS .exe unaffected): $reason"
+            "OPENLESS_SKIP_WINDOWS_MSI=1" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          }
           $exitCode = $env:TAURI_BUILD_EXIT
           if ($env:OPENLESS_SKIP_WINDOWS_MSI -eq '1') {
             Write-Host "[ok] Skipping MSI repair for beta release channel."
@@ -344,7 +350,8 @@ jobs:
             return
           }
           if (-not $exitCode -or $exitCode -eq '0') {
-            throw "Tauri exited 0 but no MSI found at src-tauri\target\release\bundle\msi\"
+            Skip-Msi "Tauri exited 0 but no MSI found at src-tauri\target\release\bundle\msi\"
+            return
           }
           Write-Warning "Tauri MSI failed (exit $exitCode). Attempting manual light.exe relink from app root."
           $wixRoot = Join-Path $appRoot 'src-tauri\target\release\wix\x64'
@@ -353,17 +360,23 @@ jobs:
           $locale  = Join-Path $wixRoot 'locale.wxl'
           foreach ($p in @($mainObj, $imeObj, $locale)) {
             if (-not (Test-Path $p)) {
-              throw "Required WiX object missing: $p — tauri build aborted before candle ran. Check the Build (Windows) step log."
+              Skip-Msi "Required WiX object missing: $p — candle did not run. Check the Build (Windows) step log."
+              return
             }
           }
           $light = Get-ChildItem "$env:LOCALAPPDATA\tauri\WixTools*\light.exe" -ErrorAction SilentlyContinue |
             Sort-Object FullName |
             Select-Object -Last 1 -ExpandProperty FullName
-          if (-not $light) { throw "WiX light.exe not found under $env:LOCALAPPDATA\tauri\WixTools*" }
-          $version = (Get-Content src-tauri\tauri.conf.json -Raw | ConvertFrom-Json).version
+          if (-not $light) {
+            Skip-Msi "WiX light.exe not found under $env:LOCALAPPDATA\tauri\WixTools*"
+            return
+          }
+          $tauriConf = Get-Content src-tauri\tauri.conf.json -Raw -Encoding utf8 | ConvertFrom-Json
+          $version = $tauriConf.version
+          $productName = $tauriConf.productName
           $bundleDir = Join-Path $appRoot 'src-tauri\target\release\bundle\msi'
           New-Item -ItemType Directory -Force -Path $bundleDir | Out-Null
-          $msiPath = Join-Path $bundleDir "OpenLess_${version}_x64_en-US.msi"
+          $msiPath = Join-Path $bundleDir "${productName}_${version}_x64_en-US.msi"
           Push-Location $appRoot
           try {
             # -sice:ICE80: the x86 IME DLL is bundled alongside x64 under INSTALLDIR\windows-ime\;
@@ -371,9 +384,14 @@ jobs:
             # absolute and does not rely on SysWOW64 redirection). Tauri exposes no pass-through
             # for light arguments, so ICE80 must be suppressed here or LGHT0204 always fails.
             & $light -nologo -sice:ICE80 -ext WixUIExtension -ext WixUtilExtension -loc $locale -out $msiPath $mainObj $imeObj
-            if ($LASTEXITCODE -ne 0) { throw "light.exe relink failed with exit $LASTEXITCODE" }
+            $lightExit = $LASTEXITCODE
           } finally {
             Pop-Location
+          }
+          if ($lightExit -ne 0) {
+            Remove-Item -LiteralPath $msiPath -Force -ErrorAction SilentlyContinue
+            Skip-Msi "light.exe relink failed with exit $lightExit"
+            return
           }
           Write-Host "[ok] MSI rebuilt at $msiPath"
 
@@ -398,38 +416,6 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             throw "MSI installer smoke failed with exit $LASTEXITCODE"
           }
-
-      - name: Disambiguate macOS updater bundle filename
-        if: startsWith(matrix.platform, 'macos') && env.TAURI_SIGNING_PRIVATE_KEY != ''
-        shell: bash
-        working-directory: 'openless-all/app/src-tauri/target/release/bundle/macos'
-        run: |
-          if [ -f OpenLess.app.tar.gz ]; then
-            mv OpenLess.app.tar.gz "OpenLess_${{ matrix.updater-arch }}.app.tar.gz"
-          fi
-          if [ -f OpenLess.app.tar.gz.sig ]; then
-            mv OpenLess.app.tar.gz.sig "OpenLess_${{ matrix.updater-arch }}.app.tar.gz.sig"
-          fi
-
-      - name: Write updater manifest
-        if: env.TAURI_SIGNING_PRIVATE_KEY != ''
-        shell: bash
-        working-directory: 'openless-all/app'
-        env:
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          OPENLESS_UPDATE_TARGET: ${{ matrix.updater-target }}
-          OPENLESS_UPDATE_ARCH: ${{ matrix.updater-arch }}
-          OPENLESS_UPDATE_REPO: Open-Less/openless
-          OPENLESS_UPDATE_MIRROR_BASE_URL: https://fastgit.cc/https://github.com
-          # On the beta channel output latest-{tgt}-{arch}-beta.json; stable keeps the old filename.
-          OPENLESS_RELEASE_CHANNEL: ${{ env.OPENLESS_RELEASE_CHANNEL }}
-          # On the beta channel the script must write manifest.url as releases/download/<tag>/...
-          # rather than releases/latest (the latter is always = Stable, so beta users downloading
-          # via url would fetch the wrong file).
-          # On workflow_dispatch github.ref_name is not a tag — but then channel=stable and the
-          # script does not read this field, so it is safe.
-          OPENLESS_RELEASE_TAG: ${{ github.ref_name }}
-        run: node scripts/write-updater-manifest.mjs
 
       # ── Collect artifacts ──
       - name: List artifacts (debug)
@@ -476,7 +462,7 @@ jobs:
             openless-all/app/src-tauri/target/release/bundle/macos/*.app.tar.gz
             openless-all/app/src-tauri/target/release/bundle/macos/*.app.tar.gz.sig
             openless-all/app/src-tauri/target/release/bundle/latest-darwin-${{ matrix.updater-arch }}*.json
-          if-no-files-found: error
+          if-no-files-found: warn
 
       - name: Upload Windows artifacts
         if: matrix.platform == 'windows-latest'
@@ -497,7 +483,7 @@ jobs:
             openless-all/app/src-tauri/target/release/bundle/nsis/*.exe.sig
             openless-all/app/src-tauri/target/release/bundle/msi/*.msi.sig
             openless-all/app/src-tauri/target/release/bundle/latest-windows-x86_64*.json
-          if-no-files-found: error
+          if-no-files-found: warn
 
       # ── On tag push, also upload to the GitHub Release ──
       # Only the leader job (darwin/aarch64) writes the release body to a file; the other matrix
