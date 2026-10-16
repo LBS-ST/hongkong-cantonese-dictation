@@ -373,7 +373,7 @@ pub struct Coordinator {
 fn startup_storage_error() -> openless_core::BackendError {
     openless_core::BackendError::new(
         openless_core::BackendErrorCode::Persistence,
-        "local recovery or secure storage is unavailable; restore access and restart OpenLess",
+        "local recovery or secure storage is unavailable; restore access and restart 唔打啦",
     )
     .retryable(true)
 }

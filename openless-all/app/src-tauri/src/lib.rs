@@ -1011,7 +1011,7 @@ impl TrayLabels {
                 default_microphone: "System default microphone",
                 no_microphones: "No microphones found",
                 default_device_suffix: " (System default)",
-                quit: "Quit OpenLess",
+                quit: "Quit 唔打啦",
                 raw: "Raw",
                 light: "Light polish",
                 structured: "Structured",
@@ -1024,7 +1024,7 @@ impl TrayLabels {
                 default_microphone: "Micrófono del sistema",
                 no_microphones: "No se encontraron micrófonos",
                 default_device_suffix: " (Predeterminado del sistema)",
-                quit: "Salir de OpenLess",
+                quit: "Salir de 唔打啦",
                 raw: "Texto original",
                 light: "Pulido ligero",
                 structured: "Estructurado",
@@ -1037,7 +1037,7 @@ impl TrayLabels {
                 default_microphone: "Microphone du système",
                 no_microphones: "Aucun microphone détecté",
                 default_device_suffix: " (Par défaut du système)",
-                quit: "Quitter OpenLess",
+                quit: "Quitter 唔打啦",
                 raw: "Texte original",
                 light: "Retouche légère",
                 structured: "Structuré",
@@ -1050,7 +1050,7 @@ impl TrayLabels {
                 default_microphone: "Systemmikrofon",
                 no_microphones: "Keine Mikrofone gefunden",
                 default_device_suffix: " (Systemstandard)",
-                quit: "OpenLess beenden",
+                quit: "唔打啦 beenden",
                 raw: "Originaltext",
                 light: "Leichte Überarbeitung",
                 structured: "Strukturiert",
@@ -1063,7 +1063,7 @@ impl TrayLabels {
                 default_microphone: "系統預設麥克風",
                 no_microphones: "找不到麥克風",
                 default_device_suffix: "（系統預設）",
-                quit: "退出 OpenLess",
+                quit: "退出 唔打啦",
                 raw: "原文",
                 light: "輕度潤色",
                 structured: "清晰結構",
@@ -1076,7 +1076,7 @@ impl TrayLabels {
                 default_microphone: "システムのデフォルトマイク",
                 no_microphones: "マイクが見つかりません",
                 default_device_suffix: "（システムのデフォルト）",
-                quit: "OpenLessを終了",
+                quit: "唔打啦を終了",
                 raw: "原文",
                 light: "軽い整文",
                 structured: "明確な構造",
@@ -1089,7 +1089,7 @@ impl TrayLabels {
                 default_microphone: "시스템 기본 마이크",
                 no_microphones: "마이크를 찾을 수 없음",
                 default_device_suffix: "（시스템 기본）",
-                quit: "OpenLess 종료",
+                quit: "唔打啦 종료",
                 raw: "원문",
                 light: "가벼운 정리",
                 structured: "명확한 구조",
@@ -1102,7 +1102,7 @@ impl TrayLabels {
                 default_microphone: "系统默认麦克风",
                 no_microphones: "未发现麦克风",
                 default_device_suffix: "（系统默认）",
-                quit: "退出 OpenLess",
+                quit: "退出 唔打啦",
                 raw: "原文",
                 light: "轻度润色",
                 structured: "清晰结构",
@@ -2799,7 +2799,7 @@ fn ensure_qa_window<R: tauri::Runtime>(app: &AppHandle<R>) -> Option<tauri::Webv
     }
     let built =
         WebviewWindowBuilder::new(app, "qa", WebviewUrl::App("index.html?window=qa".into()))
-            .title("OpenLess QA")
+            .title("唔打啦 QA")
             .inner_size(QA_WINDOW_WIDTH, QA_WINDOW_HEIGHT)
             .decorations(false)
             .transparent(true)
@@ -2858,7 +2858,7 @@ fn ensure_less_computer_window<R: tauri::Runtime>(
         "less-computer",
         WebviewUrl::App("index.html?window=less-computer".into()),
     )
-    .title("OpenLess Less Computer")
+    .title("唔打啦 Less Computer")
     .inner_size(LESS_COMPUTER_WINDOW_WIDTH, LESS_COMPUTER_WINDOW_HEIGHT)
     .decorations(false)
     .transparent(true)
@@ -2907,7 +2907,7 @@ fn ensure_less_computer_window<R: tauri::Runtime>(
         "less-computer",
         WebviewUrl::App("index.html?window=less-computer".into()),
     )
-    .title("OpenLess Less Computer")
+    .title("唔打啦 Less Computer")
     .inner_size(LESS_COMPUTER_WINDOW_WIDTH, LESS_COMPUTER_WINDOW_HEIGHT)
     .decorations(false)
     .transparent(true)
@@ -3006,7 +3006,7 @@ fn ensure_voice_edit_window<R: tauri::Runtime>(
         "voice-edit",
         WebviewUrl::App("index.html?window=voice-edit".into()),
     )
-    .title("OpenLess 语音编辑")
+    .title("唔打啦 语音编辑")
     .inner_size(VOICE_EDIT_WINDOW_WIDTH, VOICE_EDIT_WINDOW_HEIGHT)
     .min_inner_size(380.0, 420.0)
     .decorations(false)
@@ -3123,7 +3123,7 @@ fn ensure_selection_voice_intent_prompt_window<R: tauri::Runtime>(
         "selection-voice-intent",
         WebviewUrl::App("index.html?window=selection-voice-intent".into()),
     )
-    .title("OpenLess 選區語音")
+    .title("唔打啦 選區語音")
     .inner_size(420.0, 280.0)
     .min_inner_size(360.0, 240.0)
     .resizable(true)
@@ -3721,7 +3721,7 @@ mod tests {
         assert_eq!(english.style, "Output style");
         assert_eq!(english.microphone, "Select microphone");
         assert_eq!(english.default_microphone, "System default microphone");
-        assert_eq!(english.quit, "Quit OpenLess");
+        assert_eq!(english.quit, "Quit 唔打啦");
         assert_eq!(english.style_pack_name(PolishMode::Light), "Light polish");
         assert_eq!(
             english.default_device_label("USB microphone"),
@@ -3730,7 +3730,7 @@ mod tests {
 
         let chinese = TrayLabels::for_locale("zh-CN");
         assert_eq!(chinese.style_pack_name(PolishMode::Structured), "清晰结构");
-        assert_eq!(TrayLabels::for_locale("es").quit, "Salir de OpenLess");
+        assert_eq!(TrayLabels::for_locale("es").quit, "Salir de 唔打啦");
         assert_eq!(
             TrayLabels::for_locale("fr").toggle,
             "Afficher la fenêtre principale"

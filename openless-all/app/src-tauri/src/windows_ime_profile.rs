@@ -219,13 +219,13 @@ mod windows_impl {
             RegistrationInspection::Installed { dll_path } => WindowsImeStatus {
                 state: WindowsImeInstallState::Installed,
                 using_tsf_backend: true,
-                message: "OpenLess TSF IME registration is present".to_string(),
+                message: "唔打啦 TSF IME registration is present".to_string(),
                 dll_path: Some(dll_path),
             },
             RegistrationInspection::NotInstalled => WindowsImeStatus {
                 state: WindowsImeInstallState::NotInstalled,
                 using_tsf_backend: false,
-                message: "OpenLess TSF IME registration was not found".to_string(),
+                message: "唔打啦 TSF IME registration was not found".to_string(),
                 dll_path: None,
             },
             RegistrationInspection::Broken { dll_path, reason } => WindowsImeStatus {
@@ -280,7 +280,7 @@ mod windows_impl {
             Err(_) => {
                 return RegistrationInspection::Broken {
                     dll_path: None,
-                    reason: "OpenLess COM registration is missing".to_string(),
+                    reason: "唔打啦 COM registration is missing".to_string(),
                 };
             }
         };
@@ -290,7 +290,7 @@ mod windows_impl {
             _ => {
                 return RegistrationInspection::Broken {
                     dll_path: None,
-                    reason: "OpenLess COM DLL path is missing".to_string(),
+                    reason: "唔打啦 COM DLL path is missing".to_string(),
                 };
             }
         };
@@ -298,7 +298,7 @@ mod windows_impl {
         if !Path::new(&dll_path).is_file() {
             return RegistrationInspection::Broken {
                 dll_path: Some(dll_path),
-                reason: "OpenLess COM DLL path does not exist".to_string(),
+                reason: "唔打啦 COM DLL path does not exist".to_string(),
             };
         }
 
@@ -314,14 +314,14 @@ mod windows_impl {
         if !Path::new(&x86_dll_path).is_file() {
             return RegistrationInspection::Broken {
                 dll_path: Some(x86_dll_path),
-                reason: "OpenLess 32-bit COM DLL path does not exist".to_string(),
+                reason: "唔打啦 32-bit COM DLL path does not exist".to_string(),
             };
         }
 
         if !tip_key_exists {
             return RegistrationInspection::Broken {
                 dll_path: Some(dll_path),
-                reason: "OpenLess TSF language profile registration is missing".to_string(),
+                reason: "唔打啦 TSF language profile registration is missing".to_string(),
             };
         }
 
@@ -330,7 +330,7 @@ mod windows_impl {
             // release that registered a keyboard profile is still in place.
             return RegistrationInspection::Broken {
                 dll_path: Some(dll_path),
-                reason: "OpenLess TSF speech category registration is missing; reinstall the IME"
+                reason: "唔打啦 TSF speech category registration is missing; reinstall the IME"
                     .to_string(),
             };
         }
@@ -338,7 +338,7 @@ mod windows_impl {
         if !immersive_category_exists || !systray_category_exists {
             return RegistrationInspection::Broken {
                 dll_path: Some(dll_path),
-                reason: "OpenLess TSF immersive support registration is missing; reinstall the IME"
+                reason: "唔打啦 TSF immersive support registration is missing; reinstall the IME"
                     .to_string(),
             };
         }
@@ -349,10 +349,10 @@ mod windows_impl {
     fn read_com_dll_path(hklm: &RegKey, flags: u32, label: &str) -> Result<String, String> {
         let com_key = hklm
             .open_subkey_with_flags(OPENLESS_COM_INPROC_KEY, flags)
-            .map_err(|_| format!("OpenLess {label} COM registration is missing"))?;
+            .map_err(|_| format!("唔打啦 {label} COM registration is missing"))?;
         match com_key.get_value::<String, _>("") {
             Ok(value) if !value.trim().is_empty() => Ok(value),
-            _ => Err(format!("OpenLess {label} COM DLL path is missing")),
+            _ => Err(format!("唔打啦 {label} COM DLL path is missing")),
         }
     }
 

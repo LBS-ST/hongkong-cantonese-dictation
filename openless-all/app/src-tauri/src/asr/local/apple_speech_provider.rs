@@ -264,7 +264,7 @@ fn ensure_authorized() -> Result<()> {
         return Ok(());
     }
     if status == SF_AUTH_DENIED {
-        bail!("语音识别权限被拒绝，请在 系统设置 → 隐私与安全性 → 语音识别 中允许 OpenLess");
+        bail!("语音识别权限被拒绝，请在 系统设置 → 隐私与安全性 → 语音识别 中允许 唔打啦");
     }
     if status == SF_AUTH_RESTRICTED {
         bail!("此设备的语音识别功能受限（可能由家长控制或 MDM 策略禁用）");
@@ -296,7 +296,7 @@ fn ensure_authorized() -> Result<()> {
     match granted {
         SF_AUTH_AUTHORIZED => Ok(()),
         SF_AUTH_DENIED => {
-            bail!("语音识别权限被拒绝，请在 系统设置 → 隐私与安全性 → 语音识别 中允许 OpenLess")
+            bail!("语音识别权限被拒绝，请在 系统设置 → 隐私与安全性 → 语音识别 中允许 唔打啦")
         }
         SF_AUTH_RESTRICTED => bail!("此设备的语音识别功能受限"),
         other => bail!("语音识别未获授权（状态 {other}）"),

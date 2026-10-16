@@ -81,7 +81,7 @@ impl RecorderError {
         match self {
             RecorderError::NoInputDevice => "未检测到麦克风，请连接麦克风后重试".to_string(),
             RecorderError::PermissionDenied => {
-                "需要麦克风权限，请在系统设置中允许 OpenLess 使用麦克风".to_string()
+                "需要麦克风权限，请在系统设置中允许 唔打啦 使用麦克风".to_string()
             }
             other => format!("录音启动失败: {other}"),
         }

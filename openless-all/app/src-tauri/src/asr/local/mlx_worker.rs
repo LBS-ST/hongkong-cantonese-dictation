@@ -393,7 +393,7 @@ impl MlxWorkerClient {
         })?;
 
         let executable = std::env::current_exe().map_err(|error| {
-            worker_start_failure(format!("resolve OpenLess executable: {error}"))
+            worker_start_failure(format!("resolve 唔打啦 executable: {error}"))
         })?;
         let mut child = match Command::new(executable)
             .arg(WORKER_ARGUMENT)

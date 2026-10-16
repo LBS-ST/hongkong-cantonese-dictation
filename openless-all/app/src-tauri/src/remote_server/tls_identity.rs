@@ -104,8 +104,8 @@ fn save_identity(
 fn create_ca(now: OffsetDateTime) -> Result<StoredIdentity, String> {
     let mut params = CertificateParams::default();
     let mut name = DistinguishedName::new();
-    name.push(DnType::CommonName, "OpenLess Remote Input CA");
-    name.push(DnType::OrganizationName, "OpenLess");
+    name.push(DnType::CommonName, "唔打啦 Remote Input CA");
+    name.push(DnType::OrganizationName, "唔打啦");
     params.distinguished_name = name;
     params.is_ca = IsCa::Ca(BasicConstraints::Constrained(0));
     params.key_usages = vec![KeyUsagePurpose::KeyCertSign, KeyUsagePurpose::CrlSign];
@@ -225,8 +225,8 @@ fn load_at(directory: &Path, sans: &[String], now: OffsetDateTime) -> Result<Tls
         let mut params =
             CertificateParams::new(sans.to_vec()).map_err(|error| error.to_string())?;
         let mut name = DistinguishedName::new();
-        name.push(DnType::CommonName, "OpenLess Remote Input");
-        name.push(DnType::OrganizationName, "OpenLess");
+        name.push(DnType::CommonName, "唔打啦 Remote Input");
+        name.push(DnType::OrganizationName, "唔打啦");
         params.distinguished_name = name;
         params.key_usages = vec![KeyUsagePurpose::DigitalSignature];
         params.extended_key_usages = vec![ExtendedKeyUsagePurpose::ServerAuth];
@@ -286,9 +286,9 @@ pub(super) fn mobileconfig(cert: &[u8]) -> String {
 <key>PayloadIdentifier</key><string>com.openless.remote-input.{fingerprint}.cert</string>
 <key>PayloadUUID</key><string>{cert_uuid}</string>
 <key>PayloadVersion</key><integer>1</integer>
-<key>PayloadDisplayName</key><string>OpenLess Remote Input CA ({short})</string>
+<key>PayloadDisplayName</key><string>唔打啦 Remote Input CA ({short})</string>
 </dict></array>
-<key>PayloadDisplayName</key><string>OpenLess Remote Input ({short})</string>
+<key>PayloadDisplayName</key><string>唔打啦 Remote Input ({short})</string>
 <key>PayloadDescription</key><string>Before trusting, compare the certificate's full SHA-256 fingerprint in system certificate details with OpenLess settings on your computer. Names and profile identifiers are not proof of identity. Expect exactly one root certificate and no other settings. If the fingerprint differs or cannot be checked, do not install or enable full trust; remove the profile if already installed. This CA can issue certificates; remove it when no longer needed.</string>
 <key>PayloadIdentifier</key><string>com.openless.remote-input.{fingerprint}</string>
 <key>PayloadType</key><string>Configuration</string>

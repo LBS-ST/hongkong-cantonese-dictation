@@ -129,7 +129,7 @@ pub fn load_or_create_pin(app: &AppHandle) -> std::io::Result<String> {
     let path = pin_path(app).ok_or_else(|| {
         std::io::Error::new(
             std::io::ErrorKind::NotFound,
-            "OpenLess config directory is unavailable",
+            "唔打啦 config directory is unavailable",
         )
     })?;
     pin_persistence::load_or_create_pin_at_path(&path, generate_pin)
@@ -140,7 +140,7 @@ pub fn save_pin(app: &AppHandle, pin: &str) -> std::io::Result<()> {
     let path = pin_path(app).ok_or_else(|| {
         std::io::Error::new(
             std::io::ErrorKind::NotFound,
-            "OpenLess config directory is unavailable",
+            "唔打啦 config directory is unavailable",
         )
     })?;
     pin_persistence::persist_pin_atomically(&path, pin)

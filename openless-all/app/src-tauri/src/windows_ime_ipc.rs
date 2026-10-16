@@ -42,8 +42,8 @@ impl std::fmt::Display for WindowsImeIpcError {
             | Self::Io(message) => {
                 write!(f, "{message}")
             }
-            Self::NoReadyClient => write!(f, "no OpenLess IME client is ready"),
-            Self::Timeout => write!(f, "OpenLess IME IPC timed out"),
+            Self::NoReadyClient => write!(f, "no 唔打啦 IME client is ready"),
+            Self::Timeout => write!(f, "唔打啦 IME IPC timed out"),
         }
     }
 }
@@ -192,7 +192,7 @@ impl WindowsImeIpcServer {
             let _ = self;
             let _ = request;
             Err(WindowsImeIpcError::Unavailable(
-                "OpenLess IME IPC is only available on Windows".to_string(),
+                "唔打啦 IME IPC is only available on Windows".to_string(),
             ))
         }
     }
@@ -302,7 +302,7 @@ mod windows_message {
         )
         .map_err(|failure| match failure {
             SendFailure::TimedOut => WindowsImeIpcError::OutcomeUnknown(
-                "OpenLess IME did not acknowledge the submit in time".to_string(),
+                "唔打啦 IME did not acknowledge the submit in time".to_string(),
             ),
             SendFailure::NotDelivered(ERROR_ACCESS_DENIED) => WindowsImeIpcError::Io(
                 "IME window refused the message (target runs at a higher integrity level)"
@@ -339,7 +339,7 @@ mod windows_message {
             }
             if Instant::now() >= deadline {
                 return Err(WindowsImeIpcError::OutcomeUnknown(
-                    "OpenLess IME IPC timed out after submit dispatch".to_string(),
+                    "唔打啦 IME IPC timed out after submit dispatch".to_string(),
                 ));
             }
         }

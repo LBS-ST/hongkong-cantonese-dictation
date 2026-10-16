@@ -395,7 +395,7 @@ mod imp {
                 return Ok(());
             }
             anyhow::bail!(
-                "Windows App Runtime 1.8 is still unavailable after automatic installation. OpenLess stopped before starting Foundry Local to avoid the Windows bootstrapper dialog. Installer exit code: {}. {} See openless.log for installer output, package list, OS build, and elevation diagnostics.",
+                "Windows App Runtime 1.8 is still unavailable after automatic installation. 唔打啦 stopped before starting Foundry Local to avoid the Windows bootstrapper dialog. Installer exit code: {}. {} See openless.log for installer output, package list, OS build, and elevation diagnostics.",
                 format_exit_code(install_capture.status_code),
                 WINDOWS_APP_RUNTIME_MANUAL_STEPS
             );
