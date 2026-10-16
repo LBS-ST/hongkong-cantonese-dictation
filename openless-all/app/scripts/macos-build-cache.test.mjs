@@ -88,9 +88,9 @@ dmg=src-tauri/target/release/bundle/dmg/唔打啦_1.2.3_x64.dmg
 if [ "$BUILD_FIXTURE_MODE" = missing ]; then exit 0; fi
 mkdir -p "$app/Contents/MacOS" "$(dirname "$dmg")"
 cp fixture.plist "$app/Contents/Info.plist"
-echo binary > "$app/Contents/MacOS/openless"
+echo binary > "$app/Contents/MacOS/mudala"
 # Cargo may reuse a binary compiled before this packaging invocation.
-touch -t 200001010000 "$app/Contents/MacOS/openless"
+touch -t 200001010000 "$app/Contents/MacOS/mudala"
 echo dmg > "$dmg"
 if [ "$BUILD_FIXTURE_MODE" = failure ]; then exit 23; fi
 `,
@@ -100,7 +100,7 @@ if [ "$BUILD_FIXTURE_MODE" = failure ]; then exit 23; fi
   put(join(builds, 'qwen3-asr-rs-new/out/lib/mlx.metallib'), 'new shader');
   put(join(builds, 'qwen3-asr-rs-old/out/lib/mlx.metallib'), 'old shader');
   utimesSync(join(builds, 'qwen3-asr-rs-old/out/lib/mlx.metallib'), 1, 1);
-  put(join(app, 'Contents/MacOS/openless'), 'stale binary');
+  put(join(app, 'Contents/MacOS/mudala'), 'stale binary');
   put(dmg, 'stale dmg');
   put(`${app}.tar.gz`, 'stale updater');
   put(`${app}.tar.gz.sig`, 'stale signature');

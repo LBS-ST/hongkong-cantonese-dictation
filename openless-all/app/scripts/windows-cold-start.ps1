@@ -10,8 +10,8 @@ param(
 $ErrorActionPreference = "Stop"
 
 $appRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$artifactExe = Join-Path $appRoot ".artifacts\windows-gnu\dev\openless.exe"
-$debugExe = Join-Path $appRoot "src-tauri\target\debug\openless.exe"
+$artifactExe = Join-Path $appRoot ".artifacts\windows-gnu\dev\mudala.exe"
+$debugExe = Join-Path $appRoot "src-tauri\target\debug\mudala.exe"
 
 function Resolve-DefaultExePath {
   param(

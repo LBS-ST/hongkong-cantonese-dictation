@@ -9,7 +9,7 @@ $ErrorActionPreference = "Stop"
 
 if ([string]::IsNullOrWhiteSpace($ExePath)) {
   $appRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-  $ExePath = Join-Path $appRoot "src-tauri\target\x86_64-pc-windows-gnu\release\openless.exe"
+  $ExePath = Join-Path $appRoot "src-tauri\target\x86_64-pc-windows-gnu\release\mudala.exe"
 }
 
 if (-not $env:SystemDrive) {

@@ -1,9 +1,9 @@
 [package]
-name = "openless"
+name = "mudala"
 version = "2.0.0"
 license = "AGPL-3.0-only"
-description = "OpenLess — local voice input that types where your cursor is"
-authors = ["OpenLess"]
+description = "唔打啦 (Mudala) — offline Hong Kong Cantonese dictation that types where your cursor is"
+authors = ["唔打啦 (Mudala) — LBS Smart Technology"]
 edition = "2021"
 rust-version = "1.88"
 

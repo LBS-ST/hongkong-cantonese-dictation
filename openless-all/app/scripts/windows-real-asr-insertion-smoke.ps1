@@ -19,7 +19,7 @@ $ErrorActionPreference = "Stop"
 
 if ([string]::IsNullOrWhiteSpace($ExePath)) {
   $appRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-  $ExePath = Join-Path $appRoot ".artifacts\windows-gnu\dev\openless.exe"
+  $ExePath = Join-Path $appRoot ".artifacts\windows-gnu\dev\mudala.exe"
 }
 
 if (-not $env:SystemDrive) {
@@ -178,7 +178,7 @@ public struct OpenLessCredentialNativeCredential {
 }
 
 function Get-OpenLessCredentialTarget($Account) {
-  return "$Account.com.openless.app"
+  return "$Account.com.lbs-smarttech.mudala"
 }
 
 function Get-OpenLessKeyringPassword($Account) {

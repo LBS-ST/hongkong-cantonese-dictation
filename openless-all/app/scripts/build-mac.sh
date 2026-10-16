@@ -101,7 +101,7 @@ else
   npm run tauri -- "${TAURI_BUILD_ARGS[@]}"
 fi
 
-if [ ! -f "$APP/Contents/MacOS/openless" ]; then
+if [ ! -f "$APP/Contents/MacOS/mudala" ]; then
   echo "✗ $APP 缺失或不是本次构建的产物（打包未完成），中止"
   exit 1
 fi

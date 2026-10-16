@@ -250,7 +250,7 @@ function Copy-WindowsArtifacts {
   $version = Get-PackageVersion
   $msiName = Get-MsiName
   $msiPath = Get-MsiPath
-  $exePath = Join-Path $releaseRoot "openless.exe"
+  $exePath = Join-Path $releaseRoot "mudala.exe"
   $webView2Loader = Get-ChildItem -Path (Join-Path $releaseRoot "build") -Recurse -Filter "WebView2Loader.dll" -ErrorAction SilentlyContinue |
     Where-Object { $_.FullName -match "\\out\\x64\\WebView2Loader\.dll$" } |
     Select-Object -First 1
@@ -282,7 +282,7 @@ function Copy-WindowsArtifacts {
   New-Item -ItemType Directory -Force -Path $portableRoot | Out-Null
   New-Item -ItemType Directory -Force -Path $portableImeX64Root | Out-Null
   New-Item -ItemType Directory -Force -Path $portableImeX86Root | Out-Null
-  Copy-Item -LiteralPath $exePath -Destination (Join-Path $portableRoot "openless.exe") -Force
+  Copy-Item -LiteralPath $exePath -Destination (Join-Path $portableRoot "mudala.exe") -Force
   Copy-Item -LiteralPath $webView2Loader.FullName -Destination (Join-Path $portableRoot "WebView2Loader.dll") -Force
   Copy-Item -LiteralPath $env:OPENLESS_IME_DLL_X64 -Destination (Join-Path $portableImeX64Root "OpenLessIme.dll") -Force
   Copy-Item -LiteralPath $env:OPENLESS_IME_DLL_X86 -Destination (Join-Path $portableImeX86Root "OpenLessIme.dll") -Force

@@ -50,7 +50,7 @@ try {
   $releaseRoot = Join-Path $buildRoot "src-tauri\target\x86_64-pc-windows-gnu\release"
   $artifactDevRoot = Join-Path $ArtifactsRoot "dev"
   New-Item -ItemType Directory -Force -Path $artifactDevRoot | Out-Null
-  Copy-Item -LiteralPath (Join-Path $releaseRoot "openless.exe") -Destination (Join-Path $artifactDevRoot "openless.exe") -Force
+  Copy-Item -LiteralPath (Join-Path $releaseRoot "mudala.exe") -Destination (Join-Path $artifactDevRoot "mudala.exe") -Force
   Copy-Item -LiteralPath (Resolve-WebView2Loader) -Destination (Join-Path $artifactDevRoot "WebView2Loader.dll") -Force
 
   # Build OpenLessIme.dll (x64 + x86) 并导出绝对路径 env var——
@@ -83,7 +83,7 @@ try {
 $releaseRoot = Join-Path $buildRoot "src-tauri\target\x86_64-pc-windows-gnu\release"
 $artifactReleaseRoot = Join-Path $ArtifactsRoot "release"
 New-Item -ItemType Directory -Force -Path $artifactReleaseRoot | Out-Null
-Remove-Item -LiteralPath (Join-Path $artifactReleaseRoot "openless.exe") -Force -ErrorAction SilentlyContinue
+Remove-Item -LiteralPath (Join-Path $artifactReleaseRoot "mudala.exe") -Force -ErrorAction SilentlyContinue
 
 if (Test-Path (Join-Path $releaseRoot "bundle")) {
   Copy-Item -LiteralPath (Join-Path $releaseRoot "bundle") -Destination $artifactReleaseRoot -Recurse -Force
@@ -103,6 +103,6 @@ if ($usedMirror -and (-not $KeepMirror)) {
 
 Write-Host ""
 Write-Host "Windows GNU artifacts:"
-Write-Host "$ArtifactsRoot\dev\openless.exe"
+Write-Host "$ArtifactsRoot\dev\mudala.exe"
 Write-Host "$artifactReleaseRoot\bundle\msi"
 Write-Host "$artifactReleaseRoot\bundle\nsis"

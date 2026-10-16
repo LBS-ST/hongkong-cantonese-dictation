@@ -7,7 +7,7 @@ $ErrorActionPreference = "Stop"
 
 if ([string]::IsNullOrWhiteSpace($ExePath)) {
   $appRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-  $ExePath = Join-Path $appRoot "src-tauri\target\debug\openless.exe"
+  $ExePath = Join-Path $appRoot "src-tauri\target\debug\mudala.exe"
 }
 
 if (-not (Test-Path $ExePath)) {

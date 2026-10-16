@@ -8,7 +8,7 @@ $ErrorActionPreference = "Stop"
 
 if ([string]::IsNullOrWhiteSpace($ExePath)) {
   $appRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-  $ExePath = Join-Path $appRoot ".artifacts\windows-gnu\dev\openless.exe"
+  $ExePath = Join-Path $appRoot ".artifacts\windows-gnu\dev\mudala.exe"
 }
 
 if (-not $env:SystemDrive) {

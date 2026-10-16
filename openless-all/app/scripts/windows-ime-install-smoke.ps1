@@ -148,7 +148,7 @@ function Assert-OpenLessImeInstalled {
   if ($x86Dll -ne $expectedX86) {
     throw "x86 COM DLL path points outside the installed IME directory. Expected '$expectedX86', got '$x86Dll'"
   }
-  if (-not (Test-Path -LiteralPath (Join-Path $installRoot "openless.exe") -PathType Leaf)) {
+  if (-not (Test-Path -LiteralPath (Join-Path $installRoot "mudala.exe") -PathType Leaf)) {
     throw "Installed OpenLess executable not found under $installRoot"
   }
 

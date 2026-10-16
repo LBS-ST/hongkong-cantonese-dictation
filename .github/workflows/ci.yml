@@ -422,7 +422,7 @@ jobs:
           TAU=$(node -p "require('./src-tauri/tauri.conf.json').version")
           CRG=$(grep -E '^version = ' src-tauri/Cargo.toml | head -1 | sed -E 's/^version = "(.+)"$/\1/')
           # Cargo.lock: find the version line right after the [openless] package name
-          CARGO_LOCK_VER=$(awk 'BEGIN{found=0} /^name = "openless"$/{found=1; next} found && /^version = /{gsub(/"/,""); print $3; exit}' src-tauri/Cargo.lock)
+          CARGO_LOCK_VER=$(awk 'BEGIN{found=0} /^name = "mudala"$/{found=1; next} found && /^version = /{gsub(/"/,""); print $3; exit}' src-tauri/Cargo.lock)
           echo "package.json         = $PKG"
           echo "package-lock root    = $LOCK_ROOT"
           echo "package-lock nested  = $LOCK_NESTED"

@@ -3522,7 +3522,7 @@ pub struct CredentialsVault;
 
 impl CredentialsVault {
     /// System credential store service name; maps to the Keychain service on macOS.
-    pub const SERVICE_NAME: &'static str = "com.openless.app";
+    pub const SERVICE_NAME: &'static str = "com.lbs-smarttech.mudala";
 
     pub(crate) fn bind_sync_gate(
         gate: std::sync::Arc<openless_core::credentials::SyncWriteGate>,
