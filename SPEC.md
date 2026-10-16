@@ -24,7 +24,7 @@
 
 ## 4. 引擎決定（CTO 已定，勿改）
 - M1 默認引擎 = **SenseVoice Small（sherpa-onnx，yue）**
-- 模型 = `csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17`（OpenLess 已整合，model alias = `sense-voice-small-zh`）
+- 模型 = `csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09`（OpenLess 已整合，model alias = `sense-voice-small-zh`）
 - 語言 = 鎖死 **yue**，唔做自動語言偵測
 - Qwen3-ASR 唔喺 M1 用（留 M2 A/B 測試）
 

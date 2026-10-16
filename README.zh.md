@@ -449,7 +449,7 @@ OpenLess 同样认可并感谢 LinuxDo 社区开放、务实、对开发者友�
 
 唔打啦（Mudala，粤拼 *m4 daa2 laa3*）是 [OpenLess](https://github.com/Open-Less/openless)（AGPL-3.0-only）的 fork，作为香港粤语听写完全离线运行：唯一语音引擎是经 sherpa-onnx 运行的本地 SenseVoice 模型，识别锁定为粤语（`yue`），并关闭 LLM 润色以保留口语粤语原文。OpenLess 原版版权声明及许可证维持不变。
 
-- **SenseVoice Small**，由 FunAudioLLM / 阿里巴巴通义实验室开发（[FunAudioLLM/SenseVoice](https://github.com/FunAudioLLM/SenseVoice)），按 [FunASR Model License](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE) 使用。模型不随本仓库分发，App 会按需下载 [`csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17`](https://huggingface.co/csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17)。
+- **SenseVoice Small**，由 FunAudioLLM / 阿里巴巴通义实验室开发（[FunAudioLLM/SenseVoice](https://github.com/FunAudioLLM/SenseVoice)），按 [FunASR Model License](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE) 使用。模型不随本仓库分发，App 会按需下载 [`csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09`](https://huggingface.co/csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09)。
 - **sherpa-onnx**，由 k2-fsa 开发（[k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx)，Apache-2.0），提供端侧推理运行时及模型的 ONNX 导出。
 
 ## 许可证

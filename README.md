@@ -442,7 +442,7 @@ This acknowledgement does not imply official endorsement or affiliation.
 
 唔打啦 (Mudala, Jyutping *m4 daa2 laa3*) is a fork of [OpenLess](https://github.com/Open-Less/openless) (AGPL-3.0-only) that runs fully offline as Hong Kong Cantonese dictation: the only speech engine is the local SenseVoice model through sherpa-onnx, recognition is locked to Cantonese (`yue`), and LLM polish is off so colloquial Cantonese is kept as spoken. OpenLess's original copyright notices and license are retained unchanged.
 
-- **SenseVoice Small** by FunAudioLLM / Alibaba Tongyi Lab ([FunAudioLLM/SenseVoice](https://github.com/FunAudioLLM/SenseVoice)), used under the [FunASR Model License](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE). The model is not bundled in this repository. The app downloads [`csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17`](https://huggingface.co/csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17) on request.
+- **SenseVoice Small** by FunAudioLLM / Alibaba Tongyi Lab ([FunAudioLLM/SenseVoice](https://github.com/FunAudioLLM/SenseVoice)), used under the [FunASR Model License](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE). The model is not bundled in this repository. The app downloads [`csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09`](https://huggingface.co/csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09) on request.
 - **sherpa-onnx** by k2-fsa ([k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx), Apache-2.0) provides the on-device inference runtime and the ONNX export of the model.
 
 ## License

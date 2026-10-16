@@ -15,7 +15,7 @@ use crate::types::PolishMode;
 
 /// Provider id of the local sherpa-onnx runtime.
 pub const OFFLINE_LOCK_ASR_PROVIDER_ID: &str = "sherpa-onnx-local";
-/// `csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17`.
+/// `csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09`.
 pub const OFFLINE_LOCK_ASR_MODEL: &str = crate::local_asr_catalog::SHERPA_DEFAULT_MODEL_ALIAS;
 /// Default recognition language: Cantonese.
 pub const OFFLINE_LOCK_DEFAULT_LANGUAGE: &str = "yue";

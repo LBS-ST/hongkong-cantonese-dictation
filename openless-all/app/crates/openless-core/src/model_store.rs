@@ -21,6 +21,11 @@ use crate::local_asr_catalog::{LocalAsrRuntime, LocalAsrTarget};
 
 pub const MODEL_READY_SENTINEL: &str = ".openless-model-ready";
 pub const MODEL_PARTIAL_INDEX: &str = ".partial.idx";
+
+/// Models whose upstream repository changed while keeping the same alias (and therefore
+/// the same local directory). Their ready sentinel must name the current repository, so an
+/// install from the previous repository reads as not installed and is downloaded again.
+const SOURCE_PINNED_MODELS: &[&str] = &["sense-voice-small-zh"];
 const MODEL_RELOCATION_JOURNAL: &str = ".openless-model-relocation.json";
 pub const DEFAULT_MODEL_CHUNK_BYTES: u64 = 32 * 1024 * 1024;
 pub const DEFAULT_MODEL_MAX_FILE_BYTES: u64 = 8 * 1024 * 1024 * 1024;
@@ -326,7 +331,7 @@ impl ModelCatalog {
         for (id, repository, display_name, languages, files) in [
             (
                 "sense-voice-small-zh",
-                "csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17",
+                "csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09",
                 "SenseVoice Small (zh/en/ja/ko/yue)",
                 &["zh", "en", "ja", "ko", "yue"][..].as_ref(),
                 &[
@@ -484,6 +489,9 @@ fn entry_is_complete(entry: &ModelCatalogEntry, directory: &Path) -> bool {
     if !directory.join(MODEL_READY_SENTINEL).is_file() {
         return false;
     }
+    if !sentinel_matches_source(entry, directory) {
+        return false;
+    }
     match &entry.selector {
         ModelFileSelector::QwenRepository => true,
         ModelFileSelector::Exact(files) => files
@@ -494,6 +502,20 @@ fn entry_is_complete(entry: &ModelCatalogEntry, directory: &Path) -> bool {
             .all(|path| archive_required_path_is_complete(directory, path)),
         ModelFileSelector::Native => false,
     }
+}
+
+/// The ready sentinel records the repository it was downloaded from. Only models listed in
+/// `SOURCE_PINNED_MODELS` are checked, so other installs (whose sentinel just says "ready")
+/// stay valid.
+fn sentinel_matches_source(entry: &ModelCatalogEntry, directory: &Path) -> bool {
+    if !SOURCE_PINNED_MODELS.contains(&entry.target.model_id()) {
+        return true;
+    }
+    let Ok(contents) = std::fs::read_to_string(directory.join(MODEL_READY_SENTINEL)) else {
+        return false;
+    };
+    let source = contents.trim();
+    source == entry.repository || entry.modelscope_repository.as_deref() == Some(source)
 }
 
 /// Sherpa Qwen archives use either a unified tokenizer or the legacy BPE pair.
@@ -1543,7 +1565,7 @@ impl ModelStore {
             )?;
         }
         let sentinel = staging.join(MODEL_READY_SENTINEL);
-        std::fs::write(&sentinel, b"ready\n").map_err(platform_error)?;
+        std::fs::write(&sentinel, format!("{}\n", manifest.repository)).map_err(platform_error)?;
         let _ = std::fs::remove_file(staging.join(MODEL_PARTIAL_INDEX));
         let destination = self.model_dir(&manifest.target)?;
         commit_staging(&staging, &destination)?;
@@ -3381,7 +3403,7 @@ mod tests {
             LocalAsrTarget::parse(LocalAsrRuntime::SherpaOnnx, "sense-voice-small-zh").unwrap();
         let manifest = ModelManifest::new(
             target.clone(),
-            "csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17",
+            "csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09",
             vec![ModelFile {
                 path: "model.int8.onnx".into(),
                 url: "https://example.test/model.int8.onnx".into(),
@@ -3854,6 +3876,34 @@ mod tests {
         assert_eq!(store.runtime_model_dir(&turbo).unwrap(), q5_dir);
         store.delete_model(&turbo).unwrap();
         assert!(store.is_installed(&q5).unwrap());
+        let _ = std::fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn sense_voice_from_previous_repository_is_not_installed() {
+        let root = std::env::temp_dir().join(format!(
+            "openless-model-source-pin-{}",
+            uuid::Uuid::new_v4()
+        ));
+        let store = ModelStore::new(ModelStoreConfig::new(root.clone()).unwrap()).unwrap();
+        let target =
+            LocalAsrTarget::parse(LocalAsrRuntime::SherpaOnnx, "sense-voice-small-zh").unwrap();
+        let dir = store.model_dir(&target).unwrap();
+        std::fs::create_dir_all(&dir).unwrap();
+        std::fs::write(dir.join("model.int8.onnx"), b"model").unwrap();
+        std::fs::write(dir.join("tokens.txt"), b"tokens").unwrap();
+
+        // Pre-upgrade installs wrote a plain "ready" sentinel.
+        std::fs::write(dir.join(MODEL_READY_SENTINEL), b"ready\n").unwrap();
+        assert!(!store.is_installed(&target).unwrap());
+
+        std::fs::write(
+            dir.join(MODEL_READY_SENTINEL),
+            b"csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09\n",
+        )
+        .unwrap();
+        assert!(store.is_installed(&target).unwrap());
+
         let _ = std::fs::remove_dir_all(root);
     }
 
